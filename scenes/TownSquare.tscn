@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://74ehew71iv7y"]
+
+[ext_resource type="Script" uid="uid://o3c1wk4yfngl" path="res://scripts/town_square.gd" id="1_ts2lr"]
+
+[node name="Node2D" type="Node2D" unique_id=247730497]
+script = ExtResource("1_ts2lr")
