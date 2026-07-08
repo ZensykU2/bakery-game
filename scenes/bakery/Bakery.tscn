@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://bhyk4sxjngs0a"]
+
+[ext_resource type="Script" uid="uid://cl2it58d3q8s2" path="res://scripts/bakery/bakery.gd" id="1_lffwj"]
+
+[sub_resource type="TileSet" id="TileSet_1pkl4"]
+
+[node name="Bakery" type="Node2D" unique_id=247730497]
+script = ExtResource("1_lffwj")
+
+[node name="FloorLayer" type="TileMapLayer" parent="." unique_id=1281923515]
+tile_set = SubResource("TileSet_1pkl4")
+
+[node name="BackWallLayer" type="TileMapLayer" parent="." unique_id=302331530]
+tile_set = SubResource("TileSet_1pkl4")
+
+[node name="FurnitureLayer" type="TileMapLayer" parent="." unique_id=1395962426]
+tile_set = SubResource("TileSet_1pkl4")
+
+[node name="FrontDetailsLayer" type="TileMapLayer" parent="." unique_id=1506986406]
+
+[node name="Interactables" type="Node2D" parent="." unique_id=388561079]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1442445018]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1202494237]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=487538235]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=58943906]
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=1045075577]
+
+[node name="Doors" type="Node2D" parent="." unique_id=1821075531]
