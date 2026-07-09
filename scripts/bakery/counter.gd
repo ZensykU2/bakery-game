@@ -1,11 +1,17 @@
-extends Node
+extends Node2D
 
+@export var counter_ui: Control
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	if counter_ui:
+		counter_ui.visible = false
 
+func ui_accept(_player: CharacterBody2D) -> void:
+	if counter_ui:
+		counter_ui.visible = not counter_ui.visible
+		if counter_ui.visible:
+			counter_ui.update_stock_list()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func _on_area_2d_body_exited(body: Node2D) -> void:
+	if body.name == "Player" and counter_ui:
+		counter_ui.visible = false

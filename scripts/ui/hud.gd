@@ -1,11 +1,40 @@
-extends Node
+extends Control
 
+@onready var day_label: Label = $TopBarMargin/TopBar/DayLabel
+@onready var money_label: Label = $TopBarMargin/TopBar/MoneyLabel
 
-# Called when the node enters the scene tree for the first time.
+@onready var inventory_overlay: Control = $InventoryOverlay
+@onready var item_list: VBoxContainer = $InventoryOverlay/CenterContainer/InventoryPanel/ItemList
+
 func _ready() -> void:
-	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	GameManager.day_changed.connect(_update_day)
+	GameManager.money_changed.connect(_update_money)
+	GameManager.inventory_changed.connect(_rebuild_inventory)
+
+	_update_day(GameManager.get_day())
+	_update_money(GameManager.get_money())
+	_rebuild_inventory()
+
+	inventory_overlay.visible = false
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("toggle_inventory"):
+		inventory_overlay.visible = not inventory_overlay.visible
+
+func _update_day(new_day: int) -> void:
+	day_label.text = "Day: %d" % new_day
+
+func _update_money(new_money: int) -> void:
+	money_label.text = "Money: %d" % new_money
+
+func _rebuild_inventory() -> void:
+	for child in item_list.get_children():
+		child.queue_free()
+
+	var inventory = GameManager.get_inventory()
+	for item_name in inventory.keys():
+		var label := Label.new()
+		label.text = "%s: %d" % [item_name.capitalize(), inventory[item_name]]
+		item_list.add_child(label)

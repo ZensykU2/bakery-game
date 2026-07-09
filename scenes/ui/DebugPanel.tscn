@@ -1,9 +1,64 @@
 [gd_scene format=3 uid="uid://cn4aeejgt1af3"]
 
-[node name="DebugPanel" type="Control" unique_id=1624882438]
-layout_mode = 3
-anchors_preset = 15
+[ext_resource type="Script" uid="uid://dl8bbi4od0xv" path="res://scripts/ui/debug_panel.gd" id="1_bagbe"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_bagbe"]
+
+[node name="DebugPanel" type="PanelContainer" unique_id=1666631702]
+anchors_preset = 11
+anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
+offset_left = -98.0
+grow_horizontal = 0
 grow_vertical = 2
+script = ExtResource("1_bagbe")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=707640588]
+layout_mode = 2
+
+[node name="AddMoneyButton" type="Button" parent="VBoxContainer" unique_id=1628230341]
+layout_mode = 2
+focus_mode = 0
+text = "Add $100"
+icon = SubResource("ImageTexture_bagbe")
+
+[node name="AddFlourButton" type="Button" parent="VBoxContainer" unique_id=956442609]
+layout_mode = 2
+focus_mode = 0
+text = "Add Flour"
+
+[node name="AddSugarButton" type="Button" parent="VBoxContainer" unique_id=1087038800]
+layout_mode = 2
+focus_mode = 0
+text = "Add Sugar"
+
+[node name="AddButterButton" type="Button" parent="VBoxContainer" unique_id=991726855]
+layout_mode = 2
+focus_mode = 0
+text = "Add Butter"
+
+[node name="AddEggsButton" type="Button" parent="VBoxContainer" unique_id=1555203858]
+layout_mode = 2
+focus_mode = 0
+text = "Add Eggs"
+
+[node name="AddBerriesButton" type="Button" parent="VBoxContainer" unique_id=1973533769]
+layout_mode = 2
+focus_mode = 0
+text = "Add Berries"
+
+[node name="NextDayButton" type="Button" parent="VBoxContainer" unique_id=423192887]
+layout_mode = 2
+focus_mode = 0
+text = "Next Day"
+
+[node name="SaveButton" type="Button" parent="VBoxContainer" unique_id=1495772158]
+layout_mode = 2
+focus_mode = 0
+text = "Save Game"
+
+[node name="LoadButton" type="Button" parent="VBoxContainer" unique_id=157646608]
+layout_mode = 2
+focus_mode = 0
+text = "Load Game"

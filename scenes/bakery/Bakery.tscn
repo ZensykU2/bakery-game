@@ -1,33 +1,196 @@
-[gd_scene format=3 uid="uid://bhyk4sxjngs0a"]
+[gd_scene format=4 uid="uid://bhyk4sxjngs0a"]
 
 [ext_resource type="Script" uid="uid://cl2it58d3q8s2" path="res://scripts/bakery/bakery.gd" id="1_lffwj"]
+[ext_resource type="PackedScene" uid="uid://cr72npcn6rks4" path="res://scenes/player/Player.tscn" id="2_npluw"]
+[ext_resource type="PackedScene" uid="uid://fg1fujl77ecp" path="res://scenes/ui/HUD.tscn" id="2_nx2qd"]
+[ext_resource type="Texture2D" uid="uid://cnnaw742mcd4e" path="res://art/sprites/bakery/KitchenSheet.png" id="2_oahqh"]
+[ext_resource type="PackedScene" uid="uid://cqm3tlkwfdhhe" path="res://scenes/bakery/OvenUI.tscn" id="3_5gh0i"]
+[ext_resource type="PackedScene" uid="uid://mldnryhtbkso" path="res://scenes/bakery/Oven.tscn" id="3_16vwy"]
+[ext_resource type="PackedScene" uid="uid://cn4aeejgt1af3" path="res://scenes/ui/DebugPanel.tscn" id="3_dreco"]
+[ext_resource type="PackedScene" uid="uid://dhr7unit14bt2" path="res://scenes/bakery/Counter.tscn" id="4_oahqh"]
+[ext_resource type="PackedScene" uid="uid://b0ic780wnlm65" path="res://scenes/bakery/CounterUI.tscn" id="5_jl5p4"]
 
-[sub_resource type="TileSet" id="TileSet_1pkl4"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oahqh"]
+texture = ExtResource("2_oahqh")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+5:4/0 = 0
+6:4/0 = 0
+7:4/0 = 0
+0:5/0 = 0
+1:5/0 = 0
+2:5/0 = 0
+3:5/0 = 0
+4:5/0 = 0
+5:5/0 = 0
+6:5/0 = 0
+7:5/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_fi7vi"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_oahqh")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jl5p4"]
+texture = ExtResource("2_oahqh")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+5:4/0 = 0
+6:4/0 = 0
+7:4/0 = 0
+0:5/0 = 0
+1:5/0 = 0
+2:5/0 = 0
+3:5/0 = 0
+4:5/0 = 0
+5:5/0 = 0
+6:5/0 = 0
+7:5/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_oahqh"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_jl5p4")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fi7vi"]
+texture = ExtResource("2_oahqh")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_jl5p4"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_fi7vi")
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_1pkl4"]
+distance = -244.0
 
 [node name="Bakery" type="Node2D" unique_id=247730497]
 script = ExtResource("1_lffwj")
 
 [node name="FloorLayer" type="TileMapLayer" parent="." unique_id=1281923515]
-tile_set = SubResource("TileSet_1pkl4")
+tile_map_data = PackedByteArray("AAAjABMAAAAAAAEAAAAkABMAAAAAAAEAAAAlABMAAAAAAAEAAAAmABMAAAAAAAEAAAAnABMAAAAAAAEAAAAoABMAAAAAAAEAAAApABMAAAAAAAEAAAAqABMAAAAAAAEAAAAiABMAAAAAAAEAAAAhABMAAAAAAAEAAAAgABMAAAAAAAEAAAAfABMAAAAAAAEAAAAfAA8AAAAAAAEAAAAgAA8AAAAAAAEAAAAhAA8AAAAAAAEAAAAiAA8AAAAAAAEAAAAjAA8AAAAAAAEAAAAkAA8AAAAAAAEAAAAlAA8AAAAAAAEAAAAmAA8AAAAAAAEAAAAmABAAAAAAAAEAAAAnABAAAAAAAAEAAAAoABAAAAAAAAEAAAApABAAAAAAAAEAAAAqABAAAAAAAAEAAAArABAAAAAAAAEAAAAdABAAAAABAAMAAAAdABEAAAABAAMAAAAdABIAAAABAAMAAAAdABMAAAABAAMAAAAuABQAAAAAAAMAAAAuABMAAAAAAAMAAAAuABIAAAAAAAMAAAAuABEAAAAAAAMAAAAuABAAAAAAAAMAAAAuAA8AAAAAAAMAAAAuAA4AAAAAAAMAAAA=")
+tile_set = SubResource("TileSet_fi7vi")
 
 [node name="BackWallLayer" type="TileMapLayer" parent="." unique_id=302331530]
-tile_set = SubResource("TileSet_1pkl4")
+tile_map_data = PackedByteArray("AAAUAAcAAAADAAIAAAAUAAYAAAACAAIAAAAVAAcAAAADAAIAAAAWAAcAAAADAAIAAAATAAcAAAADAAIAAAASAAcAAAADAAIAAAARAAcAAAADAAIAAAAQAAcAAAADAAIAAAATAAYAAAACAAIAAAASAAYAAAACAAIAAAARAAYAAAACAAIAAAAQAAYAAAACAAIAAAAVAAYAAAACAAIAAAAWAAYAAAACAAIAAAAPAAcAAAADAAIAAAAPAAYAAAACAAIAAAAOAAcAAAADAAIAAAAOAAYAAAACAAIAAAA=")
+tile_set = SubResource("TileSet_oahqh")
 
 [node name="FurnitureLayer" type="TileMapLayer" parent="." unique_id=1395962426]
-tile_set = SubResource("TileSet_1pkl4")
+tile_map_data = PackedByteArray("AAAOAAcAAAAAAAAAAAAPAAcAAAABAAAAAAAQAAcAAAABAAAAAAARAAcAAAABAAAAAAARAAgAAAADAAAAAAAQAAgAAAACAAEAAAAPAAgAAAABAAEAAAASAAgAAAAAAAIAAAASAAcAAAABAAIAAAA=")
+tile_set = SubResource("TileSet_jl5p4")
 
 [node name="FrontDetailsLayer" type="TileMapLayer" parent="." unique_id=1506986406]
 
 [node name="Interactables" type="Node2D" parent="." unique_id=388561079]
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1442445018]
+[node name="Oven" parent="Interactables" unique_id=1524767547 node_paths=PackedStringArray("oven_ui") instance=ExtResource("3_16vwy")]
+position = Vector2(464, 272)
+oven_ui = NodePath("../../CanvasLayer/OvenUI")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1202494237]
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=487538235]
+[node name="Counter" parent="Interactables" unique_id=1309049580 node_paths=PackedStringArray("counter_ui") instance=ExtResource("4_oahqh")]
+position = Vector2(429, 271)
+counter_ui = NodePath("../../CanvasLayer/CounterUi")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=58943906]
+
+[node name="HUD" parent="CanvasLayer" unique_id=684464828 instance=ExtResource("2_nx2qd")]
+
+[node name="DebugPanel" parent="CanvasLayer" unique_id=1666631702 instance=ExtResource("3_dreco")]
+
+[node name="CounterUi" parent="CanvasLayer" unique_id=205890409 instance=ExtResource("5_jl5p4")]
+
+[node name="OvenUI" parent="CanvasLayer" unique_id=709665024 instance=ExtResource("3_5gh0i")]
 
 [node name="SpawnPoints" type="Node2D" parent="." unique_id=1045075577]
 
 [node name="Doors" type="Node2D" parent="." unique_id=1821075531]
+
+[node name="Player" parent="." unique_id=2129430925 instance=ExtResource("2_npluw")]
+position = Vector2(609, 305)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1916088712]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1828861011]
+position = Vector2(610, 71)
+shape = SubResource("WorldBoundaryShape2D_1pkl4")

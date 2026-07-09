@@ -1,11 +1,15 @@
-extends Node
+extends PanelContainer
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	$VBoxContainer/AddMoneyButton.pressed.connect(_on_add_money)
+	$VBoxContainer/AddFlourButton.pressed.connect(func(): GameManager.add_item("flour", 1))
+	$VBoxContainer/AddSugarButton.pressed.connect(func(): GameManager.add_item("sugar", 1))
+	$VBoxContainer/AddButterButton.pressed.connect(func(): GameManager.add_item("butter", 1))
+	$VBoxContainer/AddEggsButton.pressed.connect(func(): GameManager.add_item("eggs", 1))
+	$VBoxContainer/AddBerriesButton.pressed.connect(func(): GameManager.add_item("berries", 1))
+	$VBoxContainer/NextDayButton.pressed.connect(func(): GameManager.next_day())
+	$VBoxContainer/SaveButton.pressed.connect(func(): GameManager.save_game())
+	$VBoxContainer/LoadButton.pressed.connect(func(): GameManager.load_game())
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func _on_add_money() -> void:
+	GameManager.add_money(100)
