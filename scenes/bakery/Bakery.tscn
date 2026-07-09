@@ -167,6 +167,12 @@ tile_set = SubResource("TileSet_jl5p4")
 [node name="Oven" parent="Interactables" unique_id=1524767547 node_paths=PackedStringArray("oven_ui") instance=ExtResource("3_16vwy")]
 position = Vector2(464, 272)
 oven_ui = NodePath("../../CanvasLayer/OvenUI")
+oven_id = "oven"
+
+[node name="Oven2" parent="Interactables" unique_id=538350455 node_paths=PackedStringArray("oven_ui") instance=ExtResource("3_16vwy")]
+position = Vector2(624, 272)
+oven_ui = NodePath("../../CanvasLayer/OvenUI")
+oven_id = "oven2"
 
 [node name="Counter" parent="Interactables" unique_id=1309049580 node_paths=PackedStringArray("counter_ui") instance=ExtResource("4_oahqh")]
 position = Vector2(429, 271)

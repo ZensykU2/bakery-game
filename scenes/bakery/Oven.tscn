@@ -99,8 +99,8 @@ script = ExtResource("1_1ii5b")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1937661151]
 sprite_frames = SubResource("SpriteFrames_ae6gd")
-animation = &"complete"
-frame_progress = 0.22375338
+animation = &"idle"
+frame_progress = 0.8093849
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1859614450]
 visible = false

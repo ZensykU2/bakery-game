@@ -7,8 +7,8 @@ var active_bakes: Dictionary:
 
 func _process(delta: float) -> void:
 	var state_changed_flag = false
-	for recipe_name in active_bakes.keys():
-		var bake = active_bakes[recipe_name]
+	for oven_id in active_bakes.keys():
+		var bake = active_bakes[oven_id]
 		if not bake.is_finished:
 			bake.time_remaining -= delta
 			state_changed_flag = true
@@ -18,13 +18,16 @@ func _process(delta: float) -> void:
 	if state_changed_flag:
 		baking_updated.emit()
 
-func can_start_bake(recipe_name: String) -> bool:
-	if active_bakes.has(recipe_name):
+func get_bake_for_oven(oven_id: String) -> Variant:
+	return active_bakes.get(oven_id, null)
+
+func can_start_bake(oven_id: String, recipe_name: String) -> bool:
+	if active_bakes.has(oven_id):
 		return false
 	return GameManager.can_craft(recipe_name)
 
-func start_bake(recipe_name: String) -> bool:
-	if not can_start_bake(recipe_name):
+func start_bake(oven_id: String, recipe_name: String) -> bool:
+	if not can_start_bake(oven_id, recipe_name):
 		return false
 	
 	var recipe = RecipeDB.get_recipe(recipe_name)
@@ -32,7 +35,8 @@ func start_bake(recipe_name: String) -> bool:
 	for item in ingredients.keys():
 		GameManager.state.inventory[item] -= ingredients[item]
 
-	active_bakes[recipe_name] = {
+	active_bakes[oven_id] = {
+		"recipe_name": recipe_name,
 		"time_remaining": recipe.get("bake_time", 5.0),
 		"is_finished": false
 	}
@@ -42,12 +46,16 @@ func start_bake(recipe_name: String) -> bool:
 	GameManager.save_game()
 	return true
 
-func harvest_bake(recipe_name: String) -> bool:
-	if not active_bakes.has(recipe_name) or not active_bakes[recipe_name].is_finished:
+func harvest_bake(oven_id: String) -> bool:
+	if not active_bakes.has(oven_id):
+		return false
+	var bake = active_bakes[oven_id]
+	if not bake.is_finished:
 		return false
 	
+	var recipe_name = bake.recipe_name
 	GameManager.state.bakery_stock[recipe_name] = GameManager.state.bakery_stock.get(recipe_name, 0) + 1
-	active_bakes.erase(recipe_name)
+	active_bakes.erase(oven_id)
 	
 	GameManager.inventory_changed.emit()
 	baking_updated.emit()
