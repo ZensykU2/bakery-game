@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://b5nvd628h8qii"]
+
+[ext_resource type="PackedScene" uid="uid://bo1cspga42kym" path="res://scenes/world/ExitDoor.tscn" id="1_3qebd"]
+[ext_resource type="Script" uid="uid://cmvc807o5fr1r" path="res://scripts/shop/shop.gd" id="1_tc8pp"]
+
+[node name="Shop" type="Node2D" unique_id=476702166]
+script = ExtResource("1_tc8pp")
+
+[node name="StreetDoor" parent="." unique_id=341434944 instance=ExtResource("1_3qebd")]
+position = Vector2(464, 222)
+target_scene = "uid://ddjaxocttvlu"
+target_spawn_name = "StreetSpawnShop"
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=411967137]
+position = Vector2(449, 228)
+
+[node name="StreetShop" type="Marker2D" parent="SpawnPoints" unique_id=2021125005]

@@ -1,4 +1,4 @@
-extends PanelContainer
+extends CanvasLayer
 
 func _ready() -> void:
 	$VBoxContainer/AddMoneyButton.pressed.connect(_on_add_money)
@@ -10,6 +10,15 @@ func _ready() -> void:
 	$VBoxContainer/NextDayButton.pressed.connect(func(): GameManager.next_day())
 	$VBoxContainer/SaveButton.pressed.connect(func(): GameManager.save_game())
 	$VBoxContainer/LoadButton.pressed.connect(func(): GameManager.load_game())
+	$VBoxContainer/SpeedUpTimeButton.pressed.connect(func(): TimeManager.increase_speed())
+	$VBoxContainer/SlowDownTimeButton.pressed.connect(func(): TimeManager.decrease_speed())
+
+func _process(_delta: float) -> void:
+	$VBoxContainer/TimeLabel.text = "Time: %02d:%02d\nSpeed: %.1fx" % [
+		TimeManager.hour,
+		TimeManager.minute,
+		TimeManager.time_speed
+	]
 
 func _on_add_money() -> void:
 	GameManager.add_money(100)

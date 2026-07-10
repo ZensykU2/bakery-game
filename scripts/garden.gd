@@ -1,5 +1,6 @@
-extends Node
+extends Node2D
 
+var is_indoor: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

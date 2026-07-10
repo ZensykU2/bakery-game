@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bi3fvn75kbo0l"]
+
+[ext_resource type="Script" uid="uid://cl87iybfip2ss" path="res://scripts/bedroom/bedroom.gd" id="1_fs2h6"]
+[ext_resource type="PackedScene" uid="uid://bo1cspga42kym" path="res://scenes/world/ExitDoor.tscn" id="3_2ot3w"]
+[ext_resource type="PackedScene" uid="uid://bpudgokknlk6t" path="res://scenes/bedroom/Bed.tscn" id="6_v0l7g"]
+
+[node name="Bedroom" type="Node2D" unique_id=247730497]
+script = ExtResource("1_fs2h6")
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=1373270296]
+position = Vector2(48, 23)
+
+[node name="BedroomSpawn" type="Marker2D" parent="SpawnPoints" unique_id=664924597]
+position = Vector2(0, 4)
+
+[node name="PassOut" type="Marker2D" parent="SpawnPoints" unique_id=686822610]
+position = Vector2(58, -15)
+
+[node name="ExitDoor" parent="." unique_id=341434944 instance=ExtResource("3_2ot3w")]
+position = Vector2(66, 11)
+target_scene = "uid://bhyk4sxjngs0a"
+target_spawn_name = "BedroomBakery"
+
+[node name="Bed" parent="." unique_id=337482961 instance=ExtResource("6_v0l7g")]
+position = Vector2(112, 35)

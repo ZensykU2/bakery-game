@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cdgepnxc4rry1"]
+
+[ext_resource type="Script" uid="uid://c7n3tbjqoufx2" path="res://scripts/garden.gd" id="1_p33sf"]
+[ext_resource type="PackedScene" uid="uid://bo1cspga42kym" path="res://scenes/world/ExitDoor.tscn" id="4_xm2g2"]
+
+[node name="Garden" type="Node2D" unique_id=247730497]
+script = ExtResource("1_p33sf")
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=430517181]
+
+[node name="GardenSpawn" type="Marker2D" parent="SpawnPoints" unique_id=691379528]
+position = Vector2(495, 249)
+
+[node name="ExitDoor" parent="." unique_id=341434944 instance=ExtResource("4_xm2g2")]
+position = Vector2(510, 237)
+target_scene = "uid://bhyk4sxjngs0a"
+target_spawn_name = "GardenBakery"

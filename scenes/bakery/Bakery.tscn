@@ -1,15 +1,14 @@
 [gd_scene format=4 uid="uid://bhyk4sxjngs0a"]
 
 [ext_resource type="Script" uid="uid://cl2it58d3q8s2" path="res://scripts/bakery/bakery.gd" id="1_lffwj"]
-[ext_resource type="PackedScene" uid="uid://cr72npcn6rks4" path="res://scenes/player/Player.tscn" id="2_npluw"]
-[ext_resource type="PackedScene" uid="uid://fg1fujl77ecp" path="res://scenes/ui/HUD.tscn" id="2_nx2qd"]
 [ext_resource type="Texture2D" uid="uid://cnnaw742mcd4e" path="res://art/sprites/bakery/KitchenSheet.png" id="2_oahqh"]
 [ext_resource type="PackedScene" uid="uid://cqm3tlkwfdhhe" path="res://scenes/bakery/OvenUI.tscn" id="3_5gh0i"]
 [ext_resource type="PackedScene" uid="uid://mldnryhtbkso" path="res://scenes/bakery/Oven.tscn" id="3_16vwy"]
-[ext_resource type="PackedScene" uid="uid://cn4aeejgt1af3" path="res://scenes/ui/DebugPanel.tscn" id="3_dreco"]
 [ext_resource type="PackedScene" uid="uid://dhr7unit14bt2" path="res://scenes/bakery/Counter.tscn" id="4_oahqh"]
 [ext_resource type="PackedScene" uid="uid://b0ic780wnlm65" path="res://scenes/bakery/CounterUI.tscn" id="5_jl5p4"]
-[ext_resource type="PackedScene" uid="uid://bo1cspga42kym" path="res://scenes/bakery/ExitDoor.tscn" id="9_jl5p4"]
+[ext_resource type="PackedScene" uid="uid://bo1cspga42kym" path="res://scenes/world/ExitDoor.tscn" id="9_jl5p4"]
+[ext_resource type="Script" uid="uid://drvk2qsh7742j" path="res://scripts/world/window_light.gd" id="12_tuj7y"]
+[ext_resource type="Script" uid="uid://vrbxnajgcm7m" path="res://scripts/world/lamp_light.gd" id="13_e4aqv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oahqh"]
 texture = ExtResource("2_oahqh")
@@ -130,38 +129,185 @@ texture_region_size = Vector2i(32, 32)
 1:0/0 = 0
 2:0/0 = 0
 3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
 0:1/0 = 0
 1:1/0 = 0
 2:1/0 = 0
 3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
 0:2/0 = 0
 1:2/0 = 0
 2:2/0 = 0
 3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+5:4/0 = 0
+6:4/0 = 0
+7:4/0 = 0
+0:5/0 = 0
+1:5/0 = 0
+2:5/0 = 0
+3:5/0 = 0
+4:5/0 = 0
+5:5/0 = 0
+6:5/0 = 0
+7:5/0 = 0
+0:6/0 = 0
+1:6/0 = 0
+2:6/0 = 0
+3:6/0 = 0
+4:6/0 = 0
+5:6/0 = 0
+6:6/0 = 0
+0:7/0 = 0
+1:7/0 = 0
+2:7/0 = 0
+3:7/0 = 0
+4:7/0 = 0
+5:7/0 = 0
+6:7/0 = 0
+7:7/0 = 0
 
-[sub_resource type="TileSet" id="TileSet_jl5p4"]
+[sub_resource type="TileSet" id="TileSet_tuj7y"]
 tile_size = Vector2i(32, 32)
 sources/0 = SubResource("TileSetAtlasSource_fi7vi")
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tuj7y"]
+texture = ExtResource("2_oahqh")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+5:4/0 = 0
+6:4/0 = 0
+7:4/0 = 0
+0:5/0 = 0
+1:5/0 = 0
+2:5/0 = 0
+3:5/0 = 0
+4:5/0 = 0
+5:5/0 = 0
+6:5/0 = 0
+7:5/0 = 0
+0:6/0 = 0
+1:6/0 = 0
+2:6/0 = 0
+3:6/0 = 0
+4:6/0 = 0
+5:6/0 = 0
+6:6/0 = 0
+0:7/0 = 0
+1:7/0 = 0
+2:7/0 = 0
+3:7/0 = 0
+4:7/0 = 0
+5:7/0 = 0
+6:7/0 = 0
+7:7/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_e4aqv"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_tuj7y")
+
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_1pkl4"]
 distance = -244.0
+
+[sub_resource type="Gradient" id="Gradient_5cj04"]
+offsets = PackedFloat32Array(0, 0.7113821)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1pkl4"]
+gradient = SubResource("Gradient_5cj04")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_80hhj"]
+offsets = PackedFloat32Array(0, 0.31707317)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5cj04"]
+gradient = SubResource("Gradient_80hhj")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [node name="Bakery" type="Node2D" unique_id=247730497]
 script = ExtResource("1_lffwj")
 
 [node name="FloorLayer" type="TileMapLayer" parent="." unique_id=1281923515]
-tile_map_data = PackedByteArray("AAAjABMAAAAAAAEAAAAkABMAAAAAAAEAAAAlABMAAAAAAAEAAAAmABMAAAAAAAEAAAAnABMAAAAAAAEAAAAoABMAAAAAAAEAAAApABMAAAAAAAEAAAAqABMAAAAAAAEAAAAiABMAAAAAAAEAAAAhABMAAAAAAAEAAAAgABMAAAAAAAEAAAAfABMAAAAAAAEAAAAfAA8AAAAAAAEAAAAgAA8AAAAAAAEAAAAhAA8AAAAAAAEAAAAiAA8AAAAAAAEAAAAjAA8AAAAAAAEAAAAkAA8AAAAAAAEAAAAlAA8AAAAAAAEAAAAmAA8AAAAAAAEAAAAmABAAAAAAAAEAAAAnABAAAAAAAAEAAAAoABAAAAAAAAEAAAApABAAAAAAAAEAAAAqABAAAAAAAAEAAAArABAAAAAAAAEAAAAdABAAAAABAAMAAAAdABEAAAABAAMAAAAdABIAAAABAAMAAAAdABMAAAABAAMAAAAuABQAAAAAAAMAAAAuABMAAAAAAAMAAAAuABIAAAAAAAMAAAAuABEAAAAAAAMAAAAuABAAAAAAAAMAAAAuAA8AAAAAAAMAAAAuAA4AAAAAAAMAAAA=")
+tile_map_data = PackedByteArray("AAAjABMAAAAFAAEAAAAkABMAAAAFAAEAAAAlABMAAAAFAAEAAAAmABMAAAAFAAEAAAAnABMAAAAFAAEAAAAoABMAAAAFAAEAAAApABMAAAAFAAEAAAAqABMAAAAFAAEAAAAiABMAAAAFAAEAAAAhABMAAAAFAAEAAAAgABMAAAAFAAEAAAAfABMAAAAFAAEAAAAfAA8AAAAFAAEAAAAgAA8AAAAFAAEAAAAhAA8AAAAFAAEAAAAiAA8AAAAFAAEAAAAjAA8AAAAFAAEAAAAkAA8AAAAFAAEAAAAlAA8AAAAFAAEAAAAmAA8AAAAFAAEAAAAmABAAAAAFAAEAAAAnABAAAAAFAAEAAAAoABAAAAAFAAEAAAApABAAAAAFAAEAAAAqABAAAAAFAAEAAAArABAAAAAFAAEAAAAdABAAAAAFAAEAAAAdABIAAAAFAAEAAAAdABMAAAAFAAEAAAAuABQAAAAFAAEAAAAuABMAAAAFAAEAAAAuABIAAAAFAAEAAAAuABEAAAAFAAEAAAAuABAAAAAFAAEAAAAuAA8AAAAFAAEAAAAuAA4AAAAFAAEAAAAqABIAAAAFAAEAAAAqABEAAAAFAAEAAAAqAA8AAAAFAAEAAAApAA8AAAAFAAEAAAAlABAAAAAFAAEAAAAkABAAAAAFAAEAAAAhAA4AAAAFAAEAAAAgAA4AAAAFAAEAAAAfAA4AAAAFAAEAAAAeAA8AAAAFAAEAAAAdAA8AAAAFAAEAAAAlAA4AAAAFAAEAAAAmAA4AAAAFAAEAAAAnAA8AAAAFAAEAAAAoAA8AAAAFAAEAAAArABEAAAAFAAEAAAAsABEAAAAFAAEAAAAtABEAAAAFAAEAAAAtABIAAAAFAAEAAAANAAgAAAACAAAAAAAOAAgAAAACAAAAAAAPAAgAAAACAAAAAAAQAAgAAAACAAAAAAARAAgAAAACAAAAAAASAAgAAAACAAAAAAATAAgAAAACAAAAAAAUAAgAAAACAAAAAAAVAAgAAAACAAAAAAAVAAkAAAACAAAAAAAVAAoAAAACAAAAAAAUAAoAAAACAAAAAAATAAoAAAACAAAAAAATAAkAAAACAAAAAAAUAAkAAAACAAAAAAASAAkAAAACAAAAAAARAAkAAAACAAAAAAAQAAkAAAACAAAAAAAPAAkAAAACAAAAAAAOAAkAAAACAAAAAAANAAkAAAACAAAAAAANAAoAAAACAAAAAAANAAsAAAACAAAAAAAOAAsAAAACAAAAAAAPAAsAAAACAAAAAAAPAAoAAAACAAAAAAAQAAoAAAACAAAAAAARAAoAAAACAAAAAAASAAoAAAACAAAAAAAOAAoAAAACAAAAAAAQAAsAAAACAAAAAAARAAsAAAACAAAAAAASAAsAAAACAAAAAAATAAsAAAACAAAAAAAUAAsAAAACAAAAAAAVAAsAAAACAAAAAAA=")
 tile_set = SubResource("TileSet_fi7vi")
 
 [node name="BackWallLayer" type="TileMapLayer" parent="." unique_id=302331530]
-tile_map_data = PackedByteArray("AAAUAAcAAAADAAIAAAAUAAYAAAACAAIAAAAVAAcAAAADAAIAAAAWAAcAAAADAAIAAAATAAcAAAADAAIAAAASAAcAAAADAAIAAAARAAcAAAADAAIAAAAQAAcAAAADAAIAAAATAAYAAAACAAIAAAASAAYAAAACAAIAAAARAAYAAAACAAIAAAAQAAYAAAACAAIAAAAVAAYAAAACAAIAAAAWAAYAAAACAAIAAAAPAAcAAAADAAIAAAAPAAYAAAACAAIAAAAOAAcAAAADAAIAAAAOAAYAAAACAAIAAAA=")
+tile_map_data = PackedByteArray("AAAUAAcAAAADAAIAAAAUAAYAAAACAAIAAAAVAAcAAAADAAIAAAAWAAcAAAADAAIAAAATAAcAAAADAAIAAAASAAcAAAADAAIAAAARAAcAAAADAAIAAAAQAAcAAAADAAIAAAATAAYAAAACAAIAAAASAAYAAAACAAIAAAARAAYAAAACAAIAAAAQAAYAAAACAAIAAAAVAAYAAAACAAIAAAAWAAYAAAACAAIAAAAPAAcAAAADAAIAAAAPAAYAAAACAAIAAAAOAAcAAAADAAIAAAAOAAYAAAACAAIAAAANAAcAAAADAAIAAAANAAYAAAACAAIAAAA=")
 tile_set = SubResource("TileSet_oahqh")
 
 [node name="FurnitureLayer" type="TileMapLayer" parent="." unique_id=1395962426]
-tile_map_data = PackedByteArray("AAAOAAcAAAAAAAAAAAAPAAcAAAABAAAAAAAQAAcAAAABAAAAAAARAAcAAAABAAAAAAARAAgAAAADAAAAAAAQAAgAAAACAAEAAAAPAAgAAAABAAEAAAASAAgAAAAAAAIAAAASAAcAAAABAAIAAAA=")
-tile_set = SubResource("TileSet_jl5p4")
+tile_map_data = PackedByteArray("AAAOAAcAAAAAAAAAAAAPAAcAAAABAAAAAAAQAAcAAAABAAAAAAARAAcAAAABAAAAAAARAAgAAAADAAAAAAAQAAgAAAACAAEAAAAPAAgAAAABAAEAAAASAAgAAAAAAAIAAAASAAcAAAABAAIAAAANAAgAAAABAAMAAAANAAkAAAABAAMAAAANAAoAAAACAAMAAAANAAcAAAAAAAMAAAAPAAoAAAAAAAEAAAAOAAoAAAAAAAEAAAANAAsAAAADAAEAAAA=")
+tile_set = SubResource("TileSet_tuj7y")
 
 [node name="FrontDetailsLayer" type="TileMapLayer" parent="." unique_id=1506986406]
+z_index = 10
+tile_map_data = PackedByteArray("AAAPAAoAAAADAAMAAAA=")
+tile_set = SubResource("TileSet_e4aqv")
 
 [node name="Interactables" type="Node2D" parent="." unique_id=388561079]
 
@@ -176,14 +322,10 @@ oven_ui = NodePath("../../CanvasLayer/OvenUI")
 oven_id = "oven2"
 
 [node name="Counter" parent="Interactables" unique_id=1309049580 node_paths=PackedStringArray("counter_ui") instance=ExtResource("4_oahqh")]
-position = Vector2(429, 271)
+position = Vector2(464, 368)
 counter_ui = NodePath("../../CanvasLayer/CounterUi")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=58943906]
-
-[node name="HUD" parent="CanvasLayer" unique_id=684464828 instance=ExtResource("2_nx2qd")]
-
-[node name="DebugPanel" parent="CanvasLayer" unique_id=1666631702 instance=ExtResource("3_dreco")]
 
 [node name="CounterUi" parent="CanvasLayer" unique_id=205890409 instance=ExtResource("5_jl5p4")]
 
@@ -192,18 +334,51 @@ counter_ui = NodePath("../../CanvasLayer/CounterUi")
 [node name="SpawnPoints" type="Node2D" parent="." unique_id=1045075577]
 position = Vector2(593, 292)
 
-[node name="BakerySpawn" type="Marker2D" parent="SpawnPoints" unique_id=608546524]
+[node name="GardenBakery" type="Marker2D" parent="SpawnPoints" unique_id=428828996]
+position = Vector2(128, -28)
 
-[node name="ExitDoor" parent="." unique_id=341434944 instance=ExtResource("9_jl5p4")]
-position = Vector2(592, 268)
+[node name="BedroomBakery" type="Marker2D" parent="SpawnPoints" unique_id=608546524]
+position = Vector2(63, -29)
+
+[node name="StreetBakery" type="Marker2D" parent="SpawnPoints" unique_id=201130687]
+position = Vector2(180, -30)
+
+[node name="CoreSpawn" type="Marker2D" parent="SpawnPoints" unique_id=435859059]
+position = Vector2(-37, 14)
+
+[node name="BedroomDoor" parent="." unique_id=341434944 instance=ExtResource("9_jl5p4")]
+position = Vector2(672, 256)
 target_scene = "uid://bi3fvn75kbo0l"
 target_spawn_name = "BedroomSpawn"
+closed_weekdays = Array[String]([])
 
-[node name="Player" parent="." unique_id=2129430925 instance=ExtResource("2_npluw")]
-position = Vector2(566, 301)
+[node name="GardenDoor" parent="." unique_id=1173022087 instance=ExtResource("9_jl5p4")]
+position = Vector2(736, 256)
+target_scene = "uid://cdgepnxc4rry1"
+target_spawn_name = "GardenSpawn"
+closed_weekdays = Array[String]([])
+
+[node name="StreetDoor" parent="." unique_id=1139779820 instance=ExtResource("9_jl5p4")]
+position = Vector2(788, 256)
+target_scene = "uid://ddjaxocttvlu"
+target_spawn_name = "StreetSpawnBakery"
+closed_weekdays = Array[String]([])
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1916088712]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1828861011]
-position = Vector2(610, 71)
+position = Vector2(573, 179)
 shape = SubResource("WorldBoundaryShape2D_1pkl4")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1535013889]
+position = Vector2(659, 282)
+texture = SubResource("GradientTexture2D_1pkl4")
+script = ExtResource("12_tuj7y")
+
+[node name="PointLight2D2" type="PointLight2D" parent="." unique_id=1855267264]
+position = Vector2(505, 248)
+color = Color(1, 1, 0.81960785, 1)
+texture = SubResource("GradientTexture2D_5cj04")
+script = ExtResource("13_e4aqv")
+max_energy = 0.4
+turn_off_hour = 8

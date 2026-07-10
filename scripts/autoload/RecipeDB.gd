@@ -8,6 +8,7 @@ var recipes := {
 		},
 		"sell_price": 12,
 		"bake_time": 5.0,
+		"icon": preload("res://art/sprites/bakery/Bread.png"),
 	},
 	"cookies": {
 		"ingredients": {
@@ -17,6 +18,7 @@ var recipes := {
 		},
 		"sell_price": 18,
 		"bake_time": 8.0,
+		"icon": preload("res://art/sprites/bakery/Cookie.png"),
 	},
 	"berry_tart": {
 		"ingredients": {
@@ -26,7 +28,8 @@ var recipes := {
 			"berries": 1,
 		},
 		"sell_price": 25,
-		"bake_time": 12.0
+		"bake_time": 12.0,
+		"icon": preload("res://art/sprites/bakery/BerryTart.png")
 	},
 }
 

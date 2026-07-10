@@ -1,6 +1,15 @@
 [gd_scene format=3 uid="uid://dfvn466w26x8l"]
 
 [ext_resource type="Script" uid="uid://clon8lhdm6uva" path="res://scripts/main.gd" id="1_elqb8"]
+[ext_resource type="PackedScene" uid="uid://cr72npcn6rks4" path="res://scenes/player/Player.tscn" id="2_6ryrm"]
+[ext_resource type="Script" uid="uid://cdscdrla3c44b" path="res://scripts/world/ambient_light.gd" id="3_0nnu2"]
 
-[node name="Node2D" type="Node2D" unique_id=247730497]
+[node name="Main" type="Node2D" unique_id=247730497]
 script = ExtResource("1_elqb8")
+
+[node name="CurrentLevel" type="Node2D" parent="." unique_id=1739865173]
+
+[node name="Player" parent="." unique_id=669378819 instance=ExtResource("2_6ryrm")]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=690546190]
+script = ExtResource("3_0nnu2")

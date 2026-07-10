@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="bakery-game"
-run/main_scene="uid://bhyk4sxjngs0a"
+run/main_scene="uid://dfvn466w26x8l"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -22,9 +22,15 @@ SaveManager="*uid://bhqjwbao3xk1r"
 RecipeDB="*uid://cyc1bmrki1gyc"
 BakingManager="*uid://c77ecw1nfim6v"
 SceneManager="*uid://cfw08k5ocdf5k"
+TimeManager="*uid://f37hcb5gxv1p"
+Hud="*uid://fg1fujl77ecp"
+DebugPanel="*uid://cn4aeejgt1af3"
+AudioManager="*uid://bwi6pqgh71b1g"
 
 [display]
 
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 

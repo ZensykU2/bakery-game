@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://bo1cspga42kym"]
+
+[ext_resource type="Script" uid="uid://d17iyu5hktiwh" path="res://scripts/world/door.gd" id="1_la3oj"]
+[ext_resource type="Texture2D" uid="uid://o01pejnd2j5" path="res://art/sprites/world/DoorSheet.png" id="2_dmfby"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1b154"]
+size = Vector2(20, 29)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jnw2k"]
+texture = ExtResource("2_dmfby")
+texture_region_size = Vector2i(32, 32)
+2:0/0 = 0
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_1pkl4"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_jnw2k")
+
+[node name="ExitDoor" type="Node2D" unique_id=341434944]
+script = ExtResource("1_la3oj")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=402762450]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=746003119]
+position = Vector2(-16, -41.5)
+shape = SubResource("RectangleShape2D_1b154")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1604110435]
+tile_map_data = PackedByteArray(0, 0, 255, 255, 255, 255, 0, 0, 2, 0, 0, 0, 0, 0, 255, 255, 254, 255, 0, 0, 1, 0, 0, 0, 0, 0)
+tile_set = SubResource("TileSet_1pkl4")

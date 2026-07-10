@@ -1,22 +1,25 @@
 [gd_scene format=3 uid="uid://dhr7unit14bt2"]
 
 [ext_resource type="Script" uid="uid://d4n1mqd4tfwsv" path="res://scripts/bakery/counter.gd" id="1_rybl4"]
-[ext_resource type="Texture2D" uid="uid://cke7ln6qi1msi" path="res://icon.svg" id="2_djv0g"]
+[ext_resource type="Texture2D" uid="uid://dn2brp0i46ipq" path="res://art/sprites/bakery/Counter.png" id="2_djv0g"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1pkl4"]
-size = Vector2(35, 37)
+size = Vector2(74.75, 67)
 
 [node name="Counter" type="Node2D" unique_id=1309049580]
 script = ExtResource("1_rybl4")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1408662078]
-position = Vector2(-9.536743e-07, -4.7683716e-07)
-scale = Vector2(0.21484375, 0.21875)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2059048567]
+texture = ExtResource("2_djv0g")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=142075655]
+position = Vector2(32, 0)
 texture = ExtResource("2_djv0g")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1499400475]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1345963092]
+position = Vector2(15.375, -13.5)
 shape = SubResource("RectangleShape2D_1pkl4")
 
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

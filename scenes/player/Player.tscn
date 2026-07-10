@@ -1,60 +1,48 @@
 [gd_scene format=3 uid="uid://cr72npcn6rks4"]
 
 [ext_resource type="Script" uid="uid://cnoabegavolh5" path="res://scripts/player/player.gd" id="1_gfjak"]
-[ext_resource type="Texture2D" uid="uid://kkxp7kk24lxj" path="res://art/sprites/knight.png" id="1_wr5hl"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gfjak"]
-atlas = ExtResource("1_wr5hl")
-region = Rect2(0, 0, 32, 32)
+[ext_resource type="Texture2D" uid="uid://4mu3a55vn4t6" path="res://art/sprites/EvanesciaSheet.png" id="2_gfjak"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4kuee"]
-atlas = ExtResource("1_wr5hl")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_524rm"]
-atlas = ExtResource("1_wr5hl")
+atlas = ExtResource("2_gfjak")
 region = Rect2(64, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_tpg5x"]
-atlas = ExtResource("1_wr5hl")
-region = Rect2(96, 0, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_1pkl4"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_0umjp"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_gfjak")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_4kuee")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_524rm")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tpg5x")
 }],
 "loop": 1,
 "name": &"idle",
 "speed": 10.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_c3xxp"]
-radius = 5.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_524rm"]
+size = Vector2(11, 49)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5cj04"]
+radius = 16.0
 
 [node name="Player" type="CharacterBody2D" unique_id=669378819]
 script = ExtResource("1_gfjak")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1329982337]
-position = Vector2(0, -12)
-sprite_frames = SubResource("SpriteFrames_1pkl4")
-animation = &"idle"
+[node name="Head" type="Sprite2D" parent="." unique_id=591402251]
+z_index = 2
+position = Vector2(0, -32)
+texture = ExtResource("2_gfjak")
+region_enabled = true
+region_rect = Rect2(38.641743, 0, 18.345589, 32)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1104830070]
-position = Vector2(0, -5.265)
-shape = SubResource("CircleShape2D_c3xxp")
+[node name="Body" type="AnimatedSprite2D" parent="." unique_id=1316889068]
+z_index = 1
+sprite_frames = SubResource("SpriteFrames_0umjp")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="HitBox" type="CollisionShape2D" parent="." unique_id=1104830070]
+position = Vector2(0, -8.5)
+shape = SubResource("RectangleShape2D_524rm")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=459532188]
 zoom = Vector2(4, 4)

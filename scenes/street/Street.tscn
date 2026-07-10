@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://ddjaxocttvlu"]
+
+[ext_resource type="Script" uid="uid://cnmoh4gt3eyts" path="res://scripts/street/street.gd" id="1_1kily"]
+[ext_resource type="PackedScene" uid="uid://bo1cspga42kym" path="res://scenes/world/ExitDoor.tscn" id="3_byyfn"]
+[ext_resource type="Script" uid="uid://cdscdrla3c44b" path="res://scripts/world/ambient_light.gd" id="4_j4pp2"]
+
+[node name="Street" type="Node2D" unique_id=247730497]
+script = ExtResource("1_1kily")
+
+[node name="BakeryDoor" parent="." unique_id=341434944 instance=ExtResource("3_byyfn")]
+position = Vector2(511, 168)
+target_scene = "uid://bhyk4sxjngs0a"
+target_spawn_name = "StreetBakery"
+
+[node name="ShopDoor" parent="." unique_id=1442844918 instance=ExtResource("3_byyfn")]
+position = Vector2(447, 168)
+target_scene = "uid://b5nvd628h8qii"
+target_spawn_name = "StreetShop"
+shop_name = "Bennies shop"
+is_scheduled_shop = true
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=997219025]
+
+[node name="StreetSpawnBakery" type="Marker2D" parent="SpawnPoints" unique_id=1345227061]
+position = Vector2(495, 180)
+
+[node name="StreetSpawnShop" type="Marker2D" parent="SpawnPoints" unique_id=583360620]
+position = Vector2(434, 181)
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=213720139]
+script = ExtResource("4_j4pp2")

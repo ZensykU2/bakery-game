@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bxd21yy2k0y53"]
+
+[ext_resource type="Script" uid="uid://cbkschoy6bjas" path="res://scripts/world/floaty_icon.gd" id="1_xbg0h"]
+
+[node name="FloatyIcon" type="Sprite2D" unique_id=1522963225]
+script = ExtResource("1_xbg0h")
