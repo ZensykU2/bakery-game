@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cn4aeejgt1af3" path="res://scenes/ui/DebugPanel.tscn" id="3_dreco"]
 [ext_resource type="PackedScene" uid="uid://dhr7unit14bt2" path="res://scenes/bakery/Counter.tscn" id="4_oahqh"]
 [ext_resource type="PackedScene" uid="uid://b0ic780wnlm65" path="res://scenes/bakery/CounterUI.tscn" id="5_jl5p4"]
+[ext_resource type="PackedScene" uid="uid://bo1cspga42kym" path="res://scenes/bakery/ExitDoor.tscn" id="9_jl5p4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oahqh"]
 texture = ExtResource("2_oahqh")
@@ -189,11 +190,17 @@ counter_ui = NodePath("../../CanvasLayer/CounterUi")
 [node name="OvenUI" parent="CanvasLayer" unique_id=709665024 instance=ExtResource("3_5gh0i")]
 
 [node name="SpawnPoints" type="Node2D" parent="." unique_id=1045075577]
+position = Vector2(593, 292)
 
-[node name="Doors" type="Node2D" parent="." unique_id=1821075531]
+[node name="BakerySpawn" type="Marker2D" parent="SpawnPoints" unique_id=608546524]
+
+[node name="ExitDoor" parent="." unique_id=341434944 instance=ExtResource("9_jl5p4")]
+position = Vector2(592, 268)
+target_scene = "uid://bi3fvn75kbo0l"
+target_spawn_name = "BedroomSpawn"
 
 [node name="Player" parent="." unique_id=2129430925 instance=ExtResource("2_npluw")]
-position = Vector2(609, 305)
+position = Vector2(566, 301)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1916088712]
 

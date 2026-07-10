@@ -21,6 +21,7 @@ GameManager="*uid://bd6eb3xeae0q2"
 SaveManager="*uid://bhqjwbao3xk1r"
 RecipeDB="*uid://cyc1bmrki1gyc"
 BakingManager="*uid://c77ecw1nfim6v"
+SceneManager="*uid://cfw08k5ocdf5k"
 
 [display]
 

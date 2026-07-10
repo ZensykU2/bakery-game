@@ -1,9 +1,15 @@
 [gd_scene format=3 uid="uid://bo1cspga42kym"]
 
-[node name="ExitDoor" type="Node2D" unique_id=341434944]
+[ext_resource type="Script" uid="uid://d17iyu5hktiwh" path="res://scripts/world/door.gd" id="1_la3oj"]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1696509821]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1b154"]
+size = Vector2(20, 46)
+
+[node name="ExitDoor" type="Node2D" unique_id=341434944]
+script = ExtResource("1_la3oj")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=402762450]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=746003119]
+position = Vector2(0, -13)
+shape = SubResource("RectangleShape2D_1b154")
