@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://dryl16gfvomwp"]
+
+[ext_resource type="Texture2D" uid="uid://cke7ln6qi1msi" path="res://icon.svg" id="1_uaigk"]
+[ext_resource type="Script" uid="uid://y4o714fvmd78" path="res://scripts/bakery/display_casing.gd" id="1_ub2g2"]
+[ext_resource type="Texture2D" uid="uid://m2hsdmu8dq7m" path="res://art/sprites/bakery/Bread.png" id="2_hl4oe"]
+[ext_resource type="Texture2D" uid="uid://bbynl8kum17kr" path="res://art/sprites/bakery/Cookie.png" id="3_ub2g2"]
+[ext_resource type="Texture2D" uid="uid://q0uumpfy2hk8" path="res://art/sprites/bakery/BerryTart.png" id="4_12hfv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1pkl4"]
+size = Vector2(182, 199)
+
+[node name="DisplayCasing" type="Node2D" unique_id=524593675]
+script = ExtResource("1_ub2g2")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=417673944]
+texture = ExtResource("1_uaigk")
+
+[node name="Display1" type="Sprite2D" parent="Sprite2D" unique_id=1730626798]
+position = Vector2(0, -96)
+texture = ExtResource("2_hl4oe")
+
+[node name="Display2" type="Sprite2D" parent="Sprite2D" unique_id=1425984677]
+position = Vector2(0, -64)
+texture = ExtResource("3_ub2g2")
+
+[node name="Display3" type="Sprite2D" parent="Sprite2D" unique_id=2081571787]
+position = Vector2(0, -32)
+texture = ExtResource("4_12hfv")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1945542445]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1143769570]
+position = Vector2(-4, -11.5)
+shape = SubResource("RectangleShape2D_1pkl4")

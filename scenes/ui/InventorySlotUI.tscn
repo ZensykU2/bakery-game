@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://b16pt27hmto40"]
+
+[ext_resource type="Script" uid="uid://bcqufhgg5dqjo" path="res://scripts/ui/inventory_slot_ui.gd" id="1_86g6e"]
+[ext_resource type="Texture2D" uid="uid://bj06idv8uf4x8" path="res://art/sprites/world/Hotbar2.png" id="1_f1sb3"]
+
+[node name="InventorySlotUi" type="TextureRect" unique_id=250653750]
+custom_minimum_size = Vector2(128, 128)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -32.0
+offset_right = 16.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("1_f1sb3")
+expand_mode = 1
+script = ExtResource("1_86g6e")
+
+[node name="ItemIcon" type="TextureRect" parent="." unique_id=158551354]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CountLabel" type="Label" parent="." unique_id=97514916]
+layout_mode = 0
+offset_right = 1.0
+offset_bottom = 17.0
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="FreshnessBar" type="ProgressBar" parent="." unique_id=782036401]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+show_percentage = false
+
+[node name="SelectionBorder" type="ReferenceRect" parent="." unique_id=737460507]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(0.48323536, 0.53632283, 0.6419448, 1)
+border_width = 2.5
+editor_only = false

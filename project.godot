@@ -19,13 +19,14 @@ config/icon="res://icon.svg"
 
 GameManager="*uid://bd6eb3xeae0q2"
 SaveManager="*uid://bhqjwbao3xk1r"
-RecipeDB="*uid://cyc1bmrki1gyc"
 BakingManager="*uid://c77ecw1nfim6v"
 SceneManager="*uid://cfw08k5ocdf5k"
 TimeManager="*uid://f37hcb5gxv1p"
 Hud="*uid://fg1fujl77ecp"
 DebugPanel="*uid://cn4aeejgt1af3"
 AudioManager="*uid://bwi6pqgh71b1g"
+ItemDB="*uid://ckmsb1iskegqc"
+InventoryManager="*uid://dup74gp6ciw6x"
 
 [display]
 

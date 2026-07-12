@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://fg1fujl77ecp"]
 
 [ext_resource type="Script" uid="uid://2pfj2nc1o6fp" path="res://scripts/ui/hud.gd" id="1_kw0id"]
-[ext_resource type="PackedScene" uid="uid://b16pt27hmto40" path="res://scenes/ui/InventorySlotUI.tscn" id="3_slot"]
 
 [node name="HUD" type="CanvasLayer" unique_id=595498002]
 script = ExtResource("1_kw0id")
@@ -50,10 +49,6 @@ layout_mode = 2
 theme_override_constants/h_separation = -2
 theme_override_constants/v_separation = -2
 columns = 9
-
-[node name="InventorySlotUi" parent="InventoryContainer/BackpackGrid" unique_id=250653750 instance=ExtResource("3_slot")]
-layout_mode = 2
-slot_index = 999
 
 [node name="HotbarList" type="HBoxContainer" parent="InventoryContainer" unique_id=1122925778]
 layout_mode = 2

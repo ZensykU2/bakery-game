@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bw83e2wm0ubub"]
+
+[ext_resource type="Texture2D" uid="uid://cnnaw742mcd4e" path="res://art/sprites/bakery/KitchenSheet.png" id="1_nmhs2"]
+[ext_resource type="Script" uid="uid://fiqkgg05mo62" path="res://scripts/bakery/fridge.gd" id="1_x2qrm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1pkl4"]
+size = Vector2(36, 66)
+
+[node name="Fridge" type="Node2D" unique_id=809908852]
+script = ExtResource("1_x2qrm")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=56580142]
+texture = ExtResource("1_nmhs2")
+region_enabled = true
+region_rect = Rect2(0, 64, 32, 32)
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=2129520067]
+position = Vector2(0, -32)
+texture = ExtResource("1_nmhs2")
+region_enabled = true
+region_rect = Rect2(32, 64, 32, 32)
+
+[node name="Area2D" type="Area2D" parent="." unique_id=202843464]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=668186899]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_1pkl4")

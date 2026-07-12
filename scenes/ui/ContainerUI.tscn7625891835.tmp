@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://xcdqi08ven00"]
+
+[ext_resource type="Script" uid="uid://drwj8ibnl6wts" path="res://scripts/ui/container_ui.gd" id="1_g84o8"]
+
+[node name="ContainerUI" type="CanvasLayer" unique_id=744701126]
+script = ExtResource("1_g84o8")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=392695201]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.75686276)
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=729345410]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.5
+offset_top = -20.0
+offset_right = 70.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer" unique_id=982234847]
+layout_mode = 2
+
+[node name="PlayerSide" type="VBoxContainer" parent="PanelContainer/HBoxContainer" unique_id=976095974]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="PanelContainer/HBoxContainer/PlayerSide" unique_id=141052052]
+layout_mode = 2
+text = "Your Pack"
+
+[node name="PlayerGrid" type="GridContainer" parent="PanelContainer/HBoxContainer/PlayerSide" unique_id=1661068978]
+layout_mode = 2
+columns = 9
+
+[node name="ContainerSide" type="VBoxContainer" parent="PanelContainer/HBoxContainer" unique_id=271005019]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="PanelContainer/HBoxContainer/ContainerSide" unique_id=1100323566]
+layout_mode = 2
+text = "Storage"
+
+[node name="ContainerGrid" type="GridContainer" parent="PanelContainer/HBoxContainer/ContainerSide" unique_id=1110127994]
+layout_mode = 2
+columns = 3
+
+[node name="PriceLabel" type="Label" parent="PanelContainer/HBoxContainer/ContainerSide" unique_id=1354891298]
+visible = false
+layout_mode = 2
+text = "Total: 0"
+
+[node name="SellButton" type="Button" parent="PanelContainer/HBoxContainer/ContainerSide" unique_id=314196622]
+visible = false
+layout_mode = 2
+text = "Confirm Sale (+$0)"
+
+[node name="CloseButton" type="Button" parent="." unique_id=377182774]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Close"

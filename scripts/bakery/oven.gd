@@ -1,7 +1,6 @@
-extends Node2D
+extends Interactable
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@export var oven_ui: Control
 @export var oven_id: String = ""
 
 const FLOATY_ICON_SCENE = preload("res://scenes/world/FloatyIcon.tscn")
@@ -9,13 +8,10 @@ var is_showing_complete: bool = false
 
 enum OvenState { IDLE, BAKING, COMPLETE }
 
-func _ready() -> void:
+func _on_ready() -> void:
 	if oven_id.strip_edges() == "":
 		oven_id = name.to_lower()
-
-	if oven_ui:
-		oven_ui.visible = false
-
+	
 	BakingManager.baking_updated.connect(update_animation)
 	update_animation()
 
@@ -24,12 +20,17 @@ func _process(_delta: float) -> void:
 	if bake and not bake.is_finished:
 		update_animation()
 	
-func ui_accept(_player: CharacterBody2D) -> void:
-	if oven_ui:
-		oven_ui.current_oven_id = oven_id
-		oven_ui.visible = not oven_ui.visible
-		if oven_ui.visible:
-			oven_ui.update_buttons()
+func ui_accept(player: CharacterBody2D) -> void:
+	if ui_panel:
+		ui_panel.current_oven_id = oven_id
+	super.ui_accept(player)
+
+func _close_ui() -> void:
+	if ui_panel:
+		var cur_id = ui_panel.get("current_oven_id")
+		if cur_id == oven_id or cur_id == "" or cur_id == null:
+			ui_panel.visible = false
+
 
 func update_animation() -> void:
 	var bake = BakingManager.get_bake_for_oven(oven_id)
@@ -44,6 +45,10 @@ func update_animation() -> void:
 	match current_state:
 		OvenState.IDLE:
 			is_showing_complete = false
+			for child in get_children():
+				if child.has_signal("harvested"):
+					child.queue_free()
+					
 			if animated_sprite.animation != "idle":
 				animated_sprite.play("idle")
 		OvenState.BAKING:
@@ -56,17 +61,14 @@ func update_animation() -> void:
 				is_showing_complete = true
 				_spawn_floaty_icon(bake.recipe_name)
 
-func _on_area_2d_body_exited(body: Node2D) -> void:
-	if body.name == "Player" and oven_ui:
-		if oven_ui.current_oven_id == oven_id:
-			oven_ui.visible = false
-
 func _spawn_floaty_icon(recipe_name: String) -> void:
-	var recipe = RecipeDB.get_recipe(recipe_name)
+	var recipe = ItemDB.get_recipe(recipe_name)
 	var icon_texture = recipe.get("icon", null)
 	
 	if icon_texture:
 		var floaty = FLOATY_ICON_SCENE.instantiate()
 		floaty.position = Vector2(0, -24)
 		add_child(floaty)
-		floaty.start(icon_texture)
+		floaty.start(recipe_name, icon_texture)
+		
+		floaty.harvested.connect(func(): BakingManager.harvest_bake(oven_id))

@@ -2,11 +2,11 @@ extends CanvasLayer
 
 func _ready() -> void:
 	$VBoxContainer/AddMoneyButton.pressed.connect(_on_add_money)
-	$VBoxContainer/AddFlourButton.pressed.connect(func(): GameManager.add_item("flour", 1))
-	$VBoxContainer/AddSugarButton.pressed.connect(func(): GameManager.add_item("sugar", 1))
-	$VBoxContainer/AddButterButton.pressed.connect(func(): GameManager.add_item("butter", 1))
-	$VBoxContainer/AddEggsButton.pressed.connect(func(): GameManager.add_item("eggs", 1))
-	$VBoxContainer/AddBerriesButton.pressed.connect(func(): GameManager.add_item("berries", 1))
+	$VBoxContainer/AddFlourButton.pressed.connect(func(): InventoryManager.add_item("flour", 1))
+	$VBoxContainer/AddSugarButton.pressed.connect(func(): InventoryManager.add_item("sugar", 1))
+	$VBoxContainer/AddButterButton.pressed.connect(func(): InventoryManager.add_item("butter", 1))
+	$VBoxContainer/AddEggsButton.pressed.connect(func(): InventoryManager.add_item("eggs", 1))
+	$VBoxContainer/AddBerriesButton.pressed.connect(func(): InventoryManager.add_item("berries", 1))
 	$VBoxContainer/NextDayButton.pressed.connect(func(): GameManager.next_day())
 	$VBoxContainer/SaveButton.pressed.connect(func(): GameManager.save_game())
 	$VBoxContainer/LoadButton.pressed.connect(func(): GameManager.load_game())

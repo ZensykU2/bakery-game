@@ -24,16 +24,16 @@ func get_bake_for_oven(oven_id: String) -> Variant:
 func can_start_bake(oven_id: String, recipe_name: String) -> bool:
 	if active_bakes.has(oven_id):
 		return false
-	return GameManager.can_craft(recipe_name)
+	return InventoryManager.can_craft(recipe_name)
 
 func start_bake(oven_id: String, recipe_name: String) -> bool:
 	if not can_start_bake(oven_id, recipe_name):
 		return false
 	
-	var recipe = RecipeDB.get_recipe(recipe_name)
+	var recipe = ItemDB.get_recipe(recipe_name)
 	var ingredients: Dictionary = recipe.get("ingredients", {})
 	for item in ingredients.keys():
-		GameManager.state.inventory[item] -= ingredients[item]
+		InventoryManager.deduct_item(item, ingredients[item])
 
 	active_bakes[oven_id] = {
 		"recipe_name": recipe_name,
@@ -41,7 +41,7 @@ func start_bake(oven_id: String, recipe_name: String) -> bool:
 		"is_finished": false
 	}
 	
-	GameManager.inventory_changed.emit()
+	InventoryManager.inventory_changed.emit()
 	baking_updated.emit()
 	GameManager.save_game()
 	return true
@@ -53,15 +53,8 @@ func harvest_bake(oven_id: String) -> bool:
 	if not bake.is_finished:
 		return false
 	
-	var recipe_name = bake.recipe_name
-	GameManager.state.bakery_stock[recipe_name] = GameManager.state.bakery_stock.get(recipe_name, 0) + 1
 	active_bakes.erase(oven_id)
 	
-	GameManager.inventory_changed.emit()
 	baking_updated.emit()
 	GameManager.save_game()
 	return true
-	
-	
-	
-		

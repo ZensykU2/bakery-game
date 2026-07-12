@@ -4,8 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://cnnaw742mcd4e" path="res://art/sprites/bakery/KitchenSheet.png" id="2_oahqh"]
 [ext_resource type="PackedScene" uid="uid://cqm3tlkwfdhhe" path="res://scenes/bakery/OvenUI.tscn" id="3_5gh0i"]
 [ext_resource type="PackedScene" uid="uid://mldnryhtbkso" path="res://scenes/bakery/Oven.tscn" id="3_16vwy"]
+[ext_resource type="PackedScene" uid="uid://dryl16gfvomwp" path="res://scenes/bakery/DisplayCasing.tscn" id="3_fi7vi"]
 [ext_resource type="PackedScene" uid="uid://dhr7unit14bt2" path="res://scenes/bakery/Counter.tscn" id="4_oahqh"]
-[ext_resource type="PackedScene" uid="uid://b0ic780wnlm65" path="res://scenes/bakery/CounterUI.tscn" id="5_jl5p4"]
+[ext_resource type="PackedScene" uid="uid://bw83e2wm0ubub" path="res://scenes/bakery/Fridge.tscn" id="5_fi7vi"]
 [ext_resource type="PackedScene" uid="uid://bo1cspga42kym" path="res://scenes/world/ExitDoor.tscn" id="9_jl5p4"]
 [ext_resource type="Script" uid="uid://drvk2qsh7742j" path="res://scripts/world/window_light.gd" id="12_tuj7y"]
 [ext_resource type="Script" uid="uid://vrbxnajgcm7m" path="res://scripts/world/lamp_light.gd" id="13_e4aqv"]
@@ -311,23 +312,28 @@ tile_set = SubResource("TileSet_e4aqv")
 
 [node name="Interactables" type="Node2D" parent="." unique_id=388561079]
 
-[node name="Oven" parent="Interactables" unique_id=1524767547 node_paths=PackedStringArray("oven_ui") instance=ExtResource("3_16vwy")]
+[node name="DisplayCasing" parent="Interactables" unique_id=524593675 instance=ExtResource("3_fi7vi")]
+position = Vector2(924, 304)
+slot_count = 3
+
+[node name="Oven" parent="Interactables" unique_id=1524767547 node_paths=PackedStringArray("ui_panel") instance=ExtResource("3_16vwy")]
 position = Vector2(464, 272)
-oven_ui = NodePath("../../CanvasLayer/OvenUI")
 oven_id = "oven"
+ui_panel = NodePath("../../CanvasLayer/OvenUI")
 
-[node name="Oven2" parent="Interactables" unique_id=538350455 node_paths=PackedStringArray("oven_ui") instance=ExtResource("3_16vwy")]
+[node name="Oven2" parent="Interactables" unique_id=538350455 node_paths=PackedStringArray("ui_panel") instance=ExtResource("3_16vwy")]
 position = Vector2(624, 272)
-oven_ui = NodePath("../../CanvasLayer/OvenUI")
 oven_id = "oven2"
+ui_panel = NodePath("../../CanvasLayer/OvenUI")
 
-[node name="Counter" parent="Interactables" unique_id=1309049580 node_paths=PackedStringArray("counter_ui") instance=ExtResource("4_oahqh")]
+[node name="Counter" parent="Interactables" unique_id=1309049580 node_paths=PackedStringArray("ui_panel") instance=ExtResource("4_oahqh")]
 position = Vector2(464, 368)
-counter_ui = NodePath("../../CanvasLayer/CounterUi")
+ui_panel = NodePath("")
+
+[node name="Fridge" parent="Interactables" unique_id=809908852 instance=ExtResource("5_fi7vi")]
+position = Vector2(749, 345)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=58943906]
-
-[node name="CounterUi" parent="CanvasLayer" unique_id=205890409 instance=ExtResource("5_jl5p4")]
 
 [node name="OvenUI" parent="CanvasLayer" unique_id=709665024 instance=ExtResource("3_5gh0i")]
 
