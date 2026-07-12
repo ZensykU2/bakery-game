@@ -3,7 +3,6 @@ extends Interactable
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @export var oven_id: String = ""
 
-const FLOATY_ICON_SCENE = preload("res://scenes/world/FloatyIcon.tscn")
 var is_showing_complete: bool = false
 
 enum OvenState { IDLE, BAKING, COMPLETE }
@@ -66,7 +65,8 @@ func _spawn_floaty_icon(recipe_name: String) -> void:
 	var icon_texture = recipe.get("icon", null)
 	
 	if icon_texture:
-		var floaty = FLOATY_ICON_SCENE.instantiate()
+		var floaty_scene = load(GameConstants.Paths.FLOATY_ICON_SCENE_PATH)
+		var floaty = floaty_scene.instantiate()
 		floaty.position = Vector2(0, -24)
 		add_child(floaty)
 		floaty.start(recipe_name, icon_texture)

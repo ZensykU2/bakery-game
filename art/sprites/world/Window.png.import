@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dyns7oe5aq672"
-path="res://.godot/imported/Hotbar2.png-5027f231830a0abb243c1376060023c3.ctex"
+uid="uid://cldplepsgyyot"
+path="res://.godot/imported/Window.png-d31dc12c14281ff9158084ad8916d709.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/sprites/world/Hotbar2.png"
-dest_files=["res://.godot/imported/Hotbar2.png-5027f231830a0abb243c1376060023c3.ctex"]
+source_file="res://art/sprites/world/Window.png"
+dest_files=["res://.godot/imported/Window.png-d31dc12c14281ff9158084ad8916d709.ctex"]
 
 [params]
 

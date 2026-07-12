@@ -16,7 +16,7 @@ func _on_ambient_color_changed(color: Color) -> void:
 	if "energy" in self:
 		var time_factor: float = TimeManager.time_in_minutes / 60.0
 
-		if time_factor >= 6.0 and time_factor < 20.0:
+		if time_factor >= GameConstants.TimeManage.WAKEUP_HOUR and time_factor < GameConstants.TimeManage.SLEEP_HOUR:
 			self.energy = max_energy
 		else:
 			self.energy = min_energy_night

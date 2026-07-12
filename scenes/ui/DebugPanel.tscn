@@ -47,6 +47,18 @@ layout_mode = 2
 focus_mode = 0
 text = "Add Berries"
 
+[node name="AddChocolateButton" type="Button" parent="VBoxContainer" unique_id=950109975]
+layout_mode = 2
+text = "Add Chocolate"
+
+[node name="AddMilkButton" type="Button" parent="VBoxContainer" unique_id=82555588]
+layout_mode = 2
+text = "Add Milk"
+
+[node name="AddStrawberryButton" type="Button" parent="VBoxContainer" unique_id=893778955]
+layout_mode = 2
+text = "Add Strawberry"
+
 [node name="NextDayButton" type="Button" parent="VBoxContainer" unique_id=423192887]
 layout_mode = 2
 focus_mode = 0

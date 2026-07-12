@@ -8,8 +8,6 @@ extends CanvasLayer
 @onready var price_label: Label = $PanelContainer/HBoxContainer/ContainerSide/PriceLabel
 @onready var sell_button: Button = $PanelContainer/HBoxContainer/ContainerSide/SellButton
 
-const SLOT_UI_SCENE = preload("res://scenes/ui/InventorySlotUI.tscn")
-
 var player_slots: Array[Control] = []
 var container_slots: Array[Control] = []
 var active_container_array: Array[InventoryItem]
@@ -64,7 +62,8 @@ func refresh() -> void:
 func _spawn_slots_for_grid(grid: GridContainer, slot_array: Array[InventoryItem], index_offset: int) -> Array[Control]:
 	var spawned_nodes: Array[Control] = []
 	for i in range(slot_array.size()):
-		var slot = SLOT_UI_SCENE.instantiate()
+		var slot_scene = load(GameConstants.Paths.SLOT_UI_SCENE_PATH)
+		var slot = slot_scene.instantiate()
 		slot.slot_index = index_offset + i
 		grid.add_child(slot)
 		spawned_nodes.append(slot)
@@ -89,7 +88,7 @@ func _on_sell_pressed() -> void:
 		
 		var player = get_tree().root.find_child("Player", true, false)
 		if player:
-			var floaty_scene = load("res://scenes/world/FloatyIcon.tscn")
+			var floaty_scene = load(GameConstants.Paths.FLOATY_ICON_SCENE_PATH)
 			var floaty = floaty_scene.instantiate()
 			floaty.position = player.position - Vector2(0, 16)
 			get_tree().current_scene.add_child(floaty)

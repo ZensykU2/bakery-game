@@ -1,12 +1,12 @@
 extends RefCounted
 class_name GameState
 
-var day: int = 1
-var money: int = 100
+var day: int = GameConstants.TimeManage.DEFAULT_START_DAY
+var money: int = GameConstants.Inventory.DEFAULT_START_MONEY
 
-var max_inventory_slots: int = 18
-var max_fridge_slots: int = 9
-var max_counter_slots: int = 3
+var max_inventory_slots: int = GameConstants.Inventory.DEFAULT_INVENTORY_SLOTS
+var max_fridge_slots: int = GameConstants.Inventory.DEFAULT_FRIDGE_SLOTS
+var max_counter_slots: int = GameConstants.Inventory.DEFAULT_COUNTER_SLOTS
 
 var inventory_slots: Array[InventoryItem] = []
 var fridge_slots: Array[InventoryItem] = []
@@ -21,11 +21,8 @@ func _init() -> void:
 	fridge_slots.resize(max_fridge_slots)
 	counter_slots.resize(max_counter_slots)
 	
-	_add_initial_item("flour", 5)
-	_add_initial_item("eggs", 4)
-	_add_initial_item("butter", 2)
-	_add_initial_item("sugar", 3)
-	_add_initial_item("berries", 3)
+	for item_id in GameConstants.Inventory.STARTING_ITEMS.keys():
+		_add_initial_item(item_id, GameConstants.Inventory.STARTING_ITEMS[item_id])
 
 func _add_initial_item(item_id: String, amount: int) -> void:
 	for i in range(inventory_slots.size()):
@@ -92,11 +89,11 @@ func to_dict() -> Dictionary:
 	}
 
 func from_dict(data: Dictionary) -> void:
-	day = data.get("day", 1)
-	money = data.get("money", 100)
-	max_inventory_slots = data.get("max_inventory_slots", 18)
-	max_fridge_slots = data.get("max_fridge_slots", 9)
-	max_counter_slots = data.get("max_counter_slots", 3)
+	day = data.get("day", GameConstants.TimeManage.DEFAULT_START_DAY)
+	money = data.get("money", GameConstants.Inventory.DEFAULT_START_MONEY)
+	max_inventory_slots = data.get("max_inventory_slots", GameConstants.Inventory.DEFAULT_INVENTORY_SLOTS)
+	max_fridge_slots = data.get("max_fridge_slots", GameConstants.Inventory.DEFAULT_FRIDGE_SLOTS)
+	max_counter_slots = data.get("max_counter_slots", GameConstants.Inventory.DEFAULT_COUNTER_SLOTS)
 	
 	active_bakes = data.get("active_bakes", {}).duplicate(true)
 	

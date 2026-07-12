@@ -26,6 +26,9 @@ func _input(event: InputEvent) -> void:
 		last_interacted_slot_index = -1
 		is_paint_mode_active = false
 
+func is_trash_slot(slot_index: int) -> bool:
+	return slot_index == GameConstants.Inventory.TRASHBIN_IDX
+
 func get_item_count(item_id: String) -> int:
 	var total = 0
 	for item in state.inventory_slots:
@@ -47,7 +50,7 @@ func add_item(item_name: String, amount: int) -> bool:
 	var new_item = InventoryItem.new()
 	new_item.item_id = item_name
 	new_item.amount = amount
-	new_item.freshness = 1.0
+	new_item.freshness = GameConstants.Inventory.MAX_FRESHNESS
 	
 	var success = add_inventory_item_resource(new_item)
 	if success:
@@ -80,9 +83,9 @@ func _resolve_slot(slot_index: int) -> Dictionary:
 	var array = state.inventory_slots
 	var idx = slot_index
 	
-	if slot_index >= 100 and container_ui and container_ui.visible:
+	if slot_index >= GameConstants.Inventory.CONTAINER_IDX and container_ui and container_ui.visible:
 		array = container_ui.active_container_array
-		idx = slot_index - 100
+		idx = slot_index - GameConstants.Inventory.CONTAINER_IDX
 		
 	return {
 		"array": array,
@@ -93,9 +96,8 @@ func _resolve_slot(slot_index: int) -> Dictionary:
 func _set_slot_item(slot: Dictionary, item: InventoryItem) -> void:
 	slot.array[slot.index] = item
 
-
 func handle_slot_click(slot_index: int, is_shift: bool, is_pressed: bool) -> void:
-	if slot_index == 999 and is_pressed:
+	if is_trash_slot(slot_index) and is_pressed:
 		if held_item != null:
 			held_item = null
 			inventory_changed.emit()
@@ -143,6 +145,15 @@ func _execute_left_click_swap(slot_index: int) -> void:
 	inventory_changed.emit()
 
 func handle_slot_right_click(slot_index: int) -> void:
+	if is_trash_slot(slot_index):
+		if held_item != null:
+			held_item.amount -= 1
+			if held_item.amount <= 0:
+				held_item = null
+			inventory_changed.emit()
+			GameManager.save_game()
+		return
+	
 	var slot = _resolve_slot(slot_index)
 	
 	if held_item == null:
@@ -177,6 +188,9 @@ func _drop_single_item_to_slot(slot: Dictionary) -> void:
 	inventory_changed.emit()
 
 func paint_slot(slot_index: int) -> void:
+	if is_trash_slot(slot_index):
+		return
+		
 	if held_item == null or held_item.amount <= 0 or slot_index == last_interacted_slot_index:
 		return
 		
@@ -193,7 +207,10 @@ func paint_slot(slot_index: int) -> void:
 func _paint_single_item(slot_index: int) -> void:
 	_drop_single_item_to_slot(_resolve_slot(slot_index))
 
-func handle_slot_double_click(_slot_index: int) -> void:
+func handle_slot_double_click(slot_index: int) -> void:
+	if is_trash_slot(slot_index):
+		return
+	
 	if held_item == null:
 		return
 		
@@ -207,20 +224,23 @@ func handle_slot_double_click(_slot_index: int) -> void:
 	
 	for i in range(state.inventory_slots.size()):
 		var item = state.inventory_slots[i]
-		if item != null and item.item_id == target_item_id and abs(item.freshness - target_freshness) < 0.05:
+		if item != null and item.item_id == target_item_id and abs(item.freshness - target_freshness) < GameConstants.Inventory.STACKING_FRESHNESS_TOLERANCE:
 			held_item.amount += item.amount
 			state.inventory_slots[i] = null
 			
 	if container_ui and container_ui.visible:
 		for i in range(container_ui.active_container_array.size()):
 			var item = container_ui.active_container_array[i]
-			if item != null and item.item_id == target_item_id and abs(item.freshness - target_freshness) < 0.05:
+			if item != null and item.item_id == target_item_id and abs(item.freshness - target_freshness) < GameConstants.Inventory.STACKING_FRESHNESS_TOLERANCE:
 				held_item.amount += item.amount
 				container_ui.active_container_array[i] = null
 				
 	inventory_changed.emit()
 
 func _handle_shift_click(slot_index: int) -> void:
+	if is_trash_slot(slot_index):
+		return
+	
 	var container_ui = _get_container_ui()
 	var is_container_open = container_ui and container_ui.visible
 	
@@ -229,18 +249,18 @@ func _handle_shift_click(slot_index: int) -> void:
 	var from_local_index = from_slot.index
 	
 	if is_container_open:
-		if slot_index >= 100:
-			var success = _transfer_to_range(from_array, from_local_index, state.inventory_slots, 0, 9)
+		if slot_index >= GameConstants.Inventory.CONTAINER_IDX:
+			var success = _transfer_to_range(from_array, from_local_index, state.inventory_slots, 0, GameConstants.Inventory.MAX_HOTBAR_IDX)
 			if not success:
-				_transfer_to_range(from_array, from_local_index, state.inventory_slots, 9, state.inventory_slots.size())
+				_transfer_to_range(from_array, from_local_index, state.inventory_slots, GameConstants.Inventory.MAX_HOTBAR_IDX, state.inventory_slots.size())
 		else:
 			var to_array = container_ui.active_container_array
 			_transfer_to_range(from_array, from_local_index, to_array, 0, to_array.size())
 	else:
 		var hud = _get_hud()
 		if hud and hud.backdrop.visible:
-			var start = 9 if slot_index < 9 else 0
-			var end = state.inventory_slots.size() if slot_index < 9 else 9
+			var start = GameConstants.Inventory.MAX_HOTBAR_IDX if slot_index < GameConstants.Inventory.MAX_HOTBAR_IDX else 0
+			var end = state.inventory_slots.size() if slot_index < GameConstants.Inventory.MAX_HOTBAR_IDX else GameConstants.Inventory.MAX_HOTBAR_IDX
 			_transfer_to_range(from_array, from_local_index, state.inventory_slots, start, end)
 
 func _transfer_to_range(from_array: Array[InventoryItem], from_idx: int, to_array: Array[InventoryItem], start_idx: int, end_idx: int) -> bool:
@@ -294,12 +314,12 @@ func drop_held_item_to_world() -> void:
 	var active_level = SceneManager.get_active_level()
 	
 	if player and active_level:
-		var drop_pos = player.global_position + Vector2(0, 16)
+		var drop_pos = player.global_position + GameConstants.Inventory.DROP_OFFSET
 
-		if state.dropped_items.size() >= 50:
+		if state.dropped_items.size() >= GameConstants.Inventory.MAX_DROPPED_ITEMS:
 			state.dropped_items.remove_at(0)
 
-		var drop_scene = load("res://scenes/world/DroppedItem.tscn")
+		var drop_scene = load(GameConstants.Paths.DROPPED_ITEM_SCENE_PATH)
 		var instance = drop_scene.instantiate()
 		instance.global_position = drop_pos
 		instance.item = held_item 

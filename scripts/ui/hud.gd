@@ -10,7 +10,6 @@ extends CanvasLayer
 
 @onready var cursor_grabber: TextureRect = $CursorGrabber
 
-const SLOT_UI_SCENE = preload("res://scenes/ui/InventorySlotUI.tscn")
 var slot_nodes: Array[Control] = []
 
 var selected_hotbar_index: int = 0
@@ -28,7 +27,7 @@ func _update_cursor_grabber() -> void:
 	
 	cursor_grabber.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	cursor_grabber.stretch_mode = TextureRect.STRETCH_SCALE
-	cursor_grabber.size = Vector2(40, 40)
+	cursor_grabber.size = GameConstants.UI.CURSOR_GRABBER_SIZE
 	
 	cursor_grabber.texture = ItemDB.get_item_icon(held.item_id, held.freshness)
 	var label = cursor_grabber.get_node("CountLabel")
@@ -70,10 +69,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			var index = (selected_hotbar_index - 1 + 9) % 9
+			var index = (selected_hotbar_index - 1 + GameConstants.Inventory.MAX_HOTBAR_IDX) % GameConstants.Inventory.MAX_HOTBAR_IDX
 			set_selected_hotbar_index(index)
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			var index = (selected_hotbar_index + 1) % 9
+			var index = (selected_hotbar_index + 1) % GameConstants.Inventory.MAX_HOTBAR_IDX
 			set_selected_hotbar_index(index)
 
 func _toggle_backpack() -> void:
@@ -96,27 +95,28 @@ func _align_inventory_layout(open: bool) -> void:
 		inventory_container.position.y = (viewport_size.y - container_size.y) / 2.0
 	else:
 		inventory_container.position.x = (viewport_size.x - container_size.x) / 2.0
-		inventory_container.position.y = viewport_size.y - container_size.y - 12.0
+		inventory_container.position.y = viewport_size.y - container_size.y - GameConstants.UI.HUD_BOTTOM_MARGIN
 
 
 func set_selected_hotbar_index(index: int) -> void:
 	selected_hotbar_index = index
-	for i in range(9):
+	for i in range(GameConstants.Inventory.MAX_HOTBAR_IDX):
 		if i < slot_nodes.size():
 			slot_nodes[i].set_selected(i == selected_hotbar_index)
 
 func setup_inventory_ui() -> void:
 	slot_nodes.clear()
 	var total_slots = InventoryManager.state.inventory_slots.size()
-
-	for i in range(9):
-		var slot = SLOT_UI_SCENE.instantiate()
+	var slot_scene = load(GameConstants.Paths.SLOT_UI_SCENE_PATH)
+	
+	for i in range(GameConstants.Inventory.MAX_HOTBAR_IDX):
+		var slot = slot_scene.instantiate()
 		slot.slot_index = i
 		hotbar_list.add_child(slot)
 		slot_nodes.append(slot)
 		
-	for i in range(9, total_slots):
-		var slot = SLOT_UI_SCENE.instantiate()
+	for i in range(GameConstants.Inventory.MAX_HOTBAR_IDX, total_slots):
+		var slot = slot_scene.instantiate()
 		slot.slot_index = i
 		backpack_grid.add_child(slot)
 		slot_nodes.append(slot)

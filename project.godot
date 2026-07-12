@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+GameConstants="*uid://bnntwtuoqggua"
 GameManager="*uid://bd6eb3xeae0q2"
 SaveManager="*uid://bhqjwbao3xk1r"
 BakingManager="*uid://c77ecw1nfim6v"

@@ -11,7 +11,7 @@ func setup(shop_name: String, open_hour: int, close_hour: int, closed_weekdays: 
 	title_label.text = "%s is Closed" % shop_name
 	
 	var open_days: Array[String] = []
-	for day_name in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]:
+	for day_name in GameConstants.TimeManage.WEEKDAYS:
 		if not day_name in closed_weekdays:
 			open_days.append(day_name.substr(0, 3))
 		

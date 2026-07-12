@@ -1,7 +1,5 @@
 extends CharacterBody2D
 
-const SPEED = 160.0
-
 @onready var animated_sprite: AnimatedSprite2D = $Body
 var current_interactables: Array[Node2D] = []
 
@@ -10,7 +8,7 @@ func _ready() -> void:
 	
 func get_input():
 	var input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	velocity = input_direction * SPEED
+	velocity = input_direction * GameConstants.Player.SPEED
 	
 func _physics_process(_delta: float) -> void:
 	get_input()

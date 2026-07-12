@@ -6,7 +6,6 @@ signal harvested
 @onready var floaty_label: Label = $FloatyLabel
 
 var item_id: String = ""
-const HARVEST_DISTANCE: float = 128.0
 
 func start(recipe_id: String, item_texture: Texture2D) -> void:
 	item_id = recipe_id
@@ -65,7 +64,7 @@ func _harvest_item() -> void:
 	var player = SceneManager.get_player()
 	if player:
 		var distance = global_position.distance_to(player.global_position)
-		if distance > HARVEST_DISTANCE:
+		if distance > GameConstants.World.HARVEST_DISTANCE:
 			print("Too far away to harvest!")
 			return
 	

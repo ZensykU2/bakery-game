@@ -6,9 +6,9 @@ var items := {
 		"buy_price": 3,         # Cost to buy at the shop
 		"decay_rate": 0.0,      # Never decays
 		"stackable": true,
-		"icon_fresh": preload("res://art/sprites/bakery/KitchenSheet.png"),
-		"icon_stale": preload("res://art/sprites/bakery/KitchenSheet.png"),
-		"icon_spoiled": preload("res://art/sprites/bakery/KitchenSheet.png")
+		"icon_fresh": preload("res://art/sprites/bakery/ingredients/Flour.png"),
+		"icon_stale": preload("res://art/sprites/bakery/ingredients/Flour.png"),
+		"icon_spoiled": preload("res://art/sprites/bakery/ingredients/Flour.png")
 	},
 	"sugar": {
 		"buy_price": 2,
@@ -30,9 +30,9 @@ var items := {
 		"buy_price": 2,
 		"decay_rate": 0.0005,
 		"stackable": true,
-		"icon_fresh": preload("res://art/sprites/fruit.png"),
-		"icon_stale": preload("res://art/sprites/fruit.png"),
-		"icon_spoiled": preload("res://art/sprites/fruit.png")
+		"icon_fresh": preload("res://art/sprites/bakery/ingredients/Egg.png"),
+		"icon_stale": preload("res://art/sprites/bakery/ingredients/Egg.png"),
+		"icon_spoiled": preload("res://art/sprites/bakery/ingredients/Egg.png")
 	},
 	"berries": {
 		"buy_price": 5,
@@ -41,6 +41,30 @@ var items := {
 		"icon_fresh": preload("res://art/sprites/fruit.png"),
 		"icon_stale": preload("res://art/sprites/fruit.png"),
 		"icon_spoiled": preload("res://art/sprites/fruit.png")
+	},
+	"milk": {
+		"buy_price": 8,
+		"decay_rate": 0.012,
+		"stackable": true,
+		"icon_fresh": preload("res://art/sprites/bakery/ingredients/Milk.png"),
+		"icon_stale": preload("res://art/sprites/bakery/ingredients/Milk.png"),
+		"icon_spoiled": preload("res://art/sprites/bakery/ingredients/Milk.png")
+	},
+	"chocolate": {
+		"buy_price": 6,
+		"decay_rate": 0.0005,
+		"stackable": true,
+		"icon_fresh": preload("res://art/sprites/bakery/ingredients/Chocolate.png"),
+		"icon_stale": preload("res://art/sprites/bakery/ingredients/Chocolate.png"),
+		"icon_spoiled": preload("res://art/sprites/bakery/ingredients/Chocolate.png")
+	},
+	"strawberry": {
+		"buy_price": 2,
+		"decay_rate": 0.001,
+		"stackable": true,
+		"icon_fresh": preload("res://art/sprites/bakery/ingredients/Strawberry.png"),
+		"icon_stale": preload("res://art/sprites/bakery/ingredients/Strawberry.png"),
+		"icon_spoiled": preload("res://art/sprites/bakery/ingredients/Strawberry.png")
 	},
 	"bread": {
 		"ingredients": {
@@ -51,38 +75,113 @@ var items := {
 		"bake_time": 5.0,
 		"decay_rate": 0.0008,
 		"stackable": false,
-		"icon_fresh": preload("res://art/sprites/bakery/Bread.png"),
-		"icon_stale": preload("res://art/sprites/bakery/Bread.png"),
-		"icon_spoiled": preload("res://art/sprites/bakery/Bread.png")
+		"icon_fresh": preload("res://art/sprites/bakery/food/Bread.png"),
+		"icon_stale": preload("res://art/sprites/bakery/food/Bread.png"),
+		"icon_spoiled": preload("res://art/sprites/bakery/food/Bread.png")
 	},
 	"cookies": {
 		"ingredients": {
 			"flour": 1,
 			"sugar": 1,
 			"butter": 1,
+			"chocolate": 1,
 		},
 		"sell_price": 18,
 		"bake_time": 8.0,
 		"decay_rate": 0.0003,
 		"stackable": false,
-		"icon_fresh": preload("res://art/sprites/bakery/Cookie.png"),
-		"icon_stale": preload("res://art/sprites/bakery/Cookie.png"),
-		"icon_spoiled": preload("res://art/sprites/bakery/Cookie.png")
+		"icon_fresh": preload("res://art/sprites/bakery/food/Cookie.png"),
+		"icon_stale": preload("res://art/sprites/bakery/food/Cookie.png"),
+		"icon_spoiled": preload("res://art/sprites/bakery/food/Cookie.png")
 	},
 	"berry_tart": {
 		"ingredients": {
 			"flour": 1,
 			"sugar": 1,
 			"butter": 1,
-			"berries": 1,
+			"berries": 2,
 		},
 		"sell_price": 25,
 		"bake_time": 12.0,
 		"decay_rate": 0.0012,
 		"stackable": false,
-		"icon_fresh": preload("res://art/sprites/bakery/BerryTart.png"),
-		"icon_stale": preload("res://art/sprites/bakery/BerryTart.png"),
-		"icon_spoiled": preload("res://art/sprites/bakery/BerryTart.png")
+		"icon_fresh": preload("res://art/sprites/bakery/food/BerryTart.png"),
+		"icon_stale": preload("res://art/sprites/bakery/food/BerryTart.png"),
+		"icon_spoiled": preload("res://art/sprites/bakery/food/BerryTart.png")
+	},
+	"apple_pie": {
+		"ingredients": {
+			"flour": 1,
+			"sugar": 1,
+			"butter": 1,
+			"milk": 1,
+		},
+		"sell_price": 24,
+		"bake_time": 12.0,
+		"decay_rate": 0.0012,
+		"stackable": false,
+		"icon_fresh": preload("res://art/sprites/bakery/food/ApplePie.png"),
+		"icon_stale": preload("res://art/sprites/bakery/food/ApplePie.png"),
+		"icon_spoiled": preload("res://art/sprites/bakery/food/ApplePie.png")
+	},
+	"black_forest_cake": {
+		"ingredients": {
+			"flour": 2,
+			"sugar": 2,
+			"butter": 1,
+			"chocolate": 1,
+		},
+		"sell_price": 28,
+		"bake_time": 18.0,
+		"decay_rate": 0.0012,
+		"stackable": false,
+		"icon_fresh": preload("res://art/sprites/bakery/food/BlackForestCake.png"),
+		"icon_stale": preload("res://art/sprites/bakery/food/BlackForestCake.png"),
+		"icon_spoiled": preload("res://art/sprites/bakery/food/BlackForestCake.png")
+	},
+	"cherry_pie": {
+		"ingredients": {
+			"flour": 1,
+			"sugar": 1,
+			"butter": 1,
+			"berries": 2,
+		},
+		"sell_price": 28,
+		"bake_time": 18.0,
+		"decay_rate": 0.0012,
+		"stackable": false,
+		"icon_fresh": preload("res://art/sprites/bakery/food/CherryPie.png"),
+		"icon_stale": preload("res://art/sprites/bakery/food/CherryPie.png"),
+		"icon_spoiled": preload("res://art/sprites/bakery/food/CherryPie.png")
+	},
+	"donut": {
+		"ingredients": {
+			"flour": 1,
+			"butter": 1,
+			"choclate": 1,
+		},
+		"sell_price": 12,
+		"bake_time": 8.0,
+		"decay_rate": 0.0012,
+		"stackable": false,
+		"icon_fresh": preload("res://art/sprites/bakery/food/Donut.png"),
+		"icon_stale": preload("res://art/sprites/bakery/food/Donut.png"),
+		"icon_spoiled": preload("res://art/sprites/bakery/food/Donut.png")
+	},
+	"tiramisu": {
+		"ingredients": {
+			"flour": 1,
+			"sugar": 1,
+			"butter": 1,
+			"milk": 1,
+		},
+		"sell_price": 38,
+		"bake_time": 40.0,
+		"decay_rate": 0.0012,
+		"stackable": false,
+		"icon_fresh": preload("res://art/sprites/bakery/food/Tiramisu.png"),
+		"icon_stale": preload("res://art/sprites/bakery/food/Tiramisu.png"),
+		"icon_spoiled": preload("res://art/sprites/bakery/food/Tiramisu.png")
 	}
 }
 

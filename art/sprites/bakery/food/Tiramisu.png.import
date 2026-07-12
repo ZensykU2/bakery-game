@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://m2hsdmu8dq7m"
-path="res://.godot/imported/Bread.png-eb926e136e781e5af89865ff1a5452e0.ctex"
+uid="uid://bdp4ctlhrusg6"
+path="res://.godot/imported/Tiramisu.png-31a92c3cbd8aa99828aaaa9b6784f67d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/sprites/bakery/Bread.png"
-dest_files=["res://.godot/imported/Bread.png-eb926e136e781e5af89865ff1a5452e0.ctex"]
+source_file="res://art/sprites/bakery/food/Tiramisu.png"
+dest_files=["res://.godot/imported/Tiramisu.png-31a92c3cbd8aa99828aaaa9b6784f67d.ctex"]
 
 [params]
 

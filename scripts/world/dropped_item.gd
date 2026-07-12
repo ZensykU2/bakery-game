@@ -9,9 +9,9 @@ func _ready() -> void:
 	monitoring = false
 	monitorable = false
 	
-	sprite.scale = Vector2(0.15, 0.15)
+	sprite.scale = Vector2(GameConstants.World.DROPPED_ITEM_SCALE, GameConstants.World.DROPPED_ITEM_SCALE)
 	
-	get_tree().create_timer(1.2).timeout.connect(func(): 
+	get_tree().create_timer(GameConstants.World.DROPPED_ITEM_PICKUP_DELAY).timeout.connect(func(): 
 		monitoring = true
 		monitorable = true
 	)

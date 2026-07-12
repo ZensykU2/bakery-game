@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://q0uumpfy2hk8"
-path="res://.godot/imported/BerryTart.png-4a7cb3ee31209bb1d2d1934a791c0ff3.ctex"
+uid="uid://mwwb3aw54c8m"
+path="res://.godot/imported/Milk.png-e9518ff58324f6f4137188ee39b3e43a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/sprites/bakery/BerryTart.png"
-dest_files=["res://.godot/imported/BerryTart.png-4a7cb3ee31209bb1d2d1934a791c0ff3.ctex"]
+source_file="res://art/sprites/bakery/ingredients/Milk.png"
+dest_files=["res://.godot/imported/Milk.png-e9518ff58324f6f4137188ee39b3e43a.ctex"]
 
 [params]
 

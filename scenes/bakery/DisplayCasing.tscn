@@ -2,9 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://cke7ln6qi1msi" path="res://icon.svg" id="1_uaigk"]
 [ext_resource type="Script" uid="uid://y4o714fvmd78" path="res://scripts/bakery/display_casing.gd" id="1_ub2g2"]
-[ext_resource type="Texture2D" uid="uid://m2hsdmu8dq7m" path="res://art/sprites/bakery/Bread.png" id="2_hl4oe"]
-[ext_resource type="Texture2D" uid="uid://bbynl8kum17kr" path="res://art/sprites/bakery/Cookie.png" id="3_ub2g2"]
-[ext_resource type="Texture2D" uid="uid://q0uumpfy2hk8" path="res://art/sprites/bakery/BerryTart.png" id="4_12hfv"]
+[ext_resource type="Texture2D" uid="uid://m2hsdmu8dq7m" path="res://art/sprites/bakery/food/Bread.png" id="2_hl4oe"]
+[ext_resource type="Texture2D" uid="uid://bbynl8kum17kr" path="res://art/sprites/bakery/food/Cookie.png" id="3_ub2g2"]
+[ext_resource type="Texture2D" uid="uid://1olehhvjmcl5" path="res://art/sprites/bakery/food/BerryTart.png" id="4_12hfv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1pkl4"]
 size = Vector2(182, 199)

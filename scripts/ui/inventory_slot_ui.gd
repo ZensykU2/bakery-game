@@ -12,7 +12,7 @@ func set_item(item: InventoryItem) -> void:
 	item_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	item_icon.stretch_mode = TextureRect.STRETCH_SCALE
 	
-	if slot_index == 999:
+	if InventoryManager.is_trash_slot(slot_index):
 		count_label.text = ""
 		if freshness_bar: freshness_bar.visible = false
 		return
@@ -35,9 +35,9 @@ func set_item(item: InventoryItem) -> void:
 				freshness_bar.value = item.freshness * 100.0
 				
 				var sb = StyleBoxFlat.new()
-				if item.freshness > 0.6:
+				if item.freshness > GameConstants.Inventory.FRESH_THRESHOLD:
 					sb.bg_color = Color(0.2, 0.8, 0.2)
-				elif item.freshness > 0.25:
+				elif item.freshness > GameConstants.Inventory.STALE_THRESHOLD:
 					sb.bg_color = Color(0.9, 0.6, 0.1)
 				else:
 					sb.bg_color = Color(0.8, 0.2, 0.2)

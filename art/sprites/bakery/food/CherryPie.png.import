@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dyns7oe5aq672"
-path="res://.godot/imported/Hotbar2.png-5027f231830a0abb243c1376060023c3.ctex"
+uid="uid://hra4mg8vcobx"
+path="res://.godot/imported/CherryPie.png-ee5020786b3577b7068404b67bc65982.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/sprites/world/Hotbar2.png"
-dest_files=["res://.godot/imported/Hotbar2.png-5027f231830a0abb243c1376060023c3.ctex"]
+source_file="res://art/sprites/bakery/food/CherryPie.png"
+dest_files=["res://.godot/imported/CherryPie.png-ee5020786b3577b7068404b67bc65982.ctex"]
 
 [params]
 

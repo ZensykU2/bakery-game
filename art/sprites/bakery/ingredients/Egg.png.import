@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dyns7oe5aq672"
-path="res://.godot/imported/Hotbar2.png-5027f231830a0abb243c1376060023c3.ctex"
+uid="uid://cm1ijcyknk6r3"
+path="res://.godot/imported/Egg.png-3f27aa95979231926131dd8c42de7287.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/sprites/world/Hotbar2.png"
-dest_files=["res://.godot/imported/Hotbar2.png-5027f231830a0abb243c1376060023c3.ctex"]
+source_file="res://art/sprites/bakery/ingredients/Egg.png"
+dest_files=["res://.godot/imported/Egg.png-3f27aa95979231926131dd8c42de7287.ctex"]
 
 [params]
 

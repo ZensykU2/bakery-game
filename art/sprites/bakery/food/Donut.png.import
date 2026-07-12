@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dyns7oe5aq672"
-path="res://.godot/imported/Hotbar2.png-5027f231830a0abb243c1376060023c3.ctex"
+uid="uid://cjgmuyalxura0"
+path="res://.godot/imported/Donut.png-484c1bf21326d6b20320dbfa4e43431c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/sprites/world/Hotbar2.png"
-dest_files=["res://.godot/imported/Hotbar2.png-5027f231830a0abb243c1376060023c3.ctex"]
+source_file="res://art/sprites/bakery/food/Donut.png"
+dest_files=["res://.godot/imported/Donut.png-484c1bf21326d6b20320dbfa4e43431c.ctex"]
 
 [params]
 

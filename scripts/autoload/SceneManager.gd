@@ -47,7 +47,7 @@ func transition_to(target_scene_path: String, spawn_point_name: String) -> void:
 	_next_spawn_point_name = spawn_point_name
 	
 	var tween = create_tween()
-	tween.tween_property(fade_rect, "color", Color(0, 0, 0, 1), 0.4)
+	tween.tween_property(fade_rect, "color", Color(0, 0, 0, 1), GameConstants.Scene.TRANSITION_DURATION)
 	await tween.finished
 	
 	_serialize_active_dropped_items()
@@ -71,7 +71,7 @@ func transition_to(target_scene_path: String, spawn_point_name: String) -> void:
 		_spawn_dropped_items_for_scene(level_instance)
 	
 	var tween_in = create_tween()
-	tween_in.tween_property(fade_rect, "color", Color(0, 0, 0, 0), 0.4)
+	tween_in.tween_property(fade_rect, "color", Color(0, 0, 0, 0), GameConstants.Scene.TRANSITION_DURATION)
 	await tween_in.finished
 	
 	is_transitioning = false
@@ -82,12 +82,12 @@ func sleep_to_next_day() -> void:
 	is_transitioning = true
 	
 	var tween = create_tween()
-	tween.tween_property(fade_rect, "color", Color(0, 0, 0, 1), 0.8)
+	tween.tween_property(fade_rect, "color", Color(0, 0, 0, 1), GameConstants.Scene.SLEEP_FADE_DURATION)
 	await tween.finished
 	
 	_serialize_active_dropped_items()
 	
-	if TimeManager.hour >= 6:
+	if TimeManager.hour >= GameConstants.TimeManage.WAKEUP_HOUR:
 		GameManager.next_day()
 		
 	current_scene_path = "res://scenes/bedroom/Bedroom.tscn"
@@ -114,12 +114,13 @@ func sleep_to_next_day() -> void:
 		else:
 			_next_spawn_point_name = "PassOut"
 			_position_player(current_level)
-			
-	TimeManager.time_in_minutes = 6.0 * 60
+	
+	# 1 Minute IRL = 1 Second ingame
+	TimeManager.time_in_minutes = GameConstants.TimeManage.DEFAULT_START_TIME
 	TimeManager.force_process_time_update()
 	GameManager.give_daily_allowance()
 	
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(GameConstants.Scene.SLEEP_DELAY_TIMER).timeout
 	
 	var tween_in = create_tween()
 	tween_in.tween_property(fade_rect, "color", Color(0, 0, 0, 0), 0.8)
@@ -161,7 +162,7 @@ func _serialize_active_dropped_items() -> void:
 			if drop_node.is_queued_for_deletion():
 				continue
 				
-			if GameManager.state.dropped_items.size() >= 50:
+			if GameManager.state.dropped_items.size() >= GameConstants.Inventory.MAX_DROPPED_ITEMS:
 				break
 			GameManager.state.dropped_items.append({
 				"scene_path": current_scene_path,
@@ -175,7 +176,7 @@ func _spawn_dropped_items_for_scene(level_node: Node) -> void:
 	var drops = GameManager.state.dropped_items
 	for drop in drops:
 		if drop.scene_path == current_scene_path:
-			var drop_scene = load("res://scenes/world/DroppedItem.tscn")
+			var drop_scene = load(GameConstants.Paths.DROPPED_ITEM_SCENE_PATH)
 			var instance = drop_scene.instantiate()
 			instance.global_position = drop.position
 			instance.item = InventoryItem.from_dict(drop) 

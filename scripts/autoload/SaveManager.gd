@@ -1,9 +1,7 @@
 extends Node
 
-const SAVE_PATH := "user://savegame.json"
-
 func save_game(data: Dictionary) -> bool:
-	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	var file = FileAccess.open(GameConstants.Paths.SAVE_PATH, FileAccess.WRITE)
 	if file == null:
 		push_error("Could not open save file for writing.")
 		return false
@@ -13,10 +11,10 @@ func save_game(data: Dictionary) -> bool:
 	return true
 
 func load_game() -> Dictionary:
-	if not FileAccess.file_exists(SAVE_PATH):
+	if not FileAccess.file_exists(GameConstants.Paths.SAVE_PATH):
 		return {}
 
-	var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
+	var file = FileAccess.open(GameConstants.Paths.SAVE_PATH, FileAccess.READ)
 	if file == null:
 		push_error("Could not open save file for reading.")
 		return {}

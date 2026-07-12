@@ -1,10 +1,9 @@
 extends Node
 
-const POOL_SIZE = 8
 var pool: Array[AudioStreamPlayer] = []
 
 func _ready() -> void:
-	for i in range(POOL_SIZE):
+	for i in range(GameConstants.Audio.POOL_SIZE):
 		var player = AudioStreamPlayer.new()
 		add_child(player)
 		pool.append(player)
