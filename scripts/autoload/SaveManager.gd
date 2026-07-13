@@ -6,13 +6,6 @@ func get_save_path(slot_index: int) -> String:
 	return SAVE_SLOT_TEMPLATE % slot_index
 
 func save_game(data: Dictionary, slot_index: int) -> bool:
-	# Add a metadata block for load screens
-	data["metadata"] = {
-		"saved_at": Time.get_datetime_dict_from_system(),
-		"day": data.get("day", 1),
-		"money": data.get("money", 0)
-	}
-	
 	var file = FileAccess.open(get_save_path(slot_index), FileAccess.WRITE)
 	if file == null:
 		push_error("Could not open save file for writing on slot %d" % slot_index)

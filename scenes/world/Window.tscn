@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://cb83irmlsylp5"]
+
+[ext_resource type="Script" uid="uid://drvk2qsh7742j" path="res://scripts/world/window_controller.gd" id="1_bxxd8"]
+[ext_resource type="Texture2D" uid="uid://dfhb5n2x50x6d" path="res://art/sprites/pixel_art_sun.png" id="2_a1q6j"]
+[ext_resource type="Texture2D" uid="uid://cldplepsgyyot" path="res://art/sprites/world/Window.png" id="2_k5ay0"]
+[ext_resource type="Script" uid="uid://oer5goefvnpl" path="res://scripts/world/starfield.gd" id="2_k026w"]
+[ext_resource type="Script" uid="uid://dmnx5ctuscfib" path="res://scripts/world/shooting_star_spawner.gd" id="3_gfe78"]
+[ext_resource type="Texture2D" uid="uid://bhcrky31qmlgt" path="res://art/sprites/pixel_art_moon.png" id="3_jxfqx"]
+[ext_resource type="Texture2D" uid="uid://cmq8rtdnvyk6b" path="res://resources/textures/radial_glow.tres" id="3_k5ay0"]
+[ext_resource type="Script" uid="uid://p6l8plghbfeh" path="res://scripts/world/celestial_orbit.gd" id="8_phptm"]
+[ext_resource type="Script" uid="uid://c0ogtioa2htsp" path="res://scripts/world/window_light_controller.gd" id="9_b3lj5"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1pkl4"]
+light_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_bxxd8"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1pkl4"]
+gradient = SubResource("Gradient_bxxd8")
+width = 32
+height = 32
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_a1q6j"]
+light_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_jxfqx"]
+light_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_k026w"]
+light_mode = 1
+
+[node name="Window" type="Node2D" unique_id=1957938391 node_paths=PackedStringArray("sky_color_node")]
+script = ExtResource("1_bxxd8")
+sky_color_node = NodePath("GlassBackground/SkyColor")
+
+[node name="GlassBackground" type="Sprite2D" parent="." unique_id=1808133508]
+clip_children = 2
+material = SubResource("CanvasItemMaterial_1pkl4")
+texture = SubResource("GradientTexture2D_1pkl4")
+
+[node name="SkyColor" type="ColorRect" parent="GlassBackground" unique_id=2020298261]
+material = SubResource("CanvasItemMaterial_a1q6j")
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+
+[node name="Starfield" type="Node2D" parent="GlassBackground/SkyColor" unique_id=1192933912]
+script = ExtResource("2_k026w")
+
+[node name="ShootingStarSpawner" type="Node2D" parent="GlassBackground/SkyColor" unique_id=1080691824]
+script = ExtResource("3_gfe78")
+
+[node name="Sun" type="Sprite2D" parent="GlassBackground" unique_id=2146581289]
+material = SubResource("CanvasItemMaterial_jxfqx")
+texture = ExtResource("2_a1q6j")
+
+[node name="Moon" type="Sprite2D" parent="GlassBackground" unique_id=1159373010]
+material = SubResource("CanvasItemMaterial_k026w")
+texture = ExtResource("3_jxfqx")
+
+[node name="WindowFrame" type="Sprite2D" parent="." unique_id=1867557092]
+texture = ExtResource("2_k5ay0")
+
+[node name="WindowLight" type="PointLight2D" parent="." unique_id=1881012639]
+energy = 0.8
+texture = ExtResource("3_k5ay0")
+
+[node name="CelestialOrbit" type="Node2D" parent="." unique_id=1708691104 node_paths=PackedStringArray("sun_node", "moon_node")]
+script = ExtResource("8_phptm")
+sun_node = NodePath("../GlassBackground/Sun")
+moon_node = NodePath("../GlassBackground/Moon")
+
+[node name="WindowLightController" type="Node2D" parent="." unique_id=2100748409 node_paths=PackedStringArray("light_node")]
+script = ExtResource("9_b3lj5")
+light_node = NodePath("../WindowLight")

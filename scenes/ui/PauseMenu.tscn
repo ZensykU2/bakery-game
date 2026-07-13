@@ -1,10 +1,13 @@
 [gd_scene format=3 uid="uid://emefm705wk0o"]
 
 [ext_resource type="Script" uid="uid://dg4ytwsmfmlwg" path="res://scripts/ui/pause_menu.gd" id="1_vb6pq"]
+[ext_resource type="PackedScene" uid="uid://dwhw12judkoyj" path="res://scenes/ui/Backdrop.tscn" id="2_7ida2"]
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=422939771]
 process_mode = 2
 script = ExtResource("1_vb6pq")
+
+[node name="Backdrop" parent="." unique_id=136033478 instance=ExtResource("2_7ida2")]
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=1324623032]
 anchors_preset = 15

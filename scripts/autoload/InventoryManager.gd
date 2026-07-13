@@ -1,6 +1,7 @@
 extends Node
 
 signal inventory_changed
+signal item_dropped(item: InventoryItem, global_position: Vector2)
 
 var state: GameState:
 	get: return GameManager.state
@@ -12,11 +13,14 @@ var pressed_slot_index: int = -1
 var is_paint_mode_active: bool = false
 var show_freshness_bars: bool = false
 
-func _get_container_ui() -> CanvasLayer:
-	return SceneManager.get_container_ui()
+var active_container_slots: Array[InventoryItem] = []
+var is_backpack_open: bool = false
 
-func _get_hud() -> CanvasLayer:
-	return SceneManager.get_hud()
+func _ready() -> void:
+	TimeManager.minutes_passed.connect(_on_time_minutes_passed)
+
+func _on_time_minutes_passed(elapsed_minutes: int) -> void:
+	_tick_inventory_decay(elapsed_minutes)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
@@ -80,12 +84,11 @@ func deduct_item(item_id: String, amount: int) -> void:
 	GameManager.save_game()
 
 func _resolve_slot(slot_index: int) -> Dictionary:
-	var container_ui = _get_container_ui()
 	var array = state.inventory_slots
 	var idx = slot_index
 	
-	if slot_index >= GameConstants.Inventory.CONTAINER_IDX and container_ui and container_ui.visible:
-		array = container_ui.active_container_array
+	if slot_index >= GameConstants.Inventory.CONTAINER_IDX and not active_container_slots.is_empty():
+		array = active_container_slots
 		idx = slot_index - GameConstants.Inventory.CONTAINER_IDX
 		
 	return {
@@ -213,13 +216,11 @@ func handle_slot_double_click(slot_index: int) -> void:
 	if is_trash_slot(slot_index):
 		return
 	
-	var slot = _resolve_slot(slot_index)
-	if slot.item == null or not ItemDB.is_stackable(slot.item.item_id):
+	if held_item == null or not ItemDB.is_stackable(held_item.item_id):
 		return
 		
-	var target_item = slot.item
+	var target_item = held_item
 	var target_state = target_item.get_freshness_state()
-	var container_ui = _get_container_ui()
 	
 	for i in range(state.inventory_slots.size()):
 		var item = state.inventory_slots[i]
@@ -227,12 +228,12 @@ func handle_slot_double_click(slot_index: int) -> void:
 			target_item.merge_with(item)
 			state.inventory_slots[i] = null
 			
-	if container_ui and container_ui.visible:
-		for i in range(container_ui.active_container_array.size()):
-			var item = container_ui.active_container_array[i]
+	if not active_container_slots.is_empty():
+		for i in range(active_container_slots.size()):
+			var item = active_container_slots[i]
 			if item != null and item != target_item and item.item_id == target_item.item_id and item.get_freshness_state() == target_state:
 				target_item.merge_with(item)
-				container_ui.active_container_array[i] = null
+				active_container_slots[i] = null
 				
 	inventory_changed.emit()
 
@@ -240,8 +241,7 @@ func _handle_shift_click(slot_index: int) -> void:
 	if is_trash_slot(slot_index):
 		return
 	
-	var container_ui = _get_container_ui()
-	var is_container_open = container_ui and container_ui.visible
+	var is_container_open = not active_container_slots.is_empty()
 	
 	var from_slot = _resolve_slot(slot_index)
 	var from_array = from_slot.array
@@ -253,11 +253,9 @@ func _handle_shift_click(slot_index: int) -> void:
 			if not success:
 				_transfer_to_range(from_array, from_local_index, state.inventory_slots, GameConstants.Inventory.MAX_HOTBAR_IDX, state.inventory_slots.size())
 		else:
-			var to_array = container_ui.active_container_array
-			_transfer_to_range(from_array, from_local_index, to_array, 0, to_array.size())
+			_transfer_to_range(from_array, from_local_index, active_container_slots, 0, active_container_slots.size())
 	else:
-		var hud = _get_hud()
-		if hud and hud.backdrop.visible:
+		if is_backpack_open:
 			var start = GameConstants.Inventory.MAX_HOTBAR_IDX if slot_index < GameConstants.Inventory.MAX_HOTBAR_IDX else 0
 			var end = state.inventory_slots.size() if slot_index < GameConstants.Inventory.MAX_HOTBAR_IDX else GameConstants.Inventory.MAX_HOTBAR_IDX
 			_transfer_to_range(from_array, from_local_index, state.inventory_slots, start, end)
@@ -312,20 +310,55 @@ func drop_held_item_to_world() -> void:
 		return
 		
 	var player = SceneManager.get_player()
-	var active_level = SceneManager.get_active_level()
-	
-	if player and active_level:
+	if player:
 		var drop_pos = player.global_position + GameConstants.Inventory.DROP_OFFSET
-
 		if state.dropped_items.size() >= GameConstants.Inventory.MAX_DROPPED_ITEMS:
 			state.dropped_items.remove_at(0)
-
-		var drop_scene = load(GameConstants.Paths.DROPPED_ITEM_SCENE_PATH)
-		var instance = drop_scene.instantiate()
-		instance.global_position = drop_pos
-		instance.item = held_item 
-		active_level.add_child(instance)
-
+		item_dropped.emit(held_item, drop_pos)
 		held_item = null
 		inventory_changed.emit()
 		GameManager.save_game()
+
+func _decay_array(slots: Array, minutes: int, modifier: float) -> bool:
+	var changed = false
+	for item in slots:
+		if item == null:
+			continue
+		var item_id = item.item_id if "item_id" in item else item.get("item_id", "")
+		var rate = ItemDB.get_decay_rate(item_id)
+		
+		if rate > 0.0:
+			var freshness = item.freshness if "freshness" in item else item.get("freshness", 1.0)
+			var new_fresh = clamp(freshness - (rate * minutes * modifier), 0.0, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER)
+			if "freshness" in item:
+				item.freshness = new_fresh
+			else:
+				item["freshness"] = new_fresh
+			changed = true
+	return changed
+func _tick_inventory_decay(minutes: int) -> void:
+	var changed = false
+	if _decay_array(state.inventory_slots, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
+	if _decay_array(state.fridge_slots, minutes, GameConstants.Inventory.FRIDGE_DECAY_MODIFIER): changed = true
+	if _decay_array(state.counter_slots, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
+	
+	var active_level = SceneManager.get_active_level()
+	if active_level:
+		var active_drops = active_level.find_children("*", "DroppedItem", true, false)
+		var drop_items: Array[InventoryItem] = []
+		for d in active_drops:
+			if d.item: drop_items.append(d.item)
+		if _decay_array(drop_items, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
+	
+	var cur_path = SceneManager.current_scene_path
+	var offline_drops = []
+	for drop in state.dropped_items:
+		if drop.scene_path != cur_path:
+			offline_drops.append(drop)
+			
+	if _decay_array(offline_drops, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
+	for casing_id in state.casing_slots.keys():
+		var slots = state.casing_slots[casing_id]
+		if _decay_array(slots, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
+	if changed:
+		inventory_changed.emit()

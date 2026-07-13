@@ -22,6 +22,7 @@ func _ready() -> void:
 
 func open(container_array: Array[InventoryItem], mode: String = "storage") -> void:
 	active_container_array = container_array
+	InventoryManager.active_container_slots = container_array
 	is_counter_mode = (mode == "counter")
 	visible = true
 	
@@ -97,6 +98,7 @@ func _on_sell_pressed() -> void:
 
 func close() -> void:
 	visible = false
+	InventoryManager.active_container_slots = []
 	GameManager.save_game()
 
 func _unhandled_input(event: InputEvent) -> void:

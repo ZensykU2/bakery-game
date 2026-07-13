@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://82pyio4c87xp"]
+
+[ext_resource type="Texture2D" uid="uid://bekr8bggq20ms" path="res://art/sprites/bakery/ingredients/Apple.png" id="1_2oqkr"]
+[ext_resource type="Script" uid="uid://d2765713yqfdl" path="res://scripts/resources/ItemData.gd" id="2_yw5el"]
+
+[resource]
+script = ExtResource("2_yw5el")
+item_id = "apple"
+buy_price = 2
+sell_price = null
+decay_rate = 0.001
+stackable = null
+icon_fresh = ExtResource("1_2oqkr")
+icon_stale = ExtResource("1_2oqkr")
+icon_spoiled = ExtResource("1_2oqkr")
+ingredients = null
+bake_time = null

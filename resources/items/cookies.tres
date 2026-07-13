@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/sprites/bakery/food/Cookie.png" id="1_wjkvb"]
+[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_6lyig"]
+
+[resource]
+script = ExtResource("2_6lyig")
+item_id = "cookies"
+sell_price = 18
+decay_rate = 0.0003
+stackable = false
+icon_fresh = ExtResource("1_wjkvb")
+icon_stale = ExtResource("1_wjkvb")
+icon_spoiled = ExtResource("1_wjkvb")
+ingredients = {
+"butter": 1,
+"chocolate": 1,
+"flour": 1,
+"sugar": 1
+}
+bake_time = 8.0

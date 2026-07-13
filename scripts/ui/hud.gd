@@ -47,6 +47,7 @@ func _ready() -> void:
 	setup_inventory_ui()
 	backpack_grid.visible = false
 	backdrop.visible = false
+	InventoryManager.is_backpack_open = false
 	_align_inventory_layout(false)
 	
 	set_selected_hotbar_index(0)
@@ -80,6 +81,7 @@ func _toggle_backpack() -> void:
 	var open = not backpack_grid.visible
 	backpack_grid.visible = open
 	backdrop.visible = open
+	InventoryManager.is_backpack_open = open
 	_align_inventory_layout(open)
 	
 	if not open:

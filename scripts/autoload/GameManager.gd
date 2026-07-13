@@ -14,11 +14,20 @@ func _ready() -> void:
 func new_game(slot_index: int) -> void:
 	current_slot_index = slot_index
 	state = GameState.new()
+	TimeManager.is_active = true
 	save_game()
 	_emit_all_signals()
 
 func save_game() -> void:
-	SaveManager.save_game(state.to_dict(), current_slot_index)
+	var data = state.to_dict()
+	
+	data["metadata"] = {
+		"saved_at": Time.get_datetime_dict_from_system(),
+		"day": state.day,
+		"money": state.money
+	}
+	
+	SaveManager.save_game(data, current_slot_index)
 
 func load_game(slot_index: int) -> void:
 	current_slot_index = slot_index
@@ -29,6 +38,7 @@ func load_game(slot_index: int) -> void:
 		state = GameState.new()
 		state.from_dict(data)
 
+	TimeManager.is_active = true
 	_emit_all_signals()
 
 func next_day() -> void:

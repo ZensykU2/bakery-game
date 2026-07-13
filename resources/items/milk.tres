@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/sprites/bakery/ingredients/Milk.png" id="1_40saw"]
+[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_bjuwe"]
+
+[resource]
+script = ExtResource("2_bjuwe")
+item_id = "milk"
+buy_price = 8
+decay_rate = 0.012
+icon_fresh = ExtResource("1_40saw")
+icon_stale = ExtResource("1_40saw")
+icon_spoiled = ExtResource("1_40saw")

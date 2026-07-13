@@ -1,6 +1,6 @@
 extends Sprite2D
 
-signal harvested
+signal harvest_requested
 
 @onready var click_area: Area2D = $ClickArea
 @onready var floaty_label: Label = $FloatyLabel
@@ -58,24 +58,11 @@ func _run_pop_animation() -> void:
 func _on_click_area_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
-			_harvest_item()
+			harvest_requested.emit()
 
-func _harvest_item() -> void:
-	var player = SceneManager.get_player()
-	if player:
-		var distance = global_position.distance_to(player.global_position)
-		if distance > GameConstants.World.HARVEST_DISTANCE:
-			print("Too far away to harvest!")
-			return
-	
-	if InventoryManager.add_item(item_id, 1):
-		print("Harvested item into slots: ", item_id)
-		harvested.emit()
-		
-		var tween = create_tween().set_parallel(true)
-		tween.tween_property(self, "scale", Vector2.ZERO, 0.2)
-		tween.tween_property(self, "modulate:a", 0.0, 0.2)
-		await tween.finished
-		queue_free()
-	else:
-		print("Inventory Full! Cannot harvest.")
+func play_harvest_animation() -> void:
+	var tween = create_tween().set_parallel(true)
+	tween.tween_property(self, "scale", Vector2.ZERO, 0.2)
+	tween.tween_property(self, "modulate:a", 0.0, 0.2)
+	await tween.finished
+	queue_free()

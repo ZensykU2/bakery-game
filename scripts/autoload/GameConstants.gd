@@ -51,6 +51,18 @@ class TimeManage:
 	const MAX_TIME_SPEED: float = 240.0
 	const WEEKDAYS := ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 	const SEASONS := ["Spring", "Summer", "Fall", "Winter"]
+	
+		# Window & Orbit Time Constants (in minutes)
+	const SUNRISE_START_MINUTES: float = 300.0 # 5:00 AM
+	const SUNRISE_END_MINUTES: float = 360.0   # 6:00 AM
+	const SUNRISE_DURATION: float = 60.0
+	
+	const SUNSET_START_MINUTES: float = 1080.0 # 6:00 PM
+	const SUNSET_END_MINUTES: float = 1200.0   # 8:00 PM
+	const SUNSET_DURATION: float = 120.0
+	
+	const DAY_ORBIT_DURATION: float = 840.0    # 14 hours (6 AM to 8 PM)
+	const NIGHT_ORBIT_DURATION: float = 600.0  # 10 hours (8 PM to 6 AM)
 
 class World:
 	const HARVEST_DISTANCE: float = 512.0

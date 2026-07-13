@@ -7,9 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://dryl16gfvomwp" path="res://scenes/bakery/DisplayCasing.tscn" id="3_fi7vi"]
 [ext_resource type="PackedScene" uid="uid://dhr7unit14bt2" path="res://scenes/bakery/Counter.tscn" id="4_oahqh"]
 [ext_resource type="PackedScene" uid="uid://bw83e2wm0ubub" path="res://scenes/bakery/Fridge.tscn" id="5_fi7vi"]
+[ext_resource type="PackedScene" uid="uid://cb83irmlsylp5" path="res://scenes/world/Window.tscn" id="9_fi7vi"]
 [ext_resource type="PackedScene" uid="uid://bo1cspga42kym" path="res://scenes/world/ExitDoor.tscn" id="9_jl5p4"]
-[ext_resource type="Script" uid="uid://drvk2qsh7742j" path="res://scripts/world/window_light.gd" id="12_tuj7y"]
-[ext_resource type="Script" uid="uid://vrbxnajgcm7m" path="res://scripts/world/lamp_light.gd" id="13_e4aqv"]
+[ext_resource type="Script" uid="uid://vrbxnajgcm7m" path="res://scripts/world/lamp_controller.gd" id="13_e4aqv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oahqh"]
 texture = ExtResource("2_oahqh")
@@ -268,25 +268,14 @@ sources/0 = SubResource("TileSetAtlasSource_tuj7y")
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_1pkl4"]
 distance = -244.0
 
-[sub_resource type="Gradient" id="Gradient_5cj04"]
-offsets = PackedFloat32Array(0, 0.7113821)
+[sub_resource type="Gradient" id="Gradient_fi7vi"]
+offsets = PackedFloat32Array(0, 0.6097561)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_1pkl4"]
-gradient = SubResource("Gradient_5cj04")
-width = 128
-height = 128
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-
-[sub_resource type="Gradient" id="Gradient_80hhj"]
-offsets = PackedFloat32Array(0, 0.31707317)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_5cj04"]
-gradient = SubResource("Gradient_80hhj")
-width = 256
-height = 256
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fi7vi"]
+gradient = SubResource("Gradient_fi7vi")
+width = 512
+height = 512
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
@@ -326,9 +315,8 @@ position = Vector2(624, 272)
 oven_id = "oven2"
 ui_panel = NodePath("../../CanvasLayer/OvenUI")
 
-[node name="Counter" parent="Interactables" unique_id=1309049580 node_paths=PackedStringArray("ui_panel") instance=ExtResource("4_oahqh")]
+[node name="Counter" parent="Interactables" unique_id=1309049580 instance=ExtResource("4_oahqh")]
 position = Vector2(464, 368)
-ui_panel = NodePath("")
 
 [node name="Fridge" parent="Interactables" unique_id=809908852 instance=ExtResource("5_fi7vi")]
 position = Vector2(749, 345)
@@ -336,6 +324,7 @@ position = Vector2(749, 345)
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=58943906]
 
 [node name="OvenUI" parent="CanvasLayer" unique_id=709665024 instance=ExtResource("3_5gh0i")]
+visible = false
 
 [node name="SpawnPoints" type="Node2D" parent="." unique_id=1045075577]
 position = Vector2(593, 292)
@@ -356,19 +345,16 @@ position = Vector2(-37, 14)
 position = Vector2(672, 256)
 target_scene = "uid://bi3fvn75kbo0l"
 target_spawn_name = "BedroomSpawn"
-closed_weekdays = Array[String]([])
 
 [node name="GardenDoor" parent="." unique_id=1173022087 instance=ExtResource("9_jl5p4")]
 position = Vector2(736, 256)
 target_scene = "uid://cdgepnxc4rry1"
 target_spawn_name = "GardenSpawn"
-closed_weekdays = Array[String]([])
 
 [node name="StreetDoor" parent="." unique_id=1139779820 instance=ExtResource("9_jl5p4")]
 position = Vector2(788, 256)
 target_scene = "uid://ddjaxocttvlu"
 target_spawn_name = "StreetSpawnBakery"
-closed_weekdays = Array[String]([])
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1916088712]
 
@@ -376,15 +362,16 @@ closed_weekdays = Array[String]([])
 position = Vector2(573, 179)
 shape = SubResource("WorldBoundaryShape2D_1pkl4")
 
-[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1535013889]
-position = Vector2(659, 282)
-texture = SubResource("GradientTexture2D_1pkl4")
-script = ExtResource("12_tuj7y")
+[node name="Window" parent="." unique_id=1957938391 instance=ExtResource("9_fi7vi")]
+position = Vector2(688, 217)
 
-[node name="PointLight2D2" type="PointLight2D" parent="." unique_id=1855267264]
-position = Vector2(505, 248)
-color = Color(1, 1, 0.81960785, 1)
-texture = SubResource("GradientTexture2D_5cj04")
+[node name="lamp" type="Node2D" parent="." unique_id=506346661 node_paths=PackedStringArray("light_node")]
+position = Vector2(479, 188)
 script = ExtResource("13_e4aqv")
-max_energy = 0.4
-turn_off_hour = 8
+light_node = NodePath("PointLight2D")
+turn_off_hour = 9
+
+[node name="PointLight2D" type="PointLight2D" parent="lamp" unique_id=448025768]
+position = Vector2(-25, 78)
+color = Color(1, 0.8745098, 0.61960787, 1)
+texture = SubResource("GradientTexture2D_fi7vi")

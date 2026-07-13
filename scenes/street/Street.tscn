@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cnmoh4gt3eyts" path="res://scripts/street/street.gd" id="1_1kily"]
 [ext_resource type="PackedScene" uid="uid://bo1cspga42kym" path="res://scenes/world/ExitDoor.tscn" id="3_byyfn"]
+[ext_resource type="Script" uid="uid://dmn4kyr1mggji" path="res://scripts/world/shop_gatekeeper.gd" id="3_j4pp2"]
 [ext_resource type="Script" uid="uid://cdscdrla3c44b" path="res://scripts/world/ambient_light.gd" id="4_j4pp2"]
 
 [node name="Street" type="Node2D" unique_id=247730497]
@@ -16,8 +17,11 @@ target_spawn_name = "StreetBakery"
 position = Vector2(447, 168)
 target_scene = "uid://b5nvd628h8qii"
 target_spawn_name = "StreetShop"
-shop_name = "Bennies shop"
-is_scheduled_shop = true
+
+[node name="Node" type="Node" parent="ShopDoor" unique_id=1670968853]
+script = ExtResource("3_j4pp2")
+shop_name = "My Bakery"
+closed_weekdays = Array[String](["Saturday", "Sunday", "Monday", "Friday"])
 
 [node name="SpawnPoints" type="Node2D" parent="." unique_id=997219025]
 

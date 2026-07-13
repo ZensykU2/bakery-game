@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/sprites/fruit.png" id="1_624lj"]
+[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_apowa"]
+
+[resource]
+script = ExtResource("2_apowa")
+item_id = "berries"
+buy_price = 5
+decay_rate = 0.001
+icon_fresh = ExtResource("1_624lj")
+icon_stale = ExtResource("1_624lj")
+icon_spoiled = ExtResource("1_624lj")

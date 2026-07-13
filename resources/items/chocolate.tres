@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/sprites/bakery/ingredients/Chocolate.png" id="1_6iqv1"]
+[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_6tg0h"]
+
+[resource]
+script = ExtResource("2_6tg0h")
+item_id = "chocolate"
+buy_price = 6
+decay_rate = 0.0005
+icon_fresh = ExtResource("1_6iqv1")
+icon_stale = ExtResource("1_6iqv1")
+icon_spoiled = ExtResource("1_6iqv1")

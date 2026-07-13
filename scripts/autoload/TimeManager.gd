@@ -2,9 +2,11 @@ extends Node
 
 signal time_changed(hour: int, minute: int)
 signal ambient_color_changed(color: Color)
+signal minutes_passed(elapsed_minutes: int)
 
 var time_in_minutes = GameConstants.TimeManage.DEFAULT_START_TIME
 var time_speed: float = 1.0
+var is_active: bool = false
 
 var day: int:
 	get: return GameManager.state.day
@@ -26,6 +28,9 @@ var color_keyframes := {
 }
 
 func _process(delta: float) -> void:
+	if not is_active:
+		return
+	
 	time_in_minutes += delta * time_speed
 	if time_in_minutes >= GameConstants.TimeManage.MINUTES_IN_DAY:
 		time_in_minutes -= GameConstants.TimeManage.MINUTES_IN_DAY
@@ -45,65 +50,13 @@ func _process(delta: float) -> void:
 			last_tracked_minute = current_total_minutes
 		elif current_total_minutes > last_tracked_minute:
 			var elapsed = current_total_minutes - last_tracked_minute
-			_tick_inventory_decay(elapsed)
+			minutes_passed.emit(elapsed)
 			last_tracked_minute = current_total_minutes
 		
 		if hour >= GameConstants.TimeManage.PASSOUT_HOUR and hour < GameConstants.TimeManage.WAKEUP_HOUR:
 			pass_out()
 
 	ambient_color_changed.emit(get_ambient_color())
-
-func _decay_array(slots: Array, minutes: int, modifier: float) -> bool:
-	var changed = false
-	for item in slots:
-		if item == null:
-			continue
-
-		var item_id = item.item_id if "item_id" in item else item.get("item_id", "")
-		var rate = ItemDB.get_decay_rate(item_id)
-		
-		if rate > 0.0:
-			var freshness = item.freshness if "freshness" in item else item.get("freshness", 1.0)
-			var new_fresh = clamp(freshness - (rate * minutes * modifier), 0.0, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER)
-
-			if "freshness" in item:
-				item.freshness = new_fresh
-			else:
-				item["freshness"] = new_fresh
-			changed = true
-	return changed
-
-func _tick_inventory_decay(minutes: int) -> void:
-	var changed = false
-
-	if _decay_array(GameManager.state.inventory_slots, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
-
-	if _decay_array(GameManager.state.fridge_slots, minutes, GameConstants.Inventory.FRIDGE_DECAY_MODIFIER): changed = true
-
-	if _decay_array(GameManager.state.counter_slots, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
-	
-	var active_level = SceneManager.get_active_level()
-	if active_level:
-		var active_drops = active_level.find_children("*", "DroppedItem", true, false)
-		var drop_items: Array[InventoryItem] = []
-		for d in active_drops:
-			if d.item: drop_items.append(d.item)
-		if _decay_array(drop_items, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
-	
-	var cur_path = SceneManager.current_scene_path
-	var offline_drops = []
-	for drop in GameManager.state.dropped_items:
-		if drop.scene_path != cur_path:
-			offline_drops.append(drop)
-			
-	if _decay_array(offline_drops, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
-
-	for casing_id in GameManager.state.casing_slots.keys():
-		var slots = GameManager.state.casing_slots[casing_id]
-		if _decay_array(slots, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
-
-	if changed:
-		InventoryManager.inventory_changed.emit()
 
 func pass_out() -> void:
 	if SceneManager.is_transitioning:
@@ -160,7 +113,7 @@ func force_process_time_update() -> void:
 	var current_total_minutes = int(time_in_minutes) + (GameManager.get_day() * GameConstants.TimeManage.MINUTES_IN_DAY)
 	if last_tracked_minute != -1 and current_total_minutes > last_tracked_minute:
 		var elapsed = current_total_minutes - last_tracked_minute
-		_tick_inventory_decay(elapsed)
+		minutes_passed.emit(elapsed)
 	last_tracked_minute = current_total_minutes
 	
 	hour = int(time_in_minutes / 60.0)

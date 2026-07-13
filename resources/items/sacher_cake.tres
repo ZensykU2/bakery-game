@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/sprites/bakery/food/SacherCake.png" id="1_dmj4t"]
+[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_rmljh"]
+
+[resource]
+script = ExtResource("2_rmljh")
+item_id = "sacher_cake"
+sell_price = 38
+decay_rate = 0.0012
+stackable = false
+icon_fresh = ExtResource("1_dmj4t")
+icon_stale = ExtResource("1_dmj4t")
+icon_spoiled = ExtResource("1_dmj4t")
+ingredients = {
+"butter": 1,
+"flour": 1,
+"milk": 1,
+"sugar": 1
+}
+bake_time = 40.0

@@ -7,6 +7,8 @@ var _next_spawn_point_name: String = "DefaultSpawn"
 var current_scene_path: String = ""
 
 func _ready() -> void:
+	InventoryManager.item_dropped.connect(_on_inventory_item_dropped)
+	
 	var canvas_layer := CanvasLayer.new()
 	canvas_layer.layer = 100
 	add_child(canvas_layer)
@@ -196,6 +198,7 @@ func get_hud() -> CanvasLayer:
 	return get_node_or_null("/root/Hud")
 
 func go_to_title_screen() -> void:
+	TimeManager.is_active = false
 	get_tree().change_scene_to_file("res://scenes/ui/TitleScreen.tscn")
 
 func go_to_save_selector() -> void:
@@ -210,3 +213,12 @@ func open_settings_panel(parent_node: Node, when_paused: bool = false) -> void:
 	if when_paused:
 		settings_inst.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
 	parent_node.add_child(settings_inst)
+
+func _on_inventory_item_dropped(item: InventoryItem, drop_position: Vector2) -> void:
+	var active_level = get_active_level()
+	if active_level:
+		var drop_scene = load(GameConstants.Paths.DROPPED_ITEM_SCENE_PATH)
+		var instance = drop_scene.instantiate()
+		instance.global_position = drop_position
+		instance.item = item
+		active_level.add_child(instance)

@@ -1,4 +1,4 @@
-extends Interactable
+extends PanelInteractable
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @export var oven_id: String = ""
@@ -8,6 +8,7 @@ var is_showing_complete: bool = false
 enum OvenState { IDLE, BAKING, COMPLETE }
 
 func _on_ready() -> void:
+	super._on_ready()
 	if oven_id.strip_edges() == "":
 		oven_id = name.to_lower()
 	
@@ -71,4 +72,18 @@ func _spawn_floaty_icon(recipe_name: String) -> void:
 		add_child(floaty)
 		floaty.start(recipe_name, icon_texture)
 		
-		floaty.harvested.connect(func(): BakingManager.harvest_bake(oven_id))
+		floaty.harvest_requested.connect(func():
+			var player = SceneManager.get_player()
+			if player:
+				var distance = floaty.global_position.distance_to(player.global_position)
+				if distance > GameConstants.World.HARVEST_DISTANCE:
+					print("Too far away to harvest!")
+					return
+
+			if InventoryManager.add_item(recipe_name, 1):
+				print("Harvested item into slots: ", recipe_name)
+				BakingManager.harvest_bake(oven_id)
+				floaty.play_harvest_animation()
+			else:
+				print("Inventory Full! Cannot harvest.")
+		)

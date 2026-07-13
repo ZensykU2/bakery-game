@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/sprites/bakery/ingredients/Flour.png" id="1_rntsl"]
+[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_6bske"]
+
+[resource]
+script = ExtResource("2_6bske")
+item_id = "flour"
+buy_price = 3
+icon_fresh = ExtResource("1_rntsl")
+icon_stale = ExtResource("1_rntsl")
+icon_spoiled = ExtResource("1_rntsl")

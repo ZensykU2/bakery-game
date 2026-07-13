@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cbkschoy6bjas" path="res://scripts/world/floaty_icon.gd" id="1_xbg0h"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1pkl4"]
-radius = 5.0
+radius = 36.013885
 
 [node name="FloatyIcon" type="Sprite2D" unique_id=1522963225]
 script = ExtResource("1_xbg0h")

@@ -15,6 +15,7 @@ func _ready() -> void:
 	$VBoxContainer/AddChocolateButton.pressed.connect(func(): InventoryManager.add_item("chocolate", 1, get_selected_freshness()))
 	$VBoxContainer/AddMilkButton.pressed.connect(func(): InventoryManager.add_item("milk", 1, get_selected_freshness()))
 	$VBoxContainer/AddStrawberryButton.pressed.connect(func(): InventoryManager.add_item("strawberry", 1, get_selected_freshness()))
+	$VBoxContainer/AddAppleButton.pressed.connect(func(): InventoryManager.add_item("apple", 1, get_selected_freshness()))
 
 	$VBoxContainer/NextDayButton.pressed.connect(func(): GameManager.next_day())
 	$VBoxContainer/SpeedUpTimeButton.pressed.connect(func(): TimeManager.increase_speed())

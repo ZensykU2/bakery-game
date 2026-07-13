@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/sprites/bakery/ingredients/Butter.png" id="1_1vd11"]
+[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_nwj8o"]
+
+[resource]
+script = ExtResource("2_nwj8o")
+item_id = "butter"
+buy_price = 4
+decay_rate = 0.0002
+icon_fresh = ExtResource("1_1vd11")
+icon_stale = ExtResource("1_1vd11")
+icon_spoiled = ExtResource("1_1vd11")

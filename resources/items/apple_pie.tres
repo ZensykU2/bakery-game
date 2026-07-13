@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/sprites/bakery/food/ApplePie.png" id="1_khj5g"]
+[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_fv20g"]
+
+[resource]
+script = ExtResource("2_fv20g")
+item_id = "apple_pie"
+sell_price = 24
+decay_rate = 0.0012
+stackable = false
+icon_fresh = ExtResource("1_khj5g")
+icon_stale = ExtResource("1_khj5g")
+icon_spoiled = ExtResource("1_khj5g")
+ingredients = {
+"butter": 1,
+"flour": 1,
+"milk": 1,
+"sugar": 1
+}
+bake_time = 12.0

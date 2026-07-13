@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3]
+
+[ext_resource type="Texture2D" path="res://art/sprites/bakery/ingredients/Egg.png" id="1_ywhyw"]
+[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_olgdl"]
+
+[resource]
+script = ExtResource("2_olgdl")
+item_id = "eggs"
+buy_price = 2
+decay_rate = 0.0005
+icon_fresh = ExtResource("1_ywhyw")
+icon_stale = ExtResource("1_ywhyw")
+icon_spoiled = ExtResource("1_ywhyw")

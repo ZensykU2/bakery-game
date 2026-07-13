@@ -59,6 +59,10 @@ text = "Add Milk"
 layout_mode = 2
 text = "Add Strawberry"
 
+[node name="AddAppleButton" type="Button" parent="VBoxContainer" unique_id=1622512960]
+layout_mode = 2
+text = "Add Apple"
+
 [node name="NextDayButton" type="Button" parent="VBoxContainer" unique_id=423192887]
 layout_mode = 2
 focus_mode = 0

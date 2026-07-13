@@ -1,7 +1,12 @@
 extends Node2D
+class_name LampController
 
+@export_group("Dependencies")
+@export var light_node: Light2D 
+@export var bulb_sprite: CanvasItem 
+
+@export_group("Settings")
 @export var max_energy: float = 0.8
-
 @export var turn_on_hour: int = 17
 @export var turn_off_hour: int = 6
 
@@ -20,7 +25,8 @@ func _update_lamp_state(current_hour: int) -> void:
 	else:
 		should_be_on = current_hour >= turn_on_hour and current_hour < turn_off_hour
 	
-	if "energy" in self:
-		self.energy = max_energy if should_be_on else 0.0
-	elif "visible" in self:
-		self.visible = should_be_on
+	if light_node:
+		light_node.energy = max_energy if should_be_on else 0.0
+		
+	if bulb_sprite:
+		bulb_sprite.visible = should_be_on
