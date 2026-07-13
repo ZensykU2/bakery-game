@@ -76,7 +76,7 @@ func transition_to(target_scene_path: String, spawn_point_name: String) -> void:
 	
 	is_transitioning = false
 
-func sleep_to_next_day() -> void: 
+func sleep_to_next_day(spawn_point_name: String = "PassOut") -> void: 
 	if is_transitioning:
 		return
 	is_transitioning = true
@@ -107,12 +107,12 @@ func sleep_to_next_day() -> void:
 			
 			while get_tree().current_scene == null:
 				await get_tree().process_frame
-			_next_spawn_point_name = "PassOut"
+			_next_spawn_point_name = spawn_point_name
 			_position_player(level_instance)
 			_update_global_lighting(level_instance)
 			_spawn_dropped_items_for_scene(level_instance)
 		else:
-			_next_spawn_point_name = "PassOut"
+			_next_spawn_point_name = spawn_point_name
 			_position_player(current_level)
 	
 	# 1 Minute IRL = 1 Second ingame
@@ -194,3 +194,19 @@ func get_container_ui() -> CanvasLayer:
 
 func get_hud() -> CanvasLayer:
 	return get_node_or_null("/root/Hud")
+
+func go_to_title_screen() -> void:
+	get_tree().change_scene_to_file("res://scenes/ui/TitleScreen.tscn")
+
+func go_to_save_selector() -> void:
+	get_tree().change_scene_to_file("res://scenes/ui/SaveSlotSelector.tscn")
+
+func go_to_main_game() -> void:
+	get_tree().change_scene_to_file("res://scenes/world/Main.tscn")
+
+func open_settings_panel(parent_node: Node, when_paused: bool = false) -> void:
+	var settings_scene = load("res://scenes/ui/SettingsPanel.tscn")
+	var settings_inst = settings_scene.instantiate()
+	if when_paused:
+		settings_inst.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+	parent_node.add_child(settings_inst)

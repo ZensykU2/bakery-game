@@ -3,7 +3,7 @@ extends CanvasLayer
 @onready var player_grid: GridContainer = $PanelContainer/HBoxContainer/PlayerSide/PlayerGrid
 @onready var container_grid: GridContainer = $PanelContainer/HBoxContainer/ContainerSide/ContainerGrid
 @onready var close_button: Button = $CloseButton
-@onready var backdrop: ColorRect = $Backdrop
+@onready var backdrop = $Backdrop
 
 @onready var price_label: Label = $PanelContainer/HBoxContainer/ContainerSide/PriceLabel
 @onready var sell_button: Button = $PanelContainer/HBoxContainer/ContainerSide/SellButton
@@ -15,8 +15,7 @@ var active_container_array: Array[InventoryItem]
 var is_counter_mode: bool = false
 
 func _ready() -> void:
-	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP # Ensure it blocks and catches input
-	backdrop.gui_input.connect(_on_backdrop_gui_input)
+	backdrop.backdrop_clicked.connect(func(): close())
 	close_button.pressed.connect(close)
 	sell_button.pressed.connect(_on_sell_pressed)
 	InventoryManager.inventory_changed.connect(refresh)
@@ -80,7 +79,7 @@ func _on_sell_pressed() -> void:
 		var item = active_container_array[i]
 		if item != null:
 			var base_price = ItemDB.get_recipe(item.item_id).get("sell_price", 0)
-			total_earned += base_price * item.freshness * item.amount
+			total_earned += base_price * item.get_sell_multiplier() * item.amount
 			active_container_array[i] = null
 			
 	if total_earned > 0.0:

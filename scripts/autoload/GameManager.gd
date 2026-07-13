@@ -5,19 +5,24 @@ signal money_changed(new_money: int)
 signal day_changed(new_day: int)
 
 var state: GameState = GameState.new()
+var current_slot_index: int = 1
 
 func _ready() -> void:
-	load_game()
+	# Avoid loading save files during autoload initialization (handled by title screen)
+	pass
 
-func new_game() -> void:
+func new_game(slot_index: int) -> void:
+	current_slot_index = slot_index
 	state = GameState.new()
+	save_game()
 	_emit_all_signals()
 
 func save_game() -> void:
-	SaveManager.save_game(state.to_dict())
+	SaveManager.save_game(state.to_dict(), current_slot_index)
 
-func load_game() -> void:
-	var data = SaveManager.load_game()
+func load_game(slot_index: int) -> void:
+	current_slot_index = slot_index
+	var data = SaveManager.load_game(slot_index)
 	if data.is_empty():
 		state = GameState.new()
 	else:
@@ -28,8 +33,6 @@ func load_game() -> void:
 
 func next_day() -> void:
 	state.day += 1
-	
-	# Despawn all dropped items globally on new day:
 	state.dropped_items.clear()
 	
 	var current_level = SceneManager.get_active_level()

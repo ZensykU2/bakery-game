@@ -1,11 +1,24 @@
-extends Node
+extends Node2D
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	# Show the gameplay HUD when entering the main game world
+	Hud.visible = true
+	
+	# Bootstrap the default level when the Main scene is loaded
+	var level_container = get_node_or_null("CurrentLevel")
+	if level_container and level_container.get_child_count() == 0:
+		SceneManager.load_level_direct("res://scenes/bakery/Bakery.tscn", "CoreSpawn")
 
+func _unhandled_input(event: InputEvent) -> void:
+	# Press ESCAPE to pause the game and open the Pause Menu
+	if event.is_action_pressed("ui_cancel") or (event is InputEventKey and event.pressed and not event.is_echo() and event.keycode == KEY_ESCAPE):
+		_toggle_pause()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func _toggle_pause() -> void:
+	var pause_menu = get_node_or_null("PauseMenu")
+	if not pause_menu:
+		var pause_scene = load("res://scenes/ui/PauseMenu.tscn")
+		var inst = pause_scene.instantiate()
+		inst.name = "PauseMenu"
+		add_child(inst)
+		get_tree().paused = true

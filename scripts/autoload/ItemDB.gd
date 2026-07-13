@@ -198,14 +198,13 @@ func get_item_icon(item_id: String, freshness: float) -> Texture2D:
 	var data = get_item_data(item_id)
 	if data.is_empty():
 		return null
-		
-	if freshness <= 0.0:
-		return data.get("icon_spoiled", null)
-	elif freshness <= 0.5:
+	
+	if freshness >= GameConstants.Inventory.FRESH_THRESHOLD:
+		return data.get("icon_fresh", null)
+	elif freshness >= GameConstants.Inventory.STALE_THRESHOLD:
 		return data.get("icon_stale", null)
 	else:
-		return data.get("icon_fresh", null)
-
+		return data.get("icon_spoiled", null)
 func has_recipe(item_id: String) -> bool:
 	var data = get_item_data(item_id)
 	return not data.is_empty() and data.has("ingredients")

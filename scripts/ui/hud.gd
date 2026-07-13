@@ -6,7 +6,7 @@ extends CanvasLayer
 @onready var backpack_grid: GridContainer = $InventoryContainer/BackpackGrid
 @onready var hotbar_list: HBoxContainer = $InventoryContainer/HotbarList
 @onready var inventory_container: VBoxContainer = $InventoryContainer
-@onready var backdrop: ColorRect = $Backdrop
+@onready var backdrop = $Backdrop
 
 @onready var cursor_grabber: TextureRect = $CursorGrabber
 
@@ -36,8 +36,7 @@ func _update_cursor_grabber() -> void:
 	cursor_grabber.global_position = cursor_grabber.get_global_mouse_position() - cursor_grabber.size / 2
 
 func _ready() -> void:
-	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP # Ensure it blocks and catches input
-	backdrop.gui_input.connect(_on_backdrop_gui_input)
+	backdrop.backdrop_clicked.connect(func(): _toggle_backpack())
 	GameManager.day_changed.connect(_update_day)
 	GameManager.money_changed.connect(_update_money)
 	InventoryManager.inventory_changed.connect(_rebuild_inventory)
@@ -51,6 +50,8 @@ func _ready() -> void:
 	_align_inventory_layout(false)
 	
 	set_selected_hotbar_index(0)
+	
+	visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -161,11 +162,3 @@ func show_confirm_dialog(title: String, text: String, on_confirm: Callable) -> v
 	
 	add_child(dialog)
 	dialog.popup_centered()
-
-func _on_backdrop_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if InventoryManager.held_item != null:
-			InventoryManager.drop_held_item_to_world()
-			get_viewport().set_input_as_handled()
-		else:
-			_toggle_backpack()

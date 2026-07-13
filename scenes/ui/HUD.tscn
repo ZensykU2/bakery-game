@@ -1,18 +1,13 @@
 [gd_scene format=3 uid="uid://fg1fujl77ecp"]
 
 [ext_resource type="Script" uid="uid://2pfj2nc1o6fp" path="res://scripts/ui/hud.gd" id="1_kw0id"]
+[ext_resource type="PackedScene" uid="uid://dwhw12judkoyj" path="res://scenes/ui/Backdrop.tscn" id="2_6ll6g"]
 [ext_resource type="PackedScene" uid="uid://b16pt27hmto40" path="res://scenes/ui/InventorySlotUI.tscn" id="3_slot"]
 
 [node name="HUD" type="CanvasLayer" unique_id=595498002]
 script = ExtResource("1_kw0id")
 
-[node name="Backdrop" type="ColorRect" parent="." unique_id=1909599918]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.45882353)
+[node name="Backdrop" parent="." unique_id=136033478 instance=ExtResource("2_6ll6g")]
 
 [node name="TopBarMargin" type="MarginContainer" parent="." unique_id=150193772]
 anchors_preset = 10

@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dwhw12judkoyj"]
+
+[ext_resource type="Script" uid="uid://ce1nyc6521yxw" path="res://scripts/ui/backdrop.gd" id="1_f84p5"]
+
+[node name="Backdrop" type="ColorRect" unique_id=136033478]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.69803923)
+script = ExtResource("1_f84p5")

@@ -86,3 +86,16 @@ text = "Speed Up Time"
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "Slow Down Time"
+
+[node name="ShowFreshnessCheckbox" type="CheckBox" parent="VBoxContainer" unique_id=2097819527]
+layout_mode = 2
+focus_mode = 0
+text = "Show Freshness Bars"
+
+[node name="FreshnessLabel" type="Label" parent="VBoxContainer" unique_id=1207798310]
+layout_mode = 2
+text = "Add Freshness:"
+
+[node name="FreshnessOption" type="OptionButton" parent="VBoxContainer" unique_id=1753271716]
+layout_mode = 2
+focus_mode = 0

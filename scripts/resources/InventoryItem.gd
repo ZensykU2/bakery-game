@@ -20,3 +20,33 @@ static func from_dict(d: Dictionary) -> InventoryItem:
 	item.amount = d.get("amount", 1)
 	item.freshness = d.get("freshness", 1.0)
 	return item
+
+enum FreshnessState {
+	FRESH,
+	STALE,
+	SPOILED,
+}
+
+func get_freshness_state() -> FreshnessState:
+	if freshness >= GameConstants.Inventory.FRESH_THRESHOLD:
+		return FreshnessState.FRESH
+	elif freshness >= GameConstants.Inventory.STALE_THRESHOLD:
+		return FreshnessState.STALE
+	else:
+		return FreshnessState.SPOILED
+
+func get_sell_multiplier() -> float:
+	match get_freshness_state():
+		FreshnessState.FRESH:
+			return GameConstants.Inventory.FRESH_PRICE_MULTIPLIER
+		FreshnessState.STALE:
+			return GameConstants.Inventory.STALE_PRICE_MULTIPLIER
+		FreshnessState.SPOILED:
+			return GameConstants.Inventory.SPOILED_PRICE_MULTIPLIER
+	return 0.0
+
+func merge_with(other: InventoryItem) -> void:
+	var total_amt = self.amount + other.amount
+	if total_amt > 0:
+		self.freshness = (self.freshness * self.amount + other.freshness * other.amount) / total_amt
+	self.amount = total_amt

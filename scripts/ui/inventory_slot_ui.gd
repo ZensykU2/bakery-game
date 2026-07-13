@@ -28,19 +28,20 @@ func set_item(item: InventoryItem) -> void:
 		
 		if freshness_bar:
 			var decay_rate = ItemDB.get_decay_rate(item.item_id)
-			if decay_rate == 0.0:
+			if decay_rate == 0.0 or not InventoryManager.show_freshness_bars:
 				freshness_bar.visible = false
 			else:
 				freshness_bar.visible = true
 				freshness_bar.value = item.freshness * 100.0
 				
 				var sb = StyleBoxFlat.new()
-				if item.freshness > GameConstants.Inventory.FRESH_THRESHOLD:
-					sb.bg_color = Color(0.2, 0.8, 0.2)
-				elif item.freshness > GameConstants.Inventory.STALE_THRESHOLD:
-					sb.bg_color = Color(0.9, 0.6, 0.1)
-				else:
-					sb.bg_color = Color(0.8, 0.2, 0.2)
+				match item.get_freshness_state():
+					InventoryItem.FreshnessState.FRESH:
+						sb.bg_color = Color(0.2, 0.8, 0.2)
+					InventoryItem.FreshnessState.STALE:
+						sb.bg_color = Color(0.9, 0.6, 0.1)
+					InventoryItem.FreshnessState.SPOILED:
+						sb.bg_color = Color(0.8, 0.2, 0.2)
 				
 				freshness_bar.add_theme_stylebox_override("fill", sb)
 

@@ -8,8 +8,6 @@ extends CanvasModulate
 # How strongly the indoor light colors override the outdoor darkness (0.0 to 1.0)
 @export var indoor_blend_strength: float = 0.55
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	TimeManager.ambient_color_changed.connect(_on_ambient_color_changed)
 	_on_ambient_color_changed(TimeManager.get_ambient_color())

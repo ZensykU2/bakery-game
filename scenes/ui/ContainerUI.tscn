@@ -1,18 +1,12 @@
 [gd_scene format=3 uid="uid://xcdqi08ven00"]
 
 [ext_resource type="Script" uid="uid://drwj8ibnl6wts" path="res://scripts/ui/container_ui.gd" id="1_g84o8"]
+[ext_resource type="PackedScene" uid="uid://dwhw12judkoyj" path="res://scenes/ui/Backdrop.tscn" id="2_y6774"]
 
 [node name="ContainerUI" type="CanvasLayer" unique_id=744701126]
 script = ExtResource("1_g84o8")
 
-[node name="Backdrop" type="ColorRect" parent="." unique_id=392695201]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 0
-color = Color(0, 0, 0, 0.75686276)
+[node name="Backdrop" parent="." unique_id=136033478 instance=ExtResource("2_y6774")]
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=729345410]
 anchors_preset = 8

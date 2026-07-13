@@ -48,7 +48,7 @@ func _process(delta: float) -> void:
 			_tick_inventory_decay(elapsed)
 			last_tracked_minute = current_total_minutes
 		
-		if hour == GameConstants.TimeManage.PASSOUT_HOUR and minute == GameConstants.TimeManage.PASSOUT_MINUTE:
+		if hour >= GameConstants.TimeManage.PASSOUT_HOUR and hour < GameConstants.TimeManage.WAKEUP_HOUR:
 			pass_out()
 
 	ambient_color_changed.emit(get_ambient_color())
@@ -106,6 +106,8 @@ func _tick_inventory_decay(minutes: int) -> void:
 		InventoryManager.inventory_changed.emit()
 
 func pass_out() -> void:
+	if SceneManager.is_transitioning:
+		return
 	print("It's 2:00 AM! Player passed out!")
 	time_speed = 1.0
 	SceneManager.sleep_to_next_day()

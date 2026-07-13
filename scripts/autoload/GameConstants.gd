@@ -11,8 +11,11 @@ class Inventory:
 	const MAX_HOTBAR_IDX: int = 9
 	const MAX_DROPPED_ITEMS: int = 50
 	const MAX_FRESHNESS: float = 1.0
-	const FRESH_THRESHOLD: float = 0.6
-	const STALE_THRESHOLD: float = 0.25
+	const FRESH_THRESHOLD: float = 0.5
+	const STALE_THRESHOLD: float = 0.15
+	const FRESH_PRICE_MULTIPLIER: float = 1.0
+	const STALE_PRICE_MULTIPLIER: float = 0.6
+	const SPOILED_PRICE_MULTIPLIER: float = 0.2
 	const FRIDGE_DECAY_MODIFIER: float = 0.25
 	const DEFAULT_DECAY_MODIFIER: float = 1.0
 	const STACKING_FRESHNESS_TOLERANCE: float = 0.05

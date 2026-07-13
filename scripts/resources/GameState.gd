@@ -113,7 +113,7 @@ func from_dict(data: Dictionary) -> void:
 		dropped_items.append({
 			"scene_path": d.get("scene_path", ""),
 			"item_id": d.get("item_id", ""),
-			"amount": d.get("item_id", ""),
+			"amount": d.get("amount", 1),
 			"freshness": d.get("freshness", 1.0),
 			"position": Vector2(d.get("pos_x", 0.0), d.get("pos_y", 0.0))
 		})

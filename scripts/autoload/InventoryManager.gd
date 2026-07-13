@@ -10,6 +10,7 @@ var last_interacted_slot_index: int = -1
 
 var pressed_slot_index: int = -1
 var is_paint_mode_active: bool = false
+var show_freshness_bars: bool = false
 
 func _get_container_ui() -> CanvasLayer:
 	return SceneManager.get_container_ui()
@@ -46,11 +47,11 @@ func can_craft(recipe_name: String) -> bool:
 			return false
 	return true
 
-func add_item(item_name: String, amount: int) -> bool:
+func add_item(item_name: String, amount: int, freshness: float = GameConstants.Inventory.MAX_FRESHNESS) -> bool:
 	var new_item = InventoryItem.new()
 	new_item.item_id = item_name
 	new_item.amount = amount
-	new_item.freshness = GameConstants.Inventory.MAX_FRESHNESS
+	new_item.freshness = freshness
 	
 	var success = add_inventory_item_resource(new_item)
 	if success:
@@ -135,7 +136,7 @@ func _execute_left_click_swap(slot_index: int) -> void:
 			held_item = null
 		else:
 			if _can_stack(slot.item, held_item):
-				slot.item.amount += held_item.amount
+				slot.item.merge_with(held_item)
 				held_item = null
 			else:
 				var temp = slot.item
@@ -178,7 +179,8 @@ func _drop_single_item_to_slot(slot: Dictionary) -> void:
 	if slot.item == null:
 		_set_slot_item(slot, held_item.clone(1))
 	elif _can_stack(slot.item, held_item):
-		slot.item.amount += 1
+		var single_item = held_item.clone(1)
+		slot.item.merge_with(single_item)
 	else:
 		return
 		
@@ -211,28 +213,25 @@ func handle_slot_double_click(slot_index: int) -> void:
 	if is_trash_slot(slot_index):
 		return
 	
-	if held_item == null:
+	var slot = _resolve_slot(slot_index)
+	if slot.item == null or not ItemDB.is_stackable(slot.item.item_id):
 		return
 		
-	var target_item_id = held_item.item_id
-	var target_freshness = held_item.freshness
-	
-	if not ItemDB.is_stackable(target_item_id):
-		return
-		
+	var target_item = slot.item
+	var target_state = target_item.get_freshness_state()
 	var container_ui = _get_container_ui()
 	
 	for i in range(state.inventory_slots.size()):
 		var item = state.inventory_slots[i]
-		if item != null and item.item_id == target_item_id and abs(item.freshness - target_freshness) < GameConstants.Inventory.STACKING_FRESHNESS_TOLERANCE:
-			held_item.amount += item.amount
+		if item != null and item != target_item and item.item_id == target_item.item_id and item.get_freshness_state() == target_state:
+			target_item.merge_with(item)
 			state.inventory_slots[i] = null
 			
 	if container_ui and container_ui.visible:
 		for i in range(container_ui.active_container_array.size()):
 			var item = container_ui.active_container_array[i]
-			if item != null and item.item_id == target_item_id and abs(item.freshness - target_freshness) < GameConstants.Inventory.STACKING_FRESHNESS_TOLERANCE:
-				held_item.amount += item.amount
+			if item != null and item != target_item and item.item_id == target_item.item_id and item.get_freshness_state() == target_state:
+				target_item.merge_with(item)
 				container_ui.active_container_array[i] = null
 				
 	inventory_changed.emit()
@@ -271,8 +270,8 @@ func _transfer_to_range(from_array: Array[InventoryItem], from_idx: int, to_arra
 	if ItemDB.is_stackable(item.item_id):
 		for i in range(start_idx, end_idx):
 			var target = to_array[i]
-			if target != null and target.item_id == item.item_id:
-				target.amount += item.amount
+			if target != null and _can_stack(target, item):
+				target.merge_with(item)
 				from_array[from_idx] = null
 				inventory_changed.emit()
 				return true
@@ -290,14 +289,16 @@ func _can_stack(item_a: InventoryItem, item_b: InventoryItem) -> bool:
 	if item_a == null or item_b == null:
 		return false
 	
-	return item_a.item_id == item_b.item_id and ItemDB.is_stackable(item_a.item_id)
+	return (item_a.item_id == item_b.item_id 
+		and ItemDB.is_stackable(item_a.item_id)
+		and item_a.get_freshness_state() == item_b.get_freshness_state())
 
 func add_inventory_item_resource(new_item: InventoryItem) -> bool:
 	var slots = state.inventory_slots
 	if ItemDB.is_stackable(new_item.item_id):
 		for item in slots:
-			if item != null and item.item_id == new_item.item_id:
-				item.amount += new_item.amount
+			if item != null and _can_stack(item, new_item):
+				item.merge_with(new_item)
 				return true
 				
 	for i in range(slots.size()):

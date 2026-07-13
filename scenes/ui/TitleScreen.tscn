@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://4v5yqxmb53gw"]
+
+[ext_resource type="Script" uid="uid://gy0wxm7lg42f" path="res://scripts/ui/title_screen.gd" id="1_ny3vc"]
+[ext_resource type="FontFile" uid="uid://ntbv84oj5sju" path="res://art/fonts/PixelOperator8.ttf" id="2_bt6bf"]
+
+[node name="TitleScreen" type="Control" unique_id=1213132319]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ny3vc")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1693073907]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="CenterContainer" unique_id=1024892236]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bt6bf")
+theme_override_font_sizes/font_size = 120
+text = "Bakery Game"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=2109605035]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="ContinueButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2032573723]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Continue"
+
+[node name="PlayButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1379543715]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Play / Load Slots"
+
+[node name="SettingsButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1759858837]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Settings"
+
+[node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=577388411]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Quit Game"

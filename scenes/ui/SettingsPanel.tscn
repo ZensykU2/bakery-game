@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://drbq6jkutu740"]
+
+[ext_resource type="Script" uid="uid://d2x6e7uofe8kw" path="res://scripts/ui/settings_panel.gd" id="1_741xb"]
+
+[node name="SettingsPanel" type="PanelContainer" unique_id=1378636936]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -77.0
+offset_top = -83.0
+offset_right = 77.0
+offset_bottom = 83.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_741xb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=378630134]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=31487089]
+layout_mode = 2
+text = "Settings"
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer" unique_id=2104774700]
+layout_mode = 2
+columns = 2
+
+[node name="MasterLabel" type="Label" parent="VBoxContainer/GridContainer" unique_id=111176529]
+layout_mode = 2
+text = "Master Volume"
+
+[node name="MasterSlider" type="HSlider" parent="VBoxContainer/GridContainer" unique_id=1860685016]
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 0.8
+
+[node name="MusicLabel" type="Label" parent="VBoxContainer/GridContainer" unique_id=1971197647]
+layout_mode = 2
+text = "Music Volume"
+
+[node name="MusicSlider" type="HSlider" parent="VBoxContainer/GridContainer" unique_id=1487722651]
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 0.8
+
+[node name="SfxLabel" type="Label" parent="VBoxContainer/GridContainer" unique_id=361885393]
+layout_mode = 2
+text = "SFX Volume"
+
+[node name="SfxSlider" type="HSlider" parent="VBoxContainer/GridContainer" unique_id=2080465768]
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 0.8
+
+[node name="WindowLabel" type="Label" parent="VBoxContainer/GridContainer" unique_id=887320197]
+layout_mode = 2
+text = "Window Mode"
+
+[node name="WindowModeOption" type="OptionButton" parent="VBoxContainer/GridContainer" unique_id=387554071]
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="VBoxContainer" unique_id=1386391370]
+layout_mode = 2
+text = "Save and Close"
