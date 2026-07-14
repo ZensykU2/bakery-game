@@ -3,6 +3,8 @@ extends CanvasLayer
 @onready var day_label: Label = $TopBarMargin/TopBar/DayLabel
 @onready var money_label: Label = $TopBarMargin/TopBar/MoneyLabel
 
+@onready var trash_slot: TextureRect = $VBoxContainer/TrashSlot
+@onready var trash_label: Label = $VBoxContainer/TrashLabel
 @onready var backpack_grid: GridContainer = $InventoryContainer/BackpackGrid
 @onready var hotbar_list: HBoxContainer = $InventoryContainer/HotbarList
 @onready var inventory_container: VBoxContainer = $InventoryContainer
@@ -40,6 +42,7 @@ func _ready() -> void:
 	GameManager.day_changed.connect(_update_day)
 	GameManager.money_changed.connect(_update_money)
 	InventoryManager.inventory_changed.connect(_rebuild_inventory)
+	InventoryManager.active_container_changed.connect(_on_active_container_changed)
 
 	_update_day(GameManager.get_day())
 	_update_money(GameManager.get_money())
@@ -48,6 +51,8 @@ func _ready() -> void:
 	backpack_grid.visible = false
 	backdrop.visible = false
 	InventoryManager.is_backpack_open = false
+	trash_slot.visible = false
+	trash_label.visible = false
 	_align_inventory_layout(false)
 	
 	set_selected_hotbar_index(0)
@@ -83,6 +88,8 @@ func _toggle_backpack() -> void:
 	backdrop.visible = open
 	InventoryManager.is_backpack_open = open
 	_align_inventory_layout(open)
+	trash_slot.visible = open
+	trash_label.visible = open
 	
 	if not open:
 		GameManager.save_game()
@@ -164,3 +171,6 @@ func show_confirm_dialog(title: String, text: String, on_confirm: Callable) -> v
 	
 	add_child(dialog)
 	dialog.popup_centered()
+
+func _on_active_container_changed(is_open: bool) -> void:
+	inventory_container.visible = not is_open

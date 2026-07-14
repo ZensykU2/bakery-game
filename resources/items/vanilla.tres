@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://jcad1pxs8514"]
+
+[ext_resource type="Texture2D" uid="uid://ng7qbct2x85m" path="res://art/sprites/bakery/ingredients/Vanilla.png" id="1_0x5x7"]
+[ext_resource type="Script" uid="uid://d2765713yqfdl" path="res://scripts/resources/ItemData.gd" id="1_p3kfr"]
+
+[resource]
+script = ExtResource("1_p3kfr")
+item_id = "vanilla"
+buy_price = 3
+sell_price = 1
+decay_rate = 0.01444
+icon_fresh = ExtResource("1_0x5x7")
+icon_stale = ExtResource("1_0x5x7")
+icon_spoiled = ExtResource("1_0x5x7")
+metadata/_custom_type_script = "uid://d2765713yqfdl"

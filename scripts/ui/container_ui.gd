@@ -1,6 +1,7 @@
 extends CanvasLayer
 
-@onready var player_grid: GridContainer = $PanelContainer/HBoxContainer/PlayerSide/PlayerGrid
+@onready var player_backpack_grid: GridContainer = $PanelContainer/HBoxContainer/PlayerSide/PlayerBackpackGrid
+@onready var player_hotbar_grid: GridContainer = $PanelContainer/HBoxContainer/PlayerSide/PlayerHotbarGrid
 @onready var container_grid: GridContainer = $PanelContainer/HBoxContainer/ContainerSide/ContainerGrid
 @onready var close_button: Button = $CloseButton
 @onready var backdrop = $Backdrop
@@ -29,14 +30,29 @@ func open(container_array: Array[InventoryItem], mode: String = "storage") -> vo
 	price_label.visible = is_counter_mode
 	sell_button.visible = is_counter_mode
 	
-	for child in player_grid.get_children(): child.queue_free()
+	for child in player_backpack_grid.get_children(): child.queue_free()
+	for child in player_hotbar_grid.get_children(): child.queue_free()
 	for child in container_grid.get_children(): child.queue_free()
 	
-	var player_inv = InventoryManager.state.inventory_slots
-	player_slots = _spawn_slots_for_grid(player_grid, player_inv, 0)
-		
+	var total_slots = InventoryManager.state.inventory_slots.size()
+	player_slots.resize(total_slots)
+	
+	var slot_scene = load(GameConstants.Paths.SLOT_UI_SCENE_PATH)
+	
+	for i in range(GameConstants.Inventory.MAX_HOTBAR_IDX):
+		var slot = slot_scene.instantiate()
+		slot.slot_index = i
+		player_hotbar_grid.add_child(slot)
+		player_slots[i] = slot
+	
+	for i in range(GameConstants.Inventory.MAX_HOTBAR_IDX, total_slots):
+		var slot = slot_scene.instantiate()
+		slot.slot_index = i
+		player_backpack_grid.add_child(slot)
+		player_slots[i] = slot
+	
 	container_slots = _spawn_slots_for_grid(container_grid, active_container_array, 100)
-		
+	
 	refresh()
 
 func refresh() -> void:
@@ -53,7 +69,7 @@ func refresh() -> void:
 			if item != null:
 				var data = ItemDB.get_recipe(item.item_id)
 				var base_price = data.get("sell_price", 0)
-				total_value += base_price * item.freshness * item.amount
+				total_value += base_price * item.get_sell_multiplier() * item.amount
 				
 		price_label.text = "Total Value: $%d" % int(total_value)
 		sell_button.text = "Confirm Sale (+$%d)" % int(total_value)

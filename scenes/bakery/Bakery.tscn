@@ -322,11 +322,9 @@ tile_set = SubResource("TileSet_e4aqv")
 y_sort_origin = 16
 
 [node name="Window" parent="." unique_id=1957938391 instance=ExtResource("9_fi7vi")]
-z_index = 1
 position = Vector2(688, 217)
 
 [node name="Window2" parent="." unique_id=22103157 instance=ExtResource("9_fi7vi")]
-z_index = 1
 position = Vector2(462, 220)
 show_celestial_bodies = false
 

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bp7xysgd52quq"]
+
+[ext_resource type="Script" uid="uid://d2765713yqfdl" path="res://scripts/resources/ItemData.gd" id="1_22rta"]
+[ext_resource type="Texture2D" uid="uid://o868jsxe8rv8" path="res://art/sprites/bakery/ingredients/Cherries.png" id="1_co4ug"]
+
+[resource]
+script = ExtResource("1_22rta")
+item_id = "cherries"
+buy_price = 3
+sell_price = 1
+decay_rate = 0.012
+icon_fresh = ExtResource("1_co4ug")
+icon_stale = ExtResource("1_co4ug")
+icon_spoiled = ExtResource("1_co4ug")
+metadata/_custom_type_script = "uid://d2765713yqfdl"

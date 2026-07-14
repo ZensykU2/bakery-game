@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://b5vfthgg3ya1g"]
+
+[ext_resource type="Texture2D" uid="uid://bethy55qbgmtf" path="res://art/sprites/bakery/ingredients/Blueberries.png" id="1_4d36j"]
+[ext_resource type="Script" uid="uid://d2765713yqfdl" path="res://scripts/resources/ItemData.gd" id="1_311yq"]
+
+[resource]
+script = ExtResource("1_311yq")
+item_id = "blueberries"
+buy_price = 3
+sell_price = 1
+decay_rate = 0.00361
+icon_fresh = ExtResource("1_4d36j")
+icon_stale = ExtResource("1_4d36j")
+icon_spoiled = ExtResource("1_4d36j")
+metadata/_custom_type_script = "uid://d2765713yqfdl"

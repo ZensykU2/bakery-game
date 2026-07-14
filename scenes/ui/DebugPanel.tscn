@@ -63,6 +63,18 @@ text = "Add Strawberry"
 layout_mode = 2
 text = "Add Apple"
 
+[node name="AddVanillaButton" type="Button" parent="VBoxContainer" unique_id=1208608110]
+layout_mode = 2
+text = "Add Vanilla"
+
+[node name="AddBlueberriesButton" type="Button" parent="VBoxContainer" unique_id=2080630301]
+layout_mode = 2
+text = "Add Blueberries"
+
+[node name="AddCherriesButton" type="Button" parent="VBoxContainer" unique_id=404268204]
+layout_mode = 2
+text = "Add Cherries"
+
 [node name="NextDayButton" type="Button" parent="VBoxContainer" unique_id=423192887]
 layout_mode = 2
 focus_mode = 0

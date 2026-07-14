@@ -13,7 +13,7 @@ func _ready() -> void:
 		GameManager.state.casing_slots[casing_id] = slots
 	
 	for i in range(1, slot_count + 1):
-		var sprite = get_node_or_null("Display" + str(i))
+		var sprite = get_node_or_null("Sprite2D/Display" + str(i))
 		if sprite:
 			display_sprites.append(sprite)
 	

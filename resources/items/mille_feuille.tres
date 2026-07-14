@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cyydv32m3lis"]
+
+[ext_resource type="Script" uid="uid://d2765713yqfdl" path="res://scripts/resources/ItemData.gd" id="1_8pifh"]
+[ext_resource type="Texture2D" uid="uid://ctmanixhxn2yw" path="res://art/sprites/bakery/food/MilleFeuille.png" id="1_l7y8h"]
+
+[resource]
+script = ExtResource("1_8pifh")
+item_id = "mille_feuille"
+buy_price = 40
+sell_price = 38
+decay_rate = 0.008
+stackable = false
+icon_fresh = ExtResource("1_l7y8h")
+icon_stale = ExtResource("1_l7y8h")
+icon_spoiled = ExtResource("1_l7y8h")
+ingredients = Dictionary[String, int]({
+"butter": 1,
+"sugar": 1,
+"vanilla": 2
+})
+bake_time = 24.0
+metadata/_custom_type_script = "uid://d2765713yqfdl"

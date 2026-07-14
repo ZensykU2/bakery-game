@@ -9,6 +9,25 @@ script = ExtResource("1_kw0id")
 
 [node name="Backdrop" parent="." unique_id=136033478 instance=ExtResource("2_6ll6g")]
 
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=510706669]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -128.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="TrashLabel" type="Label" parent="VBoxContainer" unique_id=1357954377]
+layout_mode = 2
+text = "Trash"
+
+[node name="TrashSlot" parent="VBoxContainer" unique_id=250653750 instance=ExtResource("3_slot")]
+layout_mode = 2
+slot_index = 999
+
 [node name="TopBarMargin" type="MarginContainer" parent="." unique_id=150193772]
 anchors_preset = 10
 anchor_right = 1.0
@@ -45,10 +64,6 @@ layout_mode = 2
 theme_override_constants/h_separation = -2
 theme_override_constants/v_separation = -2
 columns = 9
-
-[node name="InventorySlotUi" parent="InventoryContainer/BackpackGrid" unique_id=250653750 instance=ExtResource("3_slot")]
-layout_mode = 2
-slot_index = 999
 
 [node name="HotbarList" type="HBoxContainer" parent="InventoryContainer" unique_id=1122925778]
 layout_mode = 2

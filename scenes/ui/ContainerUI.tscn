@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://drwj8ibnl6wts" path="res://scripts/ui/container_ui.gd" id="1_g84o8"]
 [ext_resource type="PackedScene" uid="uid://dwhw12judkoyj" path="res://scenes/ui/Backdrop.tscn" id="2_y6774"]
+[ext_resource type="PackedScene" uid="uid://b16pt27hmto40" path="res://scenes/ui/InventorySlotUI.tscn" id="3_kx7v7"]
 
 [node name="ContainerUI" type="CanvasLayer" unique_id=744701126]
 script = ExtResource("1_g84o8")
@@ -24,6 +25,17 @@ grow_vertical = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer" unique_id=982234847]
 layout_mode = 2
 
+[node name="TrashSide" type="VBoxContainer" parent="PanelContainer/HBoxContainer" unique_id=1253131514]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer/TrashSide" unique_id=1409400184]
+layout_mode = 2
+text = "Trash"
+
+[node name="TrashSlot" parent="PanelContainer/HBoxContainer/TrashSide" unique_id=250653750 instance=ExtResource("3_kx7v7")]
+layout_mode = 2
+slot_index = 999
+
 [node name="PlayerSide" type="VBoxContainer" parent="PanelContainer/HBoxContainer" unique_id=976095974]
 layout_mode = 2
 
@@ -31,7 +43,11 @@ layout_mode = 2
 layout_mode = 2
 text = "Your Pack"
 
-[node name="PlayerGrid" type="GridContainer" parent="PanelContainer/HBoxContainer/PlayerSide" unique_id=1661068978]
+[node name="PlayerBackpackGrid" type="GridContainer" parent="PanelContainer/HBoxContainer/PlayerSide" unique_id=1661068978]
+layout_mode = 2
+columns = 9
+
+[node name="PlayerHotbarGrid" type="GridContainer" parent="PanelContainer/HBoxContainer/PlayerSide" unique_id=1459724248]
 layout_mode = 2
 columns = 9
 

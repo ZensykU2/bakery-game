@@ -3,11 +3,16 @@ extends Node
 signal inventory_changed
 signal item_dropped(item: InventoryItem, global_position: Vector2)
 
+signal active_container_changed(is_open: bool)
+
 var state: GameState:
 	get: return GameManager.state
 
 var show_freshness_bars: bool = false
-var active_container_slots: Array[InventoryItem] = []
+var active_container_slots: Array[InventoryItem] = []:
+	set(val):
+		active_container_slots = val
+		active_container_changed.emit(not val.is_empty())
 var is_backpack_open: bool = false
 
 # Sub-services (SRP)
