@@ -13,6 +13,7 @@ var fridge_slots: Array[InventoryItem] = []
 var counter_slots: Array[InventoryItem] = []
 var casing_slots: Dictionary = {}
 var dropped_items: Array = []
+var dropped_items_timer: float = -1.0
 
 var active_bakes := {}
 
@@ -75,17 +76,27 @@ func to_dict() -> Dictionary:
 			"pos_y": drop.position.y
 		})
 		
+	var bakes_serialized = {}
+	for oven_id in active_bakes.keys():
+		var bake = active_bakes[oven_id]
+		if bake is BakeStrategy:
+			bakes_serialized[oven_id] = bake.to_dict()
+		else:
+			bakes_serialized[oven_id] = bake
+
 	return {
 		"day": day,
 		"money": money,
 		"max_inventory_slots": max_inventory_slots,
 		"max_fridge_slots": max_fridge_slots,
 		"max_counter_slots": max_counter_slots,
-		"active_bakes": active_bakes.duplicate(true),
+		"active_bakes": bakes_serialized,
 		"inventory_slots": _serialize_slots(inventory_slots),
 		"fridge_slots": _serialize_slots(fridge_slots),
 		"casing_slots": casing_data,
-		"counter_slots": _serialize_slots(counter_slots)
+		"counter_slots": _serialize_slots(counter_slots),
+		"dropped_items": drops,
+		"dropped_items_timer": dropped_items_timer
 	}
 
 func from_dict(data: Dictionary) -> void:
@@ -95,7 +106,14 @@ func from_dict(data: Dictionary) -> void:
 	max_fridge_slots = data.get("max_fridge_slots", GameConstants.Inventory.DEFAULT_FRIDGE_SLOTS)
 	max_counter_slots = data.get("max_counter_slots", GameConstants.Inventory.DEFAULT_COUNTER_SLOTS)
 	
-	active_bakes = data.get("active_bakes", {}).duplicate(true)
+	var bakes_data = data.get("active_bakes", {})
+	active_bakes.clear()
+	for oven_id in bakes_data.keys():
+		var val = bakes_data[oven_id]
+		if val is Dictionary:
+			active_bakes[oven_id] = BakeStrategy.create_from_dict(val)
+		else:
+			active_bakes[oven_id] = val
 	
 	inventory_slots = _deserialize_slots(data.get("inventory_slots", []), max_inventory_slots)
 	fridge_slots = _deserialize_slots(data.get("fridge_slots", []), max_fridge_slots)
@@ -117,3 +135,4 @@ func from_dict(data: Dictionary) -> void:
 			"freshness": d.get("freshness", 1.0),
 			"position": Vector2(d.get("pos_x", 0.0), d.get("pos_y", 0.0))
 		})
+	dropped_items_timer = data.get("dropped_items_timer", -1.0)

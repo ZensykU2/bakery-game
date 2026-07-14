@@ -16,6 +16,18 @@ func save_game(data: Dictionary, slot_index: int) -> bool:
 	file.close()
 	return true
 
+func delete_save(slot_index: int) -> bool:
+	var path = get_save_path(slot_index)
+	if FileAccess.file_exists(path):
+		var error = DirAccess.remove_absolute(path)
+		if error == OK:
+			return true
+		else:
+			push_error("Failed to delete save file for slot %d, error code: %d" % [slot_index, error])
+			return false
+	return false
+		
+
 func load_game(slot_index: int) -> Dictionary:
 	var path = get_save_path(slot_index)
 	if not FileAccess.file_exists(path):

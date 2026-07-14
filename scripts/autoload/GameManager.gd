@@ -8,6 +8,7 @@ var state: GameState = GameState.new()
 var current_slot_index: int = 1
 
 func _ready() -> void:
+	Services.game = self
 	# Avoid loading save files during autoload initialization (handled by title screen)
 	pass
 
@@ -19,6 +20,9 @@ func new_game(slot_index: int) -> void:
 	_emit_all_signals()
 
 func save_game() -> void:
+	var scene_manager = get_node_or_null("/root/SceneManager")
+	if scene_manager and scene_manager.has_method("_serialize_active_dropped_items"):
+		scene_manager._serialize_active_dropped_items()
 	var data = state.to_dict()
 	
 	data["metadata"] = {
@@ -44,7 +48,7 @@ func load_game(slot_index: int) -> void:
 func next_day() -> void:
 	state.day += 1
 	state.dropped_items.clear()
-	
+	state.dropped_items_timer = -1.0
 	var current_level = SceneManager.get_active_level()
 	if current_level:
 		var active_drops = current_level.find_children("*", "DroppedItem", true, false)

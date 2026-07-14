@@ -37,7 +37,7 @@ func update_buttons() -> void:
 			
 			if current_bake == null:
 				button.text = "Bake %s" % recipe_name.capitalize()
-				button.disabled = not InventoryManager.can_craft(recipe_name)
+				button.disabled = not CraftingService.can_craft(recipe_name)
 			elif current_bake.recipe_name == recipe_name:
 				if not current_bake.is_finished:
 					button.text = "Baking %s (%.1fs)" % [recipe_name.capitalize(), current_bake.time_remaining]
@@ -62,6 +62,5 @@ func _on_recipe_button_gui_input(event: InputEvent, recipe_name: String) -> void
 
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			if current_bake != null and current_bake.recipe_name == recipe_name and current_bake.is_finished:
-				if BakingManager.harvest_bake(current_oven_id):
-					InventoryManager.add_item(recipe_name, 1)
+				if BakingManager.try_harvest(current_oven_id):
 					print("Harvested baked good!")

@@ -6,7 +6,7 @@ class_name ShopGatekeeper
 @export var close_hour: int = 17
 @export var closed_weekdays: Array[String] = ["Saturday", "Sunday"]
 
-func can_pass(player: Node2D) -> bool:
+func can_pass(_player: Node2D) -> bool:
 	if _is_shop_open():
 		return true
 		

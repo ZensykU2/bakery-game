@@ -5,12 +5,18 @@
 [ext_resource type="Texture2D" uid="uid://m2hsdmu8dq7m" path="res://art/sprites/bakery/food/Bread.png" id="2_hl4oe"]
 [ext_resource type="Texture2D" uid="uid://bbynl8kum17kr" path="res://art/sprites/bakery/food/Cookie.png" id="3_ub2g2"]
 [ext_resource type="Texture2D" uid="uid://1olehhvjmcl5" path="res://art/sprites/bakery/food/BerryTart.png" id="4_12hfv"]
+[ext_resource type="Script" uid="uid://c70usr8acjw1y" path="res://scripts/world/interaction_component.gd" id="6_12hfv"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1pkl4"]
-size = Vector2(182, 199)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_isltf"]
+size = Vector2(161, 184)
 
-[node name="DisplayCasing" type="Node2D" unique_id=524593675]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rl1uj"]
+size = Vector2(128, 74)
+
+[node name="DisplayCasing" type="Node2D" unique_id=524593675 node_paths=PackedStringArray("interaction_component")]
+position = Vector2(65, 64)
 script = ExtResource("1_ub2g2")
+interaction_component = NodePath("InteractionComponent")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=417673944]
 texture = ExtResource("1_uaigk")
@@ -27,8 +33,15 @@ texture = ExtResource("3_ub2g2")
 position = Vector2(0, -32)
 texture = ExtResource("4_12hfv")
 
-[node name="Area2D" type="Area2D" parent="." unique_id=1945542445]
+[node name="InteractionComponent" type="Area2D" parent="." unique_id=1306965770]
+script = ExtResource("6_12hfv")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1143769570]
-position = Vector2(-4, -11.5)
-shape = SubResource("RectangleShape2D_1pkl4")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionComponent" unique_id=1828757877]
+position = Vector2(-2, -20)
+shape = SubResource("RectangleShape2D_isltf")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=341348220]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1816771065]
+position = Vector2(0, 27)
+shape = SubResource("RectangleShape2D_rl1uj")

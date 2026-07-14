@@ -6,30 +6,72 @@ signal item_dropped(item: InventoryItem, global_position: Vector2)
 var state: GameState:
 	get: return GameManager.state
 
-var held_item: InventoryItem = null
-var last_interacted_slot_index: int = -1
-
-var pressed_slot_index: int = -1
-var is_paint_mode_active: bool = false
 var show_freshness_bars: bool = false
-
 var active_container_slots: Array[InventoryItem] = []
 var is_backpack_open: bool = false
 
+# Sub-services (SRP)
+var slot_interaction_service: SlotInteractionService
+var decay_service: ItemDecayService
+var dropped_item_manager: DroppedItemManager
+
+# Facade properties mapping to the UI Slot Interaction Service
+var held_item: InventoryItem:
+	get: return slot_interaction_service.held_item if slot_interaction_service else null
+	set(val): if slot_interaction_service: slot_interaction_service.held_item = val
+
+var last_interacted_slot_index: int:
+	get: return slot_interaction_service.last_interacted_slot_index if slot_interaction_service else -1
+	set(val): if slot_interaction_service: slot_interaction_service.last_interacted_slot_index = val
+
+var pressed_slot_index: int:
+	get: return slot_interaction_service.pressed_slot_index if slot_interaction_service else -1
+	set(val): if slot_interaction_service: slot_interaction_service.pressed_slot_index = val
+
+var is_paint_mode_active: bool:
+	get: return slot_interaction_service.is_paint_mode_active if slot_interaction_service else false
+	set(val): if slot_interaction_service: slot_interaction_service.is_paint_mode_active = val
+
 func _ready() -> void:
-	TimeManager.minutes_passed.connect(_on_time_minutes_passed)
+	Services.inventory = self
+	
+	# Instantiate and register child services
+	decay_service = ItemDecayService.new()
+	add_child(decay_service)
+	
+	dropped_item_manager = DroppedItemManager.new()
+	add_child(dropped_item_manager)
+	
+	slot_interaction_service = SlotInteractionService.new()
+	add_child(slot_interaction_service)
 
-func _on_time_minutes_passed(elapsed_minutes: int) -> void:
-	_tick_inventory_decay(elapsed_minutes)
+# --- Facade API delegation ---
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
-		if pressed_slot_index != -1 and not is_paint_mode_active:
-			_execute_left_click_swap(pressed_slot_index)
-			
-		pressed_slot_index = -1
-		last_interacted_slot_index = -1
-		is_paint_mode_active = false
+func handle_slot_click(slot_index: int, is_shift: bool, is_pressed: bool) -> void:
+	if slot_interaction_service:
+		slot_interaction_service.handle_slot_click(slot_index, is_shift, is_pressed)
+
+func handle_slot_right_click(slot_index: int) -> void:
+	if slot_interaction_service:
+		slot_interaction_service.handle_slot_right_click(slot_index)
+
+func handle_slot_double_click(slot_index: int) -> void:
+	if slot_interaction_service:
+		slot_interaction_service.handle_slot_double_click(slot_index)
+
+func paint_slot(slot_index: int) -> void:
+	if slot_interaction_service:
+		slot_interaction_service.paint_slot(slot_index)
+
+func drop_held_item_to_world() -> void:
+	if dropped_item_manager:
+		dropped_item_manager.drop_held_item_to_world()
+
+func enforce_hard_limit() -> void:
+	if dropped_item_manager:
+		dropped_item_manager.enforce_hard_limit()
+
+# --- Core Data Store Responsibilities ---
 
 func is_trash_slot(slot_index: int) -> bool:
 	return slot_index == GameConstants.Inventory.TRASHBIN_IDX
@@ -40,16 +82,6 @@ func get_item_count(item_id: String) -> int:
 		if item != null and item.item_id == item_id:
 			total += item.amount
 	return total
-
-func can_craft(recipe_name: String) -> bool:
-	if not ItemDB.has_recipe(recipe_name):
-		return false
-	var recipe = ItemDB.get_recipe(recipe_name)
-	var ingredients: Dictionary = recipe.get("ingredients", {})
-	for item in ingredients.keys():
-		if get_item_count(item) < ingredients[item]:
-			return false
-	return true
 
 func add_item(item_name: String, amount: int, freshness: float = GameConstants.Inventory.MAX_FRESHNESS) -> bool:
 	var new_item = InventoryItem.new()
@@ -83,214 +115,6 @@ func deduct_item(item_id: String, amount: int) -> void:
 	inventory_changed.emit()
 	GameManager.save_game()
 
-func _resolve_slot(slot_index: int) -> Dictionary:
-	var array = state.inventory_slots
-	var idx = slot_index
-	
-	if slot_index >= GameConstants.Inventory.CONTAINER_IDX and not active_container_slots.is_empty():
-		array = active_container_slots
-		idx = slot_index - GameConstants.Inventory.CONTAINER_IDX
-		
-	return {
-		"array": array,
-		"index": idx,
-		"item": array[idx]
-	}
-
-func _set_slot_item(slot: Dictionary, item: InventoryItem) -> void:
-	slot.array[slot.index] = item
-
-func handle_slot_click(slot_index: int, is_shift: bool, is_pressed: bool) -> void:
-	if is_trash_slot(slot_index) and is_pressed:
-		if held_item != null:
-			held_item = null
-			inventory_changed.emit()
-			GameManager.save_game()
-		return
-	
-	if is_shift and is_pressed:
-		_handle_shift_click(slot_index)
-		return
-	
-	if is_pressed:
-		if held_item == null:
-			_execute_left_click_swap(slot_index)
-		else:
-			pressed_slot_index = slot_index
-			is_paint_mode_active = false
-			
-			var timer = get_tree().create_timer(0.2)
-			timer.timeout.connect(func(): 
-				if pressed_slot_index == slot_index and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and not is_paint_mode_active:
-					is_paint_mode_active = true
-					paint_slot(slot_index) 
-				)
-
-func _execute_left_click_swap(slot_index: int) -> void:
-	var slot = _resolve_slot(slot_index)
-	
-	if held_item == null:
-		if slot.item != null:
-			held_item = slot.item
-			_set_slot_item(slot, null)
-	else:
-		if slot.item == null:
-			_set_slot_item(slot, held_item)
-			held_item = null
-		else:
-			if _can_stack(slot.item, held_item):
-				slot.item.merge_with(held_item)
-				held_item = null
-			else:
-				var temp = slot.item
-				_set_slot_item(slot, held_item)
-				held_item = temp
-				
-	inventory_changed.emit()
-
-func handle_slot_right_click(slot_index: int) -> void:
-	if is_trash_slot(slot_index):
-		if held_item != null:
-			held_item.amount -= 1
-			if held_item.amount <= 0:
-				held_item = null
-			inventory_changed.emit()
-			GameManager.save_game()
-		return
-	
-	var slot = _resolve_slot(slot_index)
-	
-	if held_item == null:
-		if slot.item != null and slot.item.amount > 1:
-			var half = slot.item.amount / 2
-			var remainder = slot.item.amount - half
-			
-			held_item = slot.item.clone(half)
-			slot.item.amount = remainder
-		elif slot.item != null:
-			held_item = slot.item
-			_set_slot_item(slot, null)
-	else:
-		_drop_single_item_to_slot(slot)
-		
-	inventory_changed.emit()
-
-func _drop_single_item_to_slot(slot: Dictionary) -> void:
-	if held_item == null or held_item.amount <= 0:
-		return
-		
-	if slot.item == null:
-		_set_slot_item(slot, held_item.clone(1))
-	elif _can_stack(slot.item, held_item):
-		var single_item = held_item.clone(1)
-		slot.item.merge_with(single_item)
-	else:
-		return
-		
-	held_item.amount -= 1
-	if held_item.amount <= 0:
-		held_item = null
-	inventory_changed.emit()
-
-func paint_slot(slot_index: int) -> void:
-	if is_trash_slot(slot_index):
-		return
-		
-	if held_item == null or held_item.amount <= 0 or slot_index == last_interacted_slot_index:
-		return
-		
-	if pressed_slot_index != -1 and not is_paint_mode_active:
-		is_paint_mode_active = true
-		_paint_single_item(pressed_slot_index)
-		
-	if not is_paint_mode_active:
-		return
-		
-	_paint_single_item(slot_index)
-	last_interacted_slot_index = slot_index
-
-func _paint_single_item(slot_index: int) -> void:
-	_drop_single_item_to_slot(_resolve_slot(slot_index))
-
-func handle_slot_double_click(slot_index: int) -> void:
-	if is_trash_slot(slot_index):
-		return
-	
-	if held_item == null or not ItemDB.is_stackable(held_item.item_id):
-		return
-		
-	var target_item = held_item
-	var target_state = target_item.get_freshness_state()
-	
-	for i in range(state.inventory_slots.size()):
-		var item = state.inventory_slots[i]
-		if item != null and item != target_item and item.item_id == target_item.item_id and item.get_freshness_state() == target_state:
-			target_item.merge_with(item)
-			state.inventory_slots[i] = null
-			
-	if not active_container_slots.is_empty():
-		for i in range(active_container_slots.size()):
-			var item = active_container_slots[i]
-			if item != null and item != target_item and item.item_id == target_item.item_id and item.get_freshness_state() == target_state:
-				target_item.merge_with(item)
-				active_container_slots[i] = null
-				
-	inventory_changed.emit()
-
-func _handle_shift_click(slot_index: int) -> void:
-	if is_trash_slot(slot_index):
-		return
-	
-	var is_container_open = not active_container_slots.is_empty()
-	
-	var from_slot = _resolve_slot(slot_index)
-	var from_array = from_slot.array
-	var from_local_index = from_slot.index
-	
-	if is_container_open:
-		if slot_index >= GameConstants.Inventory.CONTAINER_IDX:
-			var success = _transfer_to_range(from_array, from_local_index, state.inventory_slots, 0, GameConstants.Inventory.MAX_HOTBAR_IDX)
-			if not success:
-				_transfer_to_range(from_array, from_local_index, state.inventory_slots, GameConstants.Inventory.MAX_HOTBAR_IDX, state.inventory_slots.size())
-		else:
-			_transfer_to_range(from_array, from_local_index, active_container_slots, 0, active_container_slots.size())
-	else:
-		if is_backpack_open:
-			var start = GameConstants.Inventory.MAX_HOTBAR_IDX if slot_index < GameConstants.Inventory.MAX_HOTBAR_IDX else 0
-			var end = state.inventory_slots.size() if slot_index < GameConstants.Inventory.MAX_HOTBAR_IDX else GameConstants.Inventory.MAX_HOTBAR_IDX
-			_transfer_to_range(from_array, from_local_index, state.inventory_slots, start, end)
-
-func _transfer_to_range(from_array: Array[InventoryItem], from_idx: int, to_array: Array[InventoryItem], start_idx: int, end_idx: int) -> bool:
-	var item = from_array[from_idx]
-	if item == null:
-		return false
-		
-	if ItemDB.is_stackable(item.item_id):
-		for i in range(start_idx, end_idx):
-			var target = to_array[i]
-			if target != null and _can_stack(target, item):
-				target.merge_with(item)
-				from_array[from_idx] = null
-				inventory_changed.emit()
-				return true
-				
-	for i in range(start_idx, end_idx):
-		if to_array[i] == null:
-			to_array[i] = item
-			from_array[from_idx] = null
-			inventory_changed.emit()
-			return true
-			
-	return false
-
-func _can_stack(item_a: InventoryItem, item_b: InventoryItem) -> bool:
-	if item_a == null or item_b == null:
-		return false
-	
-	return (item_a.item_id == item_b.item_id 
-		and ItemDB.is_stackable(item_a.item_id)
-		and item_a.get_freshness_state() == item_b.get_freshness_state())
-
 func add_inventory_item_resource(new_item: InventoryItem) -> bool:
 	var slots = state.inventory_slots
 	if ItemDB.is_stackable(new_item.item_id):
@@ -305,60 +129,10 @@ func add_inventory_item_resource(new_item: InventoryItem) -> bool:
 			return true
 	return false
 
-func drop_held_item_to_world() -> void:
-	if held_item == null:
-		return
-		
-	var player = SceneManager.get_player()
-	if player:
-		var drop_pos = player.global_position + GameConstants.Inventory.DROP_OFFSET
-		if state.dropped_items.size() >= GameConstants.Inventory.MAX_DROPPED_ITEMS:
-			state.dropped_items.remove_at(0)
-		item_dropped.emit(held_item, drop_pos)
-		held_item = null
-		inventory_changed.emit()
-		GameManager.save_game()
-
-func _decay_array(slots: Array, minutes: int, modifier: float) -> bool:
-	var changed = false
-	for item in slots:
-		if item == null:
-			continue
-		var item_id = item.item_id if "item_id" in item else item.get("item_id", "")
-		var rate = ItemDB.get_decay_rate(item_id)
-		
-		if rate > 0.0:
-			var freshness = item.freshness if "freshness" in item else item.get("freshness", 1.0)
-			var new_fresh = clamp(freshness - (rate * minutes * modifier), 0.0, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER)
-			if "freshness" in item:
-				item.freshness = new_fresh
-			else:
-				item["freshness"] = new_fresh
-			changed = true
-	return changed
-func _tick_inventory_decay(minutes: int) -> void:
-	var changed = false
-	if _decay_array(state.inventory_slots, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
-	if _decay_array(state.fridge_slots, minutes, GameConstants.Inventory.FRIDGE_DECAY_MODIFIER): changed = true
-	if _decay_array(state.counter_slots, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
+func _can_stack(item_a: InventoryItem, item_b: InventoryItem) -> bool:
+	if item_a == null or item_b == null:
+		return false
 	
-	var active_level = SceneManager.get_active_level()
-	if active_level:
-		var active_drops = active_level.find_children("*", "DroppedItem", true, false)
-		var drop_items: Array[InventoryItem] = []
-		for d in active_drops:
-			if d.item: drop_items.append(d.item)
-		if _decay_array(drop_items, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
-	
-	var cur_path = SceneManager.current_scene_path
-	var offline_drops = []
-	for drop in state.dropped_items:
-		if drop.scene_path != cur_path:
-			offline_drops.append(drop)
-			
-	if _decay_array(offline_drops, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
-	for casing_id in state.casing_slots.keys():
-		var slots = state.casing_slots[casing_id]
-		if _decay_array(slots, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
-	if changed:
-		inventory_changed.emit()
+	return (item_a.item_id == item_b.item_id 
+		and ItemDB.is_stackable(item_a.item_id)
+		and item_a.get_freshness_state() == item_b.get_freshness_state())

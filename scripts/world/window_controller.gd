@@ -11,6 +11,9 @@ class_name WindowController
 @export var show_shooting_stars: bool = true
 
 func _ready() -> void:
+	if sky_color_node:
+		sky_color_node.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		
 	TimeManager.ambient_color_changed.connect(_on_ambient_color_changed)
 	
 	# Apply feature toggles dynamically on startup:

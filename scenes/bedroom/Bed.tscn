@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b76nqlp02kltl" path="res://scripts/bedroom/bed.gd" id="1_t8f7u"]
 [ext_resource type="Texture2D" uid="uid://dbimspb0utp8r" path="res://art/sprites/bedroom/BedSheet.png" id="2_k1upd"]
+[ext_resource type="Script" uid="uid://c70usr8acjw1y" path="res://scripts/world/interaction_component.gd" id="3_suk7x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_suk7x"]
 texture = ExtResource("2_k1upd")
@@ -19,11 +20,16 @@ texture_region_size = Vector2i(32, 32)
 tile_size = Vector2i(32, 32)
 sources/0 = SubResource("TileSetAtlasSource_suk7x")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_k1upd"]
-size = Vector2(32, 62)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_isltf"]
+size = Vector2(49, 75)
 
-[node name="Bed" type="Node2D" unique_id=337482961]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rl1uj"]
+size = Vector2(32, 26)
+
+[node name="Bed" type="Node2D" unique_id=337482961 node_paths=PackedStringArray("interaction_component")]
+position = Vector2(0, 64)
 script = ExtResource("1_t8f7u")
+interaction_component = NodePath("InteractionComponent")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1611640329]
 tile_map_data = PackedByteArray(0, 0, 0, 0, 254, 255, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 255, 255, 0, 0, 2, 0, 0, 0, 0, 0)
@@ -37,8 +43,15 @@ tile_set = SubResource("TileSet_1pkl4")
 tile_map_data = PackedByteArray(0, 0, 0, 0, 254, 255, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 255, 255, 0, 0, 3, 0, 1, 0, 0, 0)
 tile_set = SubResource("TileSet_1pkl4")
 
-[node name="Area2D" type="Area2D" parent="." unique_id=2029961143]
+[node name="InteractionComponent" type="Area2D" parent="." unique_id=1548028475]
+script = ExtResource("3_suk7x")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=802131601]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionComponent" unique_id=1915250401]
 position = Vector2(16, -31)
-shape = SubResource("RectangleShape2D_k1upd")
+shape = SubResource("RectangleShape2D_isltf")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=906594987]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=68884879]
+position = Vector2(16, -13)
+shape = SubResource("RectangleShape2D_rl1uj")

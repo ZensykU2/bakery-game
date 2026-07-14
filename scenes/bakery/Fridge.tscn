@@ -2,12 +2,18 @@
 
 [ext_resource type="Texture2D" uid="uid://cnnaw742mcd4e" path="res://art/sprites/bakery/KitchenSheet.png" id="1_nmhs2"]
 [ext_resource type="Script" uid="uid://fiqkgg05mo62" path="res://scripts/bakery/fridge.gd" id="1_x2qrm"]
+[ext_resource type="Script" uid="uid://c70usr8acjw1y" path="res://scripts/world/interaction_component.gd" id="3_ymy3m"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1pkl4"]
-size = Vector2(36, 66)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rl1uj"]
+size = Vector2(39, 68)
 
-[node name="Fridge" type="Node2D" unique_id=809908852]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_isltf"]
+size = Vector2(32, 23)
+
+[node name="Fridge" type="Node2D" unique_id=809908852 node_paths=PackedStringArray("interaction_component")]
+position = Vector2(16, 48)
 script = ExtResource("1_x2qrm")
+interaction_component = NodePath("InteractionComponent")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=56580142]
 texture = ExtResource("1_nmhs2")
@@ -20,8 +26,16 @@ texture = ExtResource("1_nmhs2")
 region_enabled = true
 region_rect = Rect2(32, 64, 32, 32)
 
-[node name="Area2D" type="Area2D" parent="." unique_id=202843464]
+[node name="InteractionComponent" type="Area2D" parent="." unique_id=1833512882]
+input_pickable = false
+script = ExtResource("3_ymy3m")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=668186899]
-position = Vector2(0, -16)
-shape = SubResource("RectangleShape2D_1pkl4")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionComponent" unique_id=1682571265]
+position = Vector2(-0.5, -15)
+shape = SubResource("RectangleShape2D_rl1uj")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1250668790]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1471018899]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_isltf")

@@ -14,6 +14,7 @@ func start(recipe_id: String, item_texture: Texture2D) -> void:
 	
 	if floaty_label:
 		floaty_label.text = ""
+		floaty_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		
 	click_area.input_event.connect(_on_click_area_input_event)
 	_run_pop_animation()
@@ -27,11 +28,11 @@ func start_text(text: String, text_color: Color = Color.WHITE) -> void:
 	if floaty_label:
 		floaty_label.text = text
 		floaty_label.add_theme_color_override("font_color", text_color)
+		floaty_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		
 	_run_pop_animation()
 
 func _run_pop_animation() -> void:
-	self.scale = Vector2.ZERO
 	self.modulate.a = 0.0
 	
 	var tween = create_tween().set_parallel(true)
@@ -41,9 +42,6 @@ func _run_pop_animation() -> void:
 		.set_trans(Tween.TRANS_BACK)\
 		.set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.3)
-	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.4)\
-		.set_trans(Tween.TRANS_BACK)\
-		.set_ease(Tween.EASE_OUT)
 		
 	if item_id == "":
 		tween.chain().set_parallel(false)
@@ -56,8 +54,10 @@ func _run_pop_animation() -> void:
 		tween.chain().tween_callback(queue_free)
 
 func _on_click_area_input_event(_viewport: Viewport, event: InputEvent, _shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		print("Floaty ClickArea received event: button_index=", event.button_index, " pressed=", event.pressed)
 	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_RIGHT:
+		if event.button_index == MOUSE_BUTTON_LEFT or event.button_index == MOUSE_BUTTON_RIGHT:
 			harvest_requested.emit()
 
 func play_harvest_animation() -> void:

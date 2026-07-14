@@ -19,29 +19,29 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_524rm"]
-size = Vector2(11, 49)
+size = Vector2(11, 16)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5cj04"]
 radius = 16.0
 
 [node name="Player" type="CharacterBody2D" unique_id=669378819]
+y_sort_enabled = false
+y_sort_origin = 16
 script = ExtResource("1_gfjak")
 
+[node name="Body" type="AnimatedSprite2D" parent="." unique_id=1316889068]
+sprite_frames = SubResource("SpriteFrames_0umjp")
+animation = &"idle"
+autoplay = "idle"
+
 [node name="Head" type="Sprite2D" parent="." unique_id=591402251]
-z_index = 2
 position = Vector2(0, -32)
 texture = ExtResource("2_gfjak")
 region_enabled = true
 region_rect = Rect2(38.641743, 0, 18.345589, 32)
 
-[node name="Body" type="AnimatedSprite2D" parent="." unique_id=1316889068]
-z_index = 1
-sprite_frames = SubResource("SpriteFrames_0umjp")
-animation = &"idle"
-autoplay = "idle"
-
 [node name="HitBox" type="CollisionShape2D" parent="." unique_id=1104830070]
-position = Vector2(0, -8.5)
+position = Vector2(0, 8)
 shape = SubResource("RectangleShape2D_524rm")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=459532188]

@@ -9,7 +9,10 @@ class Inventory:
 	const TRASHBIN_IDX: int = 999
 	const CONTAINER_IDX: int = 100
 	const MAX_HOTBAR_IDX: int = 9
-	const MAX_DROPPED_ITEMS: int = 50
+	const SOFT_MAX_DROPPED_ITEMS: int = 50
+	const HARD_MAX_DROPPED_ITEMS: int = 200
+	const DESPAWN_TIMER_MINUTES: int = 60 # Time in in game-minutes before items start despawning
+	const DESPAWN_INTERVAL_MINUTES: int = 1 # Tick speed of despawning after timer expires
 	const MAX_FRESHNESS: float = 1.0
 	const FRESH_THRESHOLD: float = 0.5
 	const STALE_THRESHOLD: float = 0.15
@@ -52,7 +55,7 @@ class TimeManage:
 	const WEEKDAYS := ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 	const SEASONS := ["Spring", "Summer", "Fall", "Winter"]
 	
-		# Window & Orbit Time Constants (in minutes)
+	# Window & Orbit Time Constants (in minutes)
 	const SUNRISE_START_MINUTES: float = 300.0 # 5:00 AM
 	const SUNRISE_END_MINUTES: float = 360.0   # 6:00 AM
 	const SUNRISE_DURATION: float = 60.0

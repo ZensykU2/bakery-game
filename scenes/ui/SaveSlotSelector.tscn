@@ -29,17 +29,48 @@ layout_mode = 2
 text = "Title Label
 "
 
-[node name="Slot1Button" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1233418689]
-custom_minimum_size = Vector2(0, 120)
+[node name="Slot1Container" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1322356337]
 layout_mode = 2
+theme_override_constants/separation = 10
 
-[node name="Slot2Button" type="Button" parent="CenterContainer/VBoxContainer" unique_id=56936369]
+[node name="Slot1Button" type="Button" parent="CenterContainer/VBoxContainer/Slot1Container" unique_id=1233418689]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="Slot3Button" type="Button" parent="CenterContainer/VBoxContainer" unique_id=152624690]
+[node name="Delete1Button" type="Button" parent="CenterContainer/VBoxContainer/Slot1Container" unique_id=606832898]
+custom_minimum_size = Vector2(100, 120)
+layout_mode = 2
+text = "Delete
+"
+
+[node name="Slot2Container" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=844264929]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Slot2Button" type="Button" parent="CenterContainer/VBoxContainer/Slot2Container" unique_id=56936369]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Delete2Button" type="Button" parent="CenterContainer/VBoxContainer/Slot2Container" unique_id=1817785559]
+custom_minimum_size = Vector2(100, 120)
+layout_mode = 2
+text = "Delete"
+
+[node name="Slot3Container" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1424115363]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Slot3Button" type="Button" parent="CenterContainer/VBoxContainer/Slot3Container" unique_id=152624690]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Delete3Button" type="Button" parent="CenterContainer/VBoxContainer/Slot3Container" unique_id=498642338]
+custom_minimum_size = Vector2(100, 120)
+layout_mode = 2
+text = "Delete"
 
 [node name="BackButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=715738255]
 custom_minimum_size = Vector2(0, 60)

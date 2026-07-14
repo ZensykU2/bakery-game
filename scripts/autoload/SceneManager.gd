@@ -7,6 +7,7 @@ var _next_spawn_point_name: String = "DefaultSpawn"
 var current_scene_path: String = ""
 
 func _ready() -> void:
+	Services.scene = self
 	InventoryManager.item_dropped.connect(_on_inventory_item_dropped)
 	
 	var canvas_layer := CanvasLayer.new()
@@ -164,7 +165,7 @@ func _serialize_active_dropped_items() -> void:
 			if drop_node.is_queued_for_deletion():
 				continue
 				
-			if GameManager.state.dropped_items.size() >= GameConstants.Inventory.MAX_DROPPED_ITEMS:
+			if GameManager.state.dropped_items.size() >= GameConstants.Inventory.HARD_MAX_DROPPED_ITEMS:
 				break
 			GameManager.state.dropped_items.append({
 				"scene_path": current_scene_path,

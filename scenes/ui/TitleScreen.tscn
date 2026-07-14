@@ -2,6 +2,31 @@
 
 [ext_resource type="Script" uid="uid://gy0wxm7lg42f" path="res://scripts/ui/title_screen.gd" id="1_ny3vc"]
 [ext_resource type="FontFile" uid="uid://ntbv84oj5sju" path="res://art/fonts/PixelOperator8.ttf" id="2_bt6bf"]
+[ext_resource type="Texture2D" uid="uid://cppqjw78ce2tp" path="res://art/sprites/ui/cozy_ui_atlas.png" id="3_xnmwc"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tuj7y"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+texture = ExtResource("3_xnmwc")
+region_rect = Rect2(77, 384, 259, 101)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jl5p4"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+texture = ExtResource("3_xnmwc")
+region_rect = Rect2(689, 386, 256.1505, 100.013855)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fi7vi"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+texture = ExtResource("3_xnmwc")
+region_rect = Rect2(381, 381, 262, 105)
 
 [node name="TitleScreen" type="Control" unique_id=1213132319]
 layout_mode = 3
@@ -34,6 +59,9 @@ theme_override_constants/separation = 15
 [node name="ContinueButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=2032573723]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_tuj7y")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_jl5p4")
+theme_override_styles/hover = SubResource("StyleBoxTexture_fi7vi")
 text = "Continue"
 
 [node name="PlayButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1379543715]

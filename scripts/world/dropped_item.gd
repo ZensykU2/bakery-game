@@ -23,5 +23,5 @@ func _on_body_entered(body: Node2D) -> void:
 	if body.name == "Player" and item:
 		if InventoryManager.add_inventory_item_resource(item):
 			InventoryManager.inventory_changed.emit()
-			GameManager.save_game()
 			queue_free()
+			GameManager.save_game()
