@@ -52,15 +52,18 @@ func _load_shop_items_from_catalog(catalog: Array[String]) -> void:
 	for item_id in catalog:
 		if custom_items.has(item_id):
 			shop_items.append(custom_items[item_id])
+		else:
 			var res = ItemDB.item_resources.get(item_id, null)
 			if res and res.buy_price > 0:
 				var shop_item = ShopItem.new()
 				shop_item.item_id = item_id
-				shop_item.shop_types = [active_shop_type]
+				shop_item.shop_types.clear()
+				shop_item.shop_types.append(active_shop_type)
 				
 				var cost = MoneyRequirement.new()
 				cost.amount = res.buy_price
-				shop_item.costs = [cost]
+				shop_item.costs.clear()
+				shop_item.costs.append(cost)
 				
 				shop_items.append(shop_item)
 				

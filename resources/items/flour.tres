@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="ItemData" format=3]
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://5letmfdku4x"]
 
-[ext_resource type="Texture2D" path="res://art/sprites/bakery/ingredients/Flour.png" id="1_rntsl"]
-[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_6bske"]
+[ext_resource type="Texture2D" uid="uid://cemauvaey055t" path="res://art/sprites/bakery/ingredients/Flour.png" id="1_rntsl"]
+[ext_resource type="Script" uid="uid://1p3too0wndu1" path="res://scripts/resources/requirements/requirement.gd" id="2_3d6j8"]
+[ext_resource type="Script" uid="uid://d2765713yqfdl" path="res://scripts/resources/ItemData.gd" id="2_6bske"]
 
 [resource]
 script = ExtResource("2_6bske")
 item_id = "flour"
 buy_price = 3
+sell_price = 2
 icon_fresh = ExtResource("1_rntsl")
 icon_stale = ExtResource("1_rntsl")
 icon_spoiled = ExtResource("1_rntsl")
