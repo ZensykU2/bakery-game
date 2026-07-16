@@ -6,7 +6,9 @@
 load_path = "res://.godot/imported/Hotbar2.png-5027f231830a0abb243c1376060023c3.ctex"
 
 [node name="InventorySlotUi" type="TextureRect" unique_id=250653750]
+mouse_filter = 0
 custom_minimum_size = Vector2(128, 128)
+
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0

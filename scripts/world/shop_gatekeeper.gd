@@ -2,9 +2,7 @@ extends Gatekeeper
 class_name ShopGatekeeper
 
 @export var shop_name: String = "Shop"
-@export var open_hour: int = 9
-@export var close_hour: int = 17
-@export var closed_weekdays: Array[String] = ["Saturday", "Sunday"]
+@export var time_requirement: TimeRequirement
 
 func can_pass(_player: Node2D) -> bool:
 	if _is_shop_open():
@@ -14,12 +12,14 @@ func can_pass(_player: Node2D) -> bool:
 	var closed_panel_scene = load(GameConstants.Paths.SHOP_CLOSED_PANEL_PATH)
 	var popup = closed_panel_scene.instantiate()
 	Engine.get_main_loop().current_scene.add_child(popup)
-	popup.setup(shop_name, open_hour, close_hour, closed_weekdays)
+	
+	var start = time_requirement.start_hour if time_requirement else 9
+	var end = time_requirement.end_hour if time_requirement else 17
+	var closed = time_requirement.closed_days if time_requirement else []
+	popup.setup(shop_name, start, end, closed)
 	return false
 
 func _is_shop_open() -> bool:
-	var current_day = TimeManager.get_weekday_name()
-	if current_day in closed_weekdays:
-		return false
-	var current_hour = TimeManager.hour
-	return current_hour >= open_hour and current_hour < close_hour
+	if time_requirement:
+		return time_requirement.is_met()
+	return true

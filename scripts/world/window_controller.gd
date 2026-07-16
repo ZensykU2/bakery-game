@@ -20,6 +20,11 @@ func _ready() -> void:
 	if not show_celestial_bodies:
 		var orbit = get_node_or_null("CelestialOrbit")
 		if orbit: orbit.queue_free() # Safely remove it from this instance
+		var sun = find_child("Sun", true, false)
+		if sun: sun.queue_free()
+		var moon = find_child("Moon", true, false)
+		if moon: moon.queue_free()
+
 		
 	if not show_stars:
 		var starfield = find_child("Starfield", true, false)

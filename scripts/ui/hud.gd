@@ -1,5 +1,9 @@
 extends CanvasLayer
 
+@export var hotbar_slot_texture: Texture2D = null
+@export var backpack_slot_texture: Texture2D = null
+@export var trash_slot_texture: Texture2D = null
+
 @onready var day_label: Label = $TopBarMargin/TopBar/DayLabel
 @onready var money_label: Label = $TopBarMargin/TopBar/MoneyLabel
 
@@ -11,6 +15,7 @@ extends CanvasLayer
 @onready var backdrop = $Backdrop
 
 @onready var cursor_grabber: TextureRect = $CursorGrabber
+
 
 var slot_nodes: Array[Control] = []
 
@@ -47,6 +52,9 @@ func _ready() -> void:
 	_update_day(GameManager.get_day())
 	_update_money(GameManager.get_money())
 	
+	if trash_slot_texture:
+		trash_slot.set_slot_background(trash_slot_texture)
+		
 	setup_inventory_ui()
 	backpack_grid.visible = false
 	backdrop.visible = false
@@ -122,14 +130,19 @@ func setup_inventory_ui() -> void:
 	for i in range(GameConstants.Inventory.MAX_HOTBAR_IDX):
 		var slot = slot_scene.instantiate()
 		slot.slot_index = i
+		if hotbar_slot_texture:
+			slot.set_slot_background(hotbar_slot_texture)
 		hotbar_list.add_child(slot)
 		slot_nodes.append(slot)
 		
 	for i in range(GameConstants.Inventory.MAX_HOTBAR_IDX, total_slots):
 		var slot = slot_scene.instantiate()
 		slot.slot_index = i
+		if backpack_slot_texture:
+			slot.set_slot_background(backpack_slot_texture)
 		backpack_grid.add_child(slot)
 		slot_nodes.append(slot)
+
 		
 	_rebuild_inventory()
 

@@ -19,7 +19,16 @@ func new_game(slot_index: int) -> void:
 	save_game()
 	_emit_all_signals()
 
+var _is_save_queued: bool = false
+
 func save_game() -> void:
+	if _is_save_queued:
+		return
+	_is_save_queued = true
+	call_deferred("_deferred_save_game")
+
+func _deferred_save_game() -> void:
+	_is_save_queued = false
 	var scene_manager = get_node_or_null("/root/SceneManager")
 	if scene_manager and scene_manager.has_method("_serialize_active_dropped_items"):
 		scene_manager._serialize_active_dropped_items()
@@ -32,6 +41,7 @@ func save_game() -> void:
 	}
 	
 	SaveManager.save_game(data, current_slot_index)
+
 
 func load_game(slot_index: int) -> void:
 	current_slot_index = slot_index

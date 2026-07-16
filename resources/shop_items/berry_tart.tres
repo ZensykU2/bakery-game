@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="ShopItem" format=3 uid="uid://ccub2aogphafb"]
+
+[ext_resource type="Script" uid="uid://1p3too0wndu1" path="res://scripts/resources/requirements/requirement.gd" id="1_8nfdu"]
+[ext_resource type="Script" uid="uid://bbvqkauymeosd" path="res://scripts/resources/requirements/money_requirement.gd" id="2_18nra"]
+[ext_resource type="Script" uid="uid://cnfxiym54pmd8" path="res://scripts/resources/requirements/item_requirement.gd" id="2_cu0ir"]
+[ext_resource type="Script" uid="uid://bu7hctxlwtiwm" path="res://scripts/resources/shop/shop_item.gd" id="2_fr77p"]
+[ext_resource type="Script" uid="uid://cfhulhi6extw" path="res://scripts/resources/unlocks/unlock_condition.gd" id="3_cu0ir"]
+[ext_resource type="Script" uid="uid://c0glfue1kcxoj" path="res://scripts/resources/unlocks/day_reached_condition.gd" id="5_18nra"]
+
+[sub_resource type="Resource" id="Resource_l4llr"]
+script = ExtResource("2_18nra")
+amount = 15
+metadata/_custom_type_script = "uid://bbvqkauymeosd"
+
+[sub_resource type="Resource" id="Resource_cfgyo"]
+script = ExtResource("2_cu0ir")
+item_id = "berries"
+amount = 3
+metadata/_custom_type_script = "uid://cnfxiym54pmd8"
+
+[sub_resource type="Resource" id="Resource_18nra"]
+script = ExtResource("5_18nra")
+required_day = 3
+metadata/_custom_type_script = "uid://c0glfue1kcxoj"
+
+[resource]
+script = ExtResource("2_fr77p")
+item_id = "berry_tart"
+shop_types = Array[String](["trader"])
+costs = Array[ExtResource("1_8nfdu")]([SubResource("Resource_l4llr"), SubResource("Resource_cfgyo")])
+unlock_conditions = Array[ExtResource("3_cu0ir")]([SubResource("Resource_18nra")])
+metadata/_custom_type_script = "uid://bu7hctxlwtiwm"

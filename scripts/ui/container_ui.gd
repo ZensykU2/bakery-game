@@ -1,13 +1,24 @@
 extends CanvasLayer
 
+@export var player_hotbar_slot_texture: Texture2D = null
+@export var player_backpack_slot_texture: Texture2D = null
+@export var trash_slot_texture: Texture2D = null
+
+@export var storage_slot_texture: Texture2D = null
+@export var fridge_slot_texture: Texture2D = null
+@export var display_slot_texture: Texture2D = null
+@export var counter_slot_texture: Texture2D = null
+
 @onready var player_backpack_grid: GridContainer = $PanelContainer/HBoxContainer/PlayerSide/PlayerBackpackGrid
 @onready var player_hotbar_grid: GridContainer = $PanelContainer/HBoxContainer/PlayerSide/PlayerHotbarGrid
 @onready var container_grid: GridContainer = $PanelContainer/HBoxContainer/ContainerSide/ContainerGrid
-@onready var close_button: Button = $CloseButton
+@onready var close_button: Button = $PanelContainer/HBoxContainer/ContainerSide/CloseButton
 @onready var backdrop = $Backdrop
+@onready var trash_slot: TextureRect = $PanelContainer/HBoxContainer/TrashSide/TrashSlot
 
 @onready var price_label: Label = $PanelContainer/HBoxContainer/ContainerSide/PriceLabel
 @onready var sell_button: Button = $PanelContainer/HBoxContainer/ContainerSide/SellButton
+
 
 var player_slots: Array[Control] = []
 var container_slots: Array[Control] = []
@@ -42,16 +53,32 @@ func open(container_array: Array[InventoryItem], mode: String = "storage") -> vo
 	for i in range(GameConstants.Inventory.MAX_HOTBAR_IDX):
 		var slot = slot_scene.instantiate()
 		slot.slot_index = i
+		if player_hotbar_slot_texture:
+			slot.set_slot_background(player_hotbar_slot_texture)
 		player_hotbar_grid.add_child(slot)
 		player_slots[i] = slot
 	
 	for i in range(GameConstants.Inventory.MAX_HOTBAR_IDX, total_slots):
 		var slot = slot_scene.instantiate()
 		slot.slot_index = i
+		if player_backpack_slot_texture:
+			slot.set_slot_background(player_backpack_slot_texture)
 		player_backpack_grid.add_child(slot)
 		player_slots[i] = slot
+		
+	if trash_slot_texture and trash_slot:
+		trash_slot.set_slot_background(trash_slot_texture)
 	
-	container_slots = _spawn_slots_for_grid(container_grid, active_container_array, 100)
+	var container_slot_tex: Texture2D = storage_slot_texture
+	match mode:
+		"fridge":
+			container_slot_tex = fridge_slot_texture
+		"display":
+			container_slot_tex = display_slot_texture
+		"counter":
+			container_slot_tex = counter_slot_texture
+			
+	container_slots = _spawn_slots_for_grid(container_grid, active_container_array, 100, container_slot_tex)
 	
 	refresh()
 
@@ -75,15 +102,18 @@ func refresh() -> void:
 		sell_button.text = "Confirm Sale (+$%d)" % int(total_value)
 		sell_button.disabled = (total_value <= 0.0)
 
-func _spawn_slots_for_grid(grid: GridContainer, slot_array: Array[InventoryItem], index_offset: int) -> Array[Control]:
+func _spawn_slots_for_grid(grid: GridContainer, slot_array: Array[InventoryItem], index_offset: int, tex: Texture2D = null) -> Array[Control]:
 	var spawned_nodes: Array[Control] = []
 	for i in range(slot_array.size()):
 		var slot_scene = load(GameConstants.Paths.SLOT_UI_SCENE_PATH)
 		var slot = slot_scene.instantiate()
 		slot.slot_index = index_offset + i
+		if tex:
+			slot.set_slot_background(tex)
 		grid.add_child(slot)
 		spawned_nodes.append(slot)
 	return spawned_nodes
+
 
 func _refresh_slots_data(ui_slots: Array[Control], data_items: Array[InventoryItem]) -> void:
 	for i in range(data_items.size()):

@@ -5,6 +5,7 @@ extends Node2D
 @export var oven_id: String = ""
 @export var interaction_component: InteractionComponent
 @export var ui_panel: Control
+@export var completion_sfx: SfxPlayerComponent
 
 var is_showing_complete: bool = false
 
@@ -65,6 +66,8 @@ func update_animation() -> void:
 			if not is_showing_complete:
 				is_showing_complete = true
 				_spawn_floaty_icon(bake.recipe_name)
+				if completion_sfx:
+					completion_sfx.play_sound()
 
 func _spawn_floaty_icon(recipe_name: String) -> void:
 	var recipe = ItemDB.get_recipe(recipe_name)

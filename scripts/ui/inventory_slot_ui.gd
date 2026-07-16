@@ -6,6 +6,8 @@ extends TextureRect
 @onready var selection_border: ReferenceRect = $SelectionBorder
 
 @export var slot_index: int = -1
+@export var slot_background_texture: Texture2D = null
+
 
 func set_item(item: InventoryItem) -> void:
 	
@@ -50,8 +52,14 @@ func set_selected(is_selected: bool) -> void:
 		selection_border.visible = is_selected
 
 func _ready() -> void:
+	if slot_background_texture:
+		texture = slot_background_texture
 	gui_input.connect(_on_gui_input)
 	mouse_entered.connect(_on_mouse_entered)
+
+func set_slot_background(tex: Texture2D) -> void:
+	texture = tex
+
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

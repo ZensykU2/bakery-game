@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://csy2m5w2b2725"
+path="res://.godot/imported/your eyes - 68+1.mp3-46428c8aff3a577cd2d4715847861d5a.mp3str"
+
+[deps]
+
+source_file="res://audio/music/your eyes - 68+1.mp3"
+dest_files=["res://.godot/imported/your eyes - 68+1.mp3-46428c8aff3a577cd2d4715847861d5a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

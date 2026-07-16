@@ -15,6 +15,10 @@ run/main_scene="uid://4v5yqxmb53gw"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="uid://els7lw2eu7bp"
+
 [autoload]
 
 Services="*uid://c3w8kjfu4o6b7"
@@ -22,7 +26,6 @@ GameConstants="*uid://bnntwtuoqggua"
 SettingsManager="*uid://bpam3t51lsnj6"
 SaveManager="*uid://bhqjwbao3xk1r"
 ItemDB="*uid://ckmsb1iskegqc"
-AudioManager="*uid://bwi6pqgh71b1g"
 GameManager="*uid://bd6eb3xeae0q2"
 TimeManager="*uid://f37hcb5gxv1p"
 InventoryManager="*uid://dup74gp6ciw6x"
@@ -31,6 +34,8 @@ BakingManager="*uid://c77ecw1nfim6v"
 SceneManager="*uid://cfw08k5ocdf5k"
 Hud="*uid://fg1fujl77ecp"
 DebugPanel="*uid://cn4aeejgt1af3"
+MusicManager="*uid://c0a03um3s5743"
+SfxManager="*uid://bwi6pqgh71b1g"
 
 [display]
 

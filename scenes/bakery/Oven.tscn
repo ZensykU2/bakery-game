@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://b3rdyb24u26bh" path="res://scripts/bakery/oven.gd" id="1_1ii5b"]
 [ext_resource type="Texture2D" uid="uid://db5wqljbckwod" path="res://art/sprites/bakery/OvenSheet.png" id="2_1ii5b"]
 [ext_resource type="Script" uid="uid://c70usr8acjw1y" path="res://scripts/world/interaction_component.gd" id="3_ix1ri"]
+[ext_resource type="Script" uid="uid://g5qi2j2n2pmt" path="res://scripts/world/sfx_player_component.gd" id="4_xyw18"]
+[ext_resource type="AudioStream" uid="uid://phk1cary7m6f" path="res://audio/sounds/power_up.wav" id="5_78fnr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ix1ri"]
 atlas = ExtResource("2_1ii5b")
@@ -98,10 +100,11 @@ size = Vector2(49, 41)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rl1uj"]
 size = Vector2(32, 16)
 
-[node name="Oven" type="Node2D" unique_id=1524767547 node_paths=PackedStringArray("interaction_component")]
+[node name="Oven" type="Node2D" unique_id=1524767547 node_paths=PackedStringArray("interaction_component", "completion_sfx")]
 position = Vector2(16, 16)
 script = ExtResource("1_1ii5b")
 interaction_component = NodePath("InteractionComponent")
+completion_sfx = NodePath("SfxPlayerComponent")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1937661151]
 sprite_frames = SubResource("SpriteFrames_ae6gd")
@@ -120,3 +123,10 @@ shape = SubResource("RectangleShape2D_isltf")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1228060812]
 position = Vector2(0, 8)
 shape = SubResource("RectangleShape2D_rl1uj")
+
+[node name="SfxPlayerComponent" type="Node" parent="." unique_id=474806846]
+script = ExtResource("4_xyw18")
+sfx_stream = ExtResource("5_78fnr")
+volume_db = 5.0
+pitch_randomness = 0.05
+metadata/_custom_type_script = "uid://g5qi2j2n2pmt"

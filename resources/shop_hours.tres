@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="TimeRequirement" format=3 uid="uid://bo0dyjiohitwg"]
+
+[ext_resource type="Script" uid="uid://dy4gpg7p0ywrr" path="res://scripts/resources/requirements/time_requirement.gd" id="1_3dgkc"]
+
+[resource]
+script = ExtResource("1_3dgkc")
+start_hour = 9
+end_hour = 17
+closed_days = Array[String](["Saturday", "Sunday"])

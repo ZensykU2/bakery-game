@@ -31,7 +31,7 @@ func _on_interacted(_player: CharacterBody2D) -> void:
 		if container_ui.visible and container_ui.active_container_array == casing_array:
 			container_ui.close()
 		else:
-			container_ui.open(casing_array)
+			container_ui.open(casing_array, "display")
 
 func _on_player_exited() -> void:
 	var container_ui = SceneManager.get_container_ui()

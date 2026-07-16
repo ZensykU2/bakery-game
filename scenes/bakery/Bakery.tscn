@@ -325,7 +325,7 @@ y_sort_origin = 16
 position = Vector2(688, 217)
 
 [node name="Window2" parent="." unique_id=22103157 instance=ExtResource("9_fi7vi")]
-position = Vector2(462, 220)
+position = Vector2(462, 208)
 show_celestial_bodies = false
 
 [node name="SpawnPoints" type="Node2D" parent="." unique_id=1045075577]
@@ -373,6 +373,7 @@ turn_off_hour = 9
 [node name="PointLight2D" type="PointLight2D" parent="lamp" unique_id=448025768]
 position = Vector2(-25, 78)
 color = Color(1, 0.8745098, 0.61960787, 1)
+energy = 0.83
 texture = SubResource("GradientTexture2D_fi7vi")
 
 [node name="Interactables" type="Node2D" parent="." unique_id=388561079]

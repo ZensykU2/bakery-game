@@ -1,19 +1,6 @@
 [gd_scene format=3 uid="uid://drbq6jkutu740"]
 
 [ext_resource type="Script" uid="uid://d2x6e7uofe8kw" path="res://scripts/ui/settings_panel.gd" id="1_741xb"]
-[ext_resource type="Texture2D" uid="uid://cppqjw78ce2tp" path="res://art/sprites/ui/cozy_ui_atlas.png" id="2_cjf3c"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_j2lur"]
-atlas = ExtResource("2_cjf3c")
-region = Rect2(85, 232, 116, 108)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_idotu"]
-texture = ExtResource("2_cjf3c")
-region_rect = Rect2(77, 45, 658, 162)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jfewy"]
-texture = ExtResource("2_cjf3c")
-region_rect = Rect2(268, 244, 677, 79)
 
 [node name="SettingsPanel" type="PanelContainer" unique_id=1378636936]
 anchors_preset = 8
@@ -46,10 +33,6 @@ text = "Master Volume"
 
 [node name="MasterSlider" type="HSlider" parent="VBoxContainer/GridContainer" unique_id=1860685016]
 layout_mode = 2
-theme_override_icons/grabber = SubResource("AtlasTexture_j2lur")
-theme_override_icons/grabber_highlight = SubResource("AtlasTexture_j2lur")
-theme_override_styles/slider = SubResource("StyleBoxTexture_idotu")
-theme_override_styles/grabber_area = SubResource("StyleBoxTexture_jfewy")
 max_value = 1.0
 step = 0.05
 value = 0.8

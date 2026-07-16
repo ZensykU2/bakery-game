@@ -1,11 +1,19 @@
 [gd_scene format=3 uid="uid://xcdqi08ven00"]
 
 [ext_resource type="Script" uid="uid://drwj8ibnl6wts" path="res://scripts/ui/container_ui.gd" id="1_g84o8"]
+[ext_resource type="Texture2D" uid="uid://dyns7oe5aq672" path="res://art/sprites/world/Hotbar2.png" id="2_rwmhm"]
 [ext_resource type="PackedScene" uid="uid://dwhw12judkoyj" path="res://scenes/ui/Backdrop.tscn" id="2_y6774"]
 [ext_resource type="PackedScene" uid="uid://b16pt27hmto40" path="res://scenes/ui/InventorySlotUI.tscn" id="3_kx7v7"]
 
 [node name="ContainerUI" type="CanvasLayer" unique_id=744701126]
 script = ExtResource("1_g84o8")
+player_hotbar_slot_texture = ExtResource("2_rwmhm")
+player_backpack_slot_texture = ExtResource("2_rwmhm")
+trash_slot_texture = ExtResource("2_rwmhm")
+storage_slot_texture = ExtResource("2_rwmhm")
+fridge_slot_texture = ExtResource("2_rwmhm")
+display_slot_texture = ExtResource("2_rwmhm")
+counter_slot_texture = ExtResource("2_rwmhm")
 
 [node name="Backdrop" parent="." unique_id=136033478 instance=ExtResource("2_y6774")]
 
@@ -72,7 +80,6 @@ visible = false
 layout_mode = 2
 text = "Confirm Sale (+$0)"
 
-[node name="CloseButton" type="Button" parent="." unique_id=377182774]
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="CloseButton" type="Button" parent="PanelContainer/HBoxContainer/ContainerSide" unique_id=377182774]
+layout_mode = 2
 text = "Close"

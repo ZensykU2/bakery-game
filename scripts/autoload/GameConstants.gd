@@ -66,6 +66,11 @@ class TimeManage:
 	
 	const DAY_ORBIT_DURATION: float = 840.0    # 14 hours (6 AM to 8 PM)
 	const NIGHT_ORBIT_DURATION: float = 600.0  # 10 hours (8 PM to 6 AM)
+	
+	const HOUR_MORNING_START: int = 6
+	const HOUR_DAY_START: int = 12
+	const HOUR_EVENING_START: int = 17
+	const HOUR_NIGHT_START: int = 20
 
 class World:
 	const HARVEST_DISTANCE: float = 512.0
@@ -88,7 +93,28 @@ class Paths:
 	const SLOT_UI_SCENE_PATH: String = "res://scenes/ui/InventorySlotUI.tscn"
 	const SHOP_CLOSED_PANEL_PATH: String = "res://scenes/ui/ShopClosedPanel.tscn"
 	const DROPPED_ITEM_SCENE_PATH: String = "res://scenes/world/DroppedItem.tscn"
+	const SHOP_ITEMS_DIR: String = "res://resources/shop_items/"
+	const SHOP_UI_SCENE_PATH: String = "res://scenes/ui/ShopUI.tscn"
 	
 # Audio Configurations
 class Audio:
 	const POOL_SIZE: int = 8
+	const BUS_SFX: String = "SFX"
+	const BUS_MUSIC: String = "Music"
+	const BUS_MASTER: String = "Master"
+	
+	const TIME_ANY: String = "Any"
+	const TIME_MORNING: String = "Morning"
+	const TIME_DAY: String = "Day"
+	const TIME_EVENING: String = "Evening"
+	const TIME_NIGHT: String = "Night"
+	
+	const FADE_VOL: float = 80.0
+	const FADE_DUR: float = 2.0
+	
+	# Music weighting scores
+	const TR_SC_SCORE: int = 10
+	const TR_DY_SCORE: int = 2
+	const TR_SE_SCORE: int = 2
+	const TR_WD_SCORE: int = 2
+	const TR_WE_SCORE: int = 2

@@ -13,7 +13,7 @@ func _on_interacted(_player: CharacterBody2D) -> void:
 		if container_ui.visible and container_ui.active_container_array == GameManager.state.fridge_slots:
 			container_ui.close()
 		else:
-			container_ui.open(GameManager.state.fridge_slots)
+			container_ui.open(GameManager.state.fridge_slots, "fridge")
 
 func _on_player_exited() -> void:
 	var container_ui = SceneManager.get_container_ui()

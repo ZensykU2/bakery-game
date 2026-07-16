@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="MusicTrack" format=3 uid="uid://b01onelgt6sox"]
+
+[ext_resource type="Script" uid="uid://css8cupai6oyr" path="res://scripts/resources/music_track.gd" id="1_nqrs2"]
+[ext_resource type="AudioStream" uid="uid://b6yf2g1drcltx" path="res://audio/music/here I am - 68+1.mp3" id="2_gjh7y"]
+
+[resource]
+script = ExtResource("1_nqrs2")
+stream = ExtResource("2_gjh7y")
+volume_db = 2.0
+allowed_scenes = Array[String](["Bakery"])
+time_of_day = "Day"
+metadata/_custom_type_script = "uid://css8cupai6oyr"

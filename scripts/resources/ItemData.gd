@@ -15,3 +15,4 @@ class_name ItemData
 @export_group("Recipe Settings (Optional)")
 @export var ingredients: Dictionary[String, int] = {}
 @export var bake_time: float = 0.0
+@export var recipe_requirements: Array[Requirement] = []
