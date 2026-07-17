@@ -9,8 +9,12 @@ var shop_ui: CanvasLayer = null
 
 var current_scene_path: String = ""
 
+const DEFAULT_LEVEL_PATH := "res://scenes/bakery/Bakery.tscn"
+const DEFAULT_SPAWN_POINT := "CoreSpawn"
+
+var _pending_location: Dictionary = {}
+
 func _ready() -> void:
-	Services.scene = self
 	InventoryManager.item_dropped.connect(_on_inventory_item_dropped)
 	
 	var canvas_layer := CanvasLayer.new()
@@ -28,9 +32,9 @@ func _ready() -> void:
 	if main:
 		var level_container = main.get_node_or_null("CurrentLevel")
 		if level_container and level_container.get_child_count() == 0:
-			load_level_direct("res://scenes/bakery/Bakery.tscn", "CoreSpawn")
+			load_initial_level()
 
-func load_level_direct(scene_path: String, spawn_point_name: String) -> void:
+func load_level_direct(scene_path: String, spawn_point_name: String, restored_position: Variant = null) -> void:
 	_next_spawn_point_name = spawn_point_name
 	current_scene_path = scene_path
 	
@@ -42,7 +46,7 @@ func load_level_direct(scene_path: String, spawn_point_name: String) -> void:
 	var level_instance = level_scene.instantiate()
 	level_container.add_child(level_instance)
 	
-	_position_player(level_instance)
+	_position_player(level_instance, restored_position)
 	_update_global_lighting(level_instance)
 	_spawn_dropped_items_for_scene(level_instance)
 	scene_changed.emit(current_scene_path)
@@ -137,13 +141,20 @@ func sleep_to_next_day(spawn_point_name: String = "PassOut") -> void:
 	is_transitioning = false
 	scene_changed.emit(current_scene_path)
 
-func _position_player(current_level: Node) -> void:
+func _position_player(current_level: Node, restored_position: Variant = null) -> void:
 	var player = get_player()
+	if player == null:
+		return
+	
+	if restored_position is Vector2:
+		player.global_position = restored_position
+		return
+	
 	var spawn_points = current_level.find_child("SpawnPoints", true, false)
 	if not spawn_points:
 		spawn_points = current_level.find_child("SpawnPoint", true, false)
 		
-	if player and spawn_points:
+	if spawn_points:
 		var spawn_marker = spawn_points.find_child(_next_spawn_point_name, true, false)
 		if spawn_marker:
 			player.global_position = spawn_marker.global_position
@@ -158,7 +169,7 @@ func _update_global_lighting(level_instance: Node) -> void:
 		global_light._on_ambient_color_changed(TimeManager.get_ambient_color())
 
 func _serialize_active_dropped_items() -> void:
-	var keep_drops = []
+	var keep_drops: Array[DroppedItemRecord] = []
 	for drop in GameManager.state.dropped_items:
 		if drop.scene_path != current_scene_path:
 			keep_drops.append(drop)
@@ -173,13 +184,14 @@ func _serialize_active_dropped_items() -> void:
 				
 			if GameManager.state.dropped_items.size() >= GameConstants.Inventory.HARD_MAX_DROPPED_ITEMS:
 				break
-			GameManager.state.dropped_items.append({
-				"scene_path": current_scene_path,
-				"item_id": drop_node.item.item_id,
-				"amount": drop_node.item.amount,
-				"freshness": drop_node.item.freshness,
-				"position": drop_node.global_position
-			})
+			if drop_node.item != null:
+				GameManager.state.dropped_items.append(
+					DroppedItemRecord.from_world_item(
+						current_scene_path,
+						drop_node.item,
+						drop_node.global_position
+					)
+				)
 
 func _spawn_dropped_items_for_scene(level_node: Node) -> void:
 	var drops = GameManager.state.dropped_items
@@ -188,7 +200,7 @@ func _spawn_dropped_items_for_scene(level_node: Node) -> void:
 			var drop_scene = load(GameConstants.Paths.DROPPED_ITEM_SCENE_PATH)
 			var instance = drop_scene.instantiate()
 			instance.global_position = drop.position
-			instance.item = InventoryItem.from_dict(drop) 
+			instance.item = drop.item.clone()
 			level_node.add_child(instance)
 
 func get_player() -> CharacterBody2D:
@@ -241,3 +253,48 @@ func get_shop_ui() -> CanvasLayer:
 			shop_ui = shop_scene.instantiate()
 			main.add_child(shop_ui)
 	return shop_ui
+
+func to_save_data() -> Dictionary:
+	var active_level := get_active_level()
+	var player := get_player()
+	
+	if active_level == null or player == null:
+		return {}
+	
+	return {
+		"level_path": current_scene_path,
+		"spawn_point_name": _next_spawn_point_name,
+		"player_position": {
+			"x": player.global_position.x,
+			"y": player.global_position.y
+			}
+		}
+
+func load_from_save_data(data: Dictionary) -> void:
+	_pending_location = data.duplicate(true)
+
+func load_initial_level() -> void:
+	if get_active_level() != null:
+		return
+	
+	var scene_path := String(_pending_location.get("level_path", DEFAULT_LEVEL_PATH))
+	var spawn_point := String(_pending_location.get("spawn_point_name", DEFAULT_SPAWN_POINT))
+	
+	if not ResourceLoader.exists(scene_path, "PackedScene"):
+		scene_path = DEFAULT_LEVEL_PATH
+		spawn_point = DEFAULT_SPAWN_POINT
+	
+	var restored_position: Variant = _get_saved_player_position(_pending_location)
+	load_level_direct(scene_path, spawn_point, restored_position)
+
+func _get_saved_player_position(location: Dictionary) -> Variant:
+	var position_data: Variant = location.get("player_position", {})
+	
+	if position_data is Dictionary and position_data.has("x") and position_data.has("y"):
+		return Vector2(
+			float(position_data["x"]),
+			float(position_data["y"])
+		)
+	
+	return null
+	

@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ItemData" format=3]
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cul46vat8c7n5"]
 
-[ext_resource type="Texture2D" path="res://art/sprites/bakery/food/Donut.png" id="1_jqwlx"]
-[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_fowm2"]
+[ext_resource type="Texture2D" uid="uid://cjgmuyalxura0" path="res://art/sprites/bakery/food/Donut.png" id="1_jqwlx"]
+[ext_resource type="Script" uid="uid://d2765713yqfdl" path="res://scripts/resources/ItemData.gd" id="2_fowm2"]
 
 [resource]
 script = ExtResource("2_fowm2")
@@ -12,9 +12,3 @@ stackable = false
 icon_fresh = ExtResource("1_jqwlx")
 icon_stale = ExtResource("1_jqwlx")
 icon_spoiled = ExtResource("1_jqwlx")
-ingredients = {
-"butter": 1,
-"choclate": 1,
-"flour": 1
-}
-bake_time = 8.0

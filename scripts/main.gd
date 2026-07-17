@@ -7,11 +7,14 @@ func _ready() -> void:
 	# Bootstrap the default level when the Main scene is loaded
 	var level_container = get_node_or_null("CurrentLevel")
 	if level_container and level_container.get_child_count() == 0:
-		SceneManager.load_level_direct("res://scenes/bakery/Bakery.tscn", "CoreSpawn")
+		SceneManager.load_initial_level()
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Press ESCAPE to pause the game and open the Pause Menu
 	if event.is_action_pressed("ui_cancel") or (event is InputEventKey and event.pressed and not event.is_echo() and event.keycode == KEY_ESCAPE):
+		if UIOverlayManager.close_active_overlay():
+			get_viewport().set_input_as_handled()
+			return
 		_toggle_pause()
 
 func _toggle_pause() -> void:
@@ -22,3 +25,8 @@ func _toggle_pause() -> void:
 		inst.name = "PauseMenu"
 		add_child(inst)
 		get_tree().paused = true
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		GameManager.save_game_now()
+		get_tree().quit()

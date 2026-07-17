@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="RecipeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/RecipeData.gd" id="1_recipe"]
+[ext_resource type="Script" path="res://scripts/resources/requirements/item_requirement.gd" id="2_item"]
+
+[sub_resource type="Resource" id="ItemRequirement_berries"]
+script = ExtResource("2_item")
+item_id = "berries"
+amount = 2
+[sub_resource type="Resource" id="ItemRequirement_butter"]
+script = ExtResource("2_item")
+item_id = "butter"
+amount = 1
+[sub_resource type="Resource" id="ItemRequirement_flour"]
+script = ExtResource("2_item")
+item_id = "flour"
+amount = 1
+[sub_resource type="Resource" id="ItemRequirement_sugar"]
+script = ExtResource("2_item")
+item_id = "sugar"
+amount = 1
+
+[resource]
+script = ExtResource("1_recipe")
+recipe_id = "cherry_pie"
+output_item_id = "cherry_pie"
+bake_duration_minutes = 48.0
+requirements = Array[ExtResource("2_item")]([SubResource("ItemRequirement_berries"), SubResource("ItemRequirement_butter"), SubResource("ItemRequirement_flour"), SubResource("ItemRequirement_sugar")])

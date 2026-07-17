@@ -12,7 +12,7 @@ var inventory_slots: Array[InventoryItem] = []
 var fridge_slots: Array[InventoryItem] = []
 var counter_slots: Array[InventoryItem] = []
 var casing_slots: Dictionary = {}
-var dropped_items: Array = []
+var dropped_items: Array[DroppedItemRecord] = []
 var dropped_items_timer: float = -1.0
 
 var active_bakes := {}
@@ -65,16 +65,10 @@ func to_dict() -> Dictionary:
 	for key in casing_slots.keys():
 		casing_data[key] = _serialize_slots(casing_slots[key])
 	
-	var drops = []
+	var drops: Array[Dictionary] = []
 	for drop in dropped_items:
-		drops.append({
-			"scene_path": drop.scene_path,
-			"item_id": drop.item_id,
-			"amount": drop.amount,
-			"freshness": drop.freshness,
-			"pos_x": drop.position.x,
-			"pos_y": drop.position.y
-		})
+		if drop != null and drop.item != null:
+			drops.append(drop.to_dict())
 		
 	var bakes_serialized = {}
 	for oven_id in active_bakes.keys():
@@ -127,12 +121,7 @@ func from_dict(data: Dictionary) -> void:
 	
 	var drops_data = data.get("dropped_items", [])
 	dropped_items.clear()
-	for d in drops_data:
-		dropped_items.append({
-			"scene_path": d.get("scene_path", ""),
-			"item_id": d.get("item_id", ""),
-			"amount": d.get("amount", 1),
-			"freshness": d.get("freshness", 1.0),
-			"position": Vector2(d.get("pos_x", 0.0), d.get("pos_y", 0.0))
-		})
+	for drop_data in drops_data:
+		if drop_data is Dictionary:
+			dropped_items.append(DroppedItemRecord.from_dict(drop_data))
 	dropped_items_timer = data.get("dropped_items_timer", -1.0)

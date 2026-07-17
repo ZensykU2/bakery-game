@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ItemData" format=3]
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dmfgascapaw1c"]
 
-[ext_resource type="Texture2D" path="res://art/sprites/bakery/food/Cookie.png" id="1_wjkvb"]
-[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_6lyig"]
+[ext_resource type="Texture2D" uid="uid://bbynl8kum17kr" path="res://art/sprites/bakery/food/Cookie.png" id="1_wjkvb"]
+[ext_resource type="Script" uid="uid://d2765713yqfdl" path="res://scripts/resources/ItemData.gd" id="2_6lyig"]
 
 [resource]
 script = ExtResource("2_6lyig")
@@ -12,10 +12,3 @@ stackable = false
 icon_fresh = ExtResource("1_wjkvb")
 icon_stale = ExtResource("1_wjkvb")
 icon_spoiled = ExtResource("1_wjkvb")
-ingredients = {
-"butter": 1,
-"chocolate": 1,
-"flour": 1,
-"sugar": 1
-}
-bake_time = 8.0

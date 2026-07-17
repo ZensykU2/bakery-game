@@ -22,15 +22,17 @@ func _ready() -> void:
 	BakingManager.baking_updated.connect(update_animation)
 	update_animation()
 
-func _process(_delta: float) -> void:
-	var bake = BakingManager.get_bake_for_oven(oven_id)
-	if bake and not bake.is_finished:
-		update_animation()
-
 func _on_interacted(_player: CharacterBody2D) -> void:
 	if ui_panel:
-		ui_panel.current_oven_id = oven_id
-		ui_panel.visible = not ui_panel.visible
+		var should_open := not ui_panel.visible
+		if should_open:
+			UIOverlayManager.close_all_overlays(ui_panel)
+			if ui_panel.has_method("open_for_oven"):
+				ui_panel.call("open_for_oven", oven_id)
+			else:
+				ui_panel.visible = true
+		else:
+			ui_panel.visible = false
 
 func _on_player_exited() -> void:
 	if ui_panel:
@@ -65,20 +67,21 @@ func update_animation() -> void:
 				animated_sprite.play("complete")
 			if not is_showing_complete:
 				is_showing_complete = true
-				_spawn_floaty_icon(bake.recipe_name)
+				_spawn_floaty_icon(bake.recipe_id)
 				if completion_sfx:
 					completion_sfx.play_sound()
 
-func _spawn_floaty_icon(recipe_name: String) -> void:
-	var recipe = ItemDB.get_recipe(recipe_name)
-	var icon_texture = recipe.get("icon", null)
+func _spawn_floaty_icon(recipe_id: String) -> void:
+	var recipe := ItemDB.get_recipe_resource(recipe_id)
+	var output_item := ItemDB.get_item_resource(recipe.output_item_id) if recipe else null
+	var icon_texture := output_item.icon_fresh if output_item else null
 	
 	if icon_texture:
 		var floaty_scene = load(GameConstants.Paths.FLOATY_ICON_SCENE_PATH)
 		var floaty = floaty_scene.instantiate()
 		floaty.position = Vector2(0, -24)
 		add_child(floaty)
-		floaty.start(recipe_name, icon_texture)
+		floaty.start(recipe_id, icon_texture)
 		
 		floaty.harvest_requested.connect(func():
 			var player = SceneManager.get_player()
@@ -90,6 +93,6 @@ func _spawn_floaty_icon(recipe_name: String) -> void:
 					return
 
 			if BakingManager.try_harvest(oven_id):
-				print("Harvested item into slots: ", recipe_name)
+				print("Harvested item into slots: ", recipe_id)
 				floaty.play_harvest_animation()
 		)

@@ -29,7 +29,6 @@ text = "Trash"
 [node name="TrashSlot" parent="VBoxContainer" unique_id=250653750 instance=ExtResource("3_slot")]
 layout_mode = 2
 texture = null
-slot_index = 999
 
 [node name="TopBarMargin" type="MarginContainer" parent="." unique_id=150193772]
 anchors_preset = 10

@@ -42,7 +42,6 @@ text = "Trash"
 
 [node name="TrashSlot" parent="PanelContainer/HBoxContainer/TrashSide" unique_id=250653750 instance=ExtResource("3_kx7v7")]
 layout_mode = 2
-slot_index = 999
 
 [node name="PlayerSide" type="VBoxContainer" parent="PanelContainer/HBoxContainer" unique_id=976095974]
 layout_mode = 2

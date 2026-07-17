@@ -27,12 +27,14 @@ var active_container_array: Array[InventoryItem]
 var is_counter_mode: bool = false
 
 func _ready() -> void:
+	add_to_group(UIOverlayManager.OVERLAY_GROUP)
 	backdrop.backdrop_clicked.connect(func(): close())
 	close_button.pressed.connect(close)
 	sell_button.pressed.connect(_on_sell_pressed)
 	InventoryManager.inventory_changed.connect(refresh)
 
 func open(container_array: Array[InventoryItem], mode: String = "storage") -> void:
+	UIOverlayManager.close_all_overlays(self)
 	active_container_array = container_array
 	InventoryManager.active_container_slots = container_array
 	is_counter_mode = (mode == "counter")
@@ -52,7 +54,7 @@ func open(container_array: Array[InventoryItem], mode: String = "storage") -> vo
 	
 	for i in range(GameConstants.Inventory.MAX_HOTBAR_IDX):
 		var slot = slot_scene.instantiate()
-		slot.slot_index = i
+		slot.configure(InventorySlotAddress.inventory(i))
 		if player_hotbar_slot_texture:
 			slot.set_slot_background(player_hotbar_slot_texture)
 		player_hotbar_grid.add_child(slot)
@@ -60,14 +62,16 @@ func open(container_array: Array[InventoryItem], mode: String = "storage") -> vo
 	
 	for i in range(GameConstants.Inventory.MAX_HOTBAR_IDX, total_slots):
 		var slot = slot_scene.instantiate()
-		slot.slot_index = i
+		slot.configure(InventorySlotAddress.inventory(i))
 		if player_backpack_slot_texture:
 			slot.set_slot_background(player_backpack_slot_texture)
 		player_backpack_grid.add_child(slot)
 		player_slots[i] = slot
 		
-	if trash_slot_texture and trash_slot:
-		trash_slot.set_slot_background(trash_slot_texture)
+	if trash_slot:
+		if trash_slot_texture:
+			trash_slot.set_slot_background(trash_slot_texture)
+		trash_slot.configure(InventorySlotAddress.trash())
 	
 	var container_slot_tex: Texture2D = storage_slot_texture
 	match mode:
@@ -78,7 +82,7 @@ func open(container_array: Array[InventoryItem], mode: String = "storage") -> vo
 		"counter":
 			container_slot_tex = counter_slot_texture
 			
-	container_slots = _spawn_slots_for_grid(container_grid, active_container_array, 100, container_slot_tex)
+	container_slots = _spawn_slots_for_grid(container_grid, active_container_array, container_slot_tex)
 	
 	refresh()
 
@@ -88,26 +92,21 @@ func refresh() -> void:
 		
 	_refresh_slots_data(player_slots, InventoryManager.state.inventory_slots)
 
-	var total_value = 0.0
 	_refresh_slots_data(container_slots, active_container_array)
 	
 	if is_counter_mode:
-		for item in active_container_array:
-			if item != null:
-				var data = ItemDB.get_recipe(item.item_id)
-				var base_price = data.get("sell_price", 0)
-				total_value += base_price * item.get_sell_multiplier() * item.amount
+		var total_value := SaleService.get_total_value(active_container_array)
 				
-		price_label.text = "Total Value: $%d" % int(total_value)
-		sell_button.text = "Confirm Sale (+$%d)" % int(total_value)
-		sell_button.disabled = (total_value <= 0.0)
+		price_label.text = "Total Value: $%d" % total_value
+		sell_button.text = "Confirm Sale (+$%d)" % total_value
+		sell_button.disabled = total_value <= 0
 
-func _spawn_slots_for_grid(grid: GridContainer, slot_array: Array[InventoryItem], index_offset: int, tex: Texture2D = null) -> Array[Control]:
+func _spawn_slots_for_grid(grid: GridContainer, slot_array: Array[InventoryItem], tex: Texture2D = null) -> Array[Control]:
 	var spawned_nodes: Array[Control] = []
 	for i in range(slot_array.size()):
 		var slot_scene = load(GameConstants.Paths.SLOT_UI_SCENE_PATH)
 		var slot = slot_scene.instantiate()
-		slot.slot_index = index_offset + i
+		slot.configure(InventorySlotAddress.active_container(i))
 		if tex:
 			slot.set_slot_background(tex)
 		grid.add_child(slot)
@@ -121,31 +120,31 @@ func _refresh_slots_data(ui_slots: Array[Control], data_items: Array[InventoryIt
 			ui_slots[i].set_item(data_items[i])
 
 func _on_sell_pressed() -> void:
-	var total_earned = 0.0
-	for i in range(active_container_array.size()):
-		var item = active_container_array[i]
-		if item != null:
-			var base_price = ItemDB.get_recipe(item.item_id).get("sell_price", 0)
-			total_earned += base_price * item.get_sell_multiplier() * item.amount
-			active_container_array[i] = null
+	var total_earned := SaleService.sell_all(active_container_array)
 			
-	if total_earned > 0.0:
-		GameManager.add_money(int(total_earned))
-		
-		var player = get_tree().root.find_child("Player", true, false)
+	if total_earned > 0:
+		var player := SceneManager.get_player()
 		if player:
 			var floaty_scene = load(GameConstants.Paths.FLOATY_ICON_SCENE_PATH)
 			var floaty = floaty_scene.instantiate()
 			floaty.position = player.position - Vector2(0, 16)
 			get_tree().current_scene.add_child(floaty)
-			floaty.start_text("+$%d" % int(total_earned), Color(0.2, 0.8, 0.2))
+			floaty.start_text("+$%d" % total_earned, Color(0.2, 0.8, 0.2))
 			
-	close()
+		close()
 
 func close() -> void:
 	visible = false
 	InventoryManager.active_container_slots = []
 	GameManager.save_game()
+
+
+func close_overlay() -> void:
+	close()
+
+
+func is_overlay_open() -> bool:
+	return visible
 
 func _unhandled_input(event: InputEvent) -> void:
 	if visible:

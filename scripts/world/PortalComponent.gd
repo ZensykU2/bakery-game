@@ -10,7 +10,7 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.name == "Player":
+	if body.is_in_group(&"player"):
 		# Check for key/lock gatekeepers in the parent hierarchy
 		var parent = get_parent()
 		if parent:
@@ -19,4 +19,4 @@ func _on_body_entered(body: Node2D) -> void:
 					return
 					
 		if target_scene != "":
-			Services.scene.transition_to(target_scene, target_spawn_name)
+			SceneManager.transition_to(target_scene, target_spawn_name)

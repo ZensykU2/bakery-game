@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="RecipeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/RecipeData.gd" id="1_recipe"]
+[ext_resource type="Script" path="res://scripts/resources/requirements/item_requirement.gd" id="2_item"]
+
+[sub_resource type="Resource" id="ItemRequirement_butter"]
+script = ExtResource("2_item")
+item_id = "butter"
+amount = 1
+[sub_resource type="Resource" id="ItemRequirement_chocolate"]
+script = ExtResource("2_item")
+item_id = "chocolate"
+amount = 1
+[sub_resource type="Resource" id="ItemRequirement_flour"]
+script = ExtResource("2_item")
+item_id = "flour"
+amount = 1
+
+[resource]
+script = ExtResource("1_recipe")
+recipe_id = "donut"
+output_item_id = "donut"
+bake_duration_minutes = 22.0
+requirements = Array[ExtResource("2_item")]([SubResource("ItemRequirement_butter"), SubResource("ItemRequirement_chocolate"), SubResource("ItemRequirement_flour")])

@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ItemData" format=3]
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://3ocmjaplamjy"]
 
-[ext_resource type="Texture2D" path="res://art/sprites/bakery/food/SacherCake.png" id="1_dmj4t"]
-[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_rmljh"]
+[ext_resource type="Texture2D" uid="uid://cvn18sxqgrabj" path="res://art/sprites/bakery/food/SacherCake.png" id="1_dmj4t"]
+[ext_resource type="Script" uid="uid://d2765713yqfdl" path="res://scripts/resources/ItemData.gd" id="2_rmljh"]
 
 [resource]
 script = ExtResource("2_rmljh")
@@ -12,10 +12,3 @@ stackable = false
 icon_fresh = ExtResource("1_dmj4t")
 icon_stale = ExtResource("1_dmj4t")
 icon_spoiled = ExtResource("1_dmj4t")
-ingredients = {
-"butter": 1,
-"flour": 1,
-"milk": 1,
-"sugar": 1
-}
-bake_time = 40.0

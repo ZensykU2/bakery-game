@@ -11,10 +11,10 @@ func consume() -> void:
 	InventoryManager.deduct_item(item_id, amount)
 
 func get_description() -> String:
-	var data = ItemDB.get_item_data(item_id)
-	var display_name = data.get("name", item_id.capitalize()) if data else item_id.capitalize()
+	var item_data := ItemDB.get_item_resource(item_id)
+	var display_name := item_data.item_id.capitalize() if item_data else item_id.capitalize()
 	return "%dx %s" % [amount, display_name]
 
 func get_icon() -> Texture2D:
-	var data = ItemDB.get_item_data(item_id)
-	return data.get("icon_fresh", null) if data else null
+	var item_data := ItemDB.get_item_resource(item_id)
+	return item_data.icon_fresh if item_data else null

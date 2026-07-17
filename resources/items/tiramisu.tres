@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ItemData" format=3]
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://decgjj47e50ux"]
 
-[ext_resource type="Texture2D" path="res://art/sprites/bakery/food/Tiramisu.png" id="1_drnrm"]
-[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_wofi7"]
+[ext_resource type="Texture2D" uid="uid://bdp4ctlhrusg6" path="res://art/sprites/bakery/food/Tiramisu.png" id="1_drnrm"]
+[ext_resource type="Script" uid="uid://d2765713yqfdl" path="res://scripts/resources/ItemData.gd" id="2_wofi7"]
 
 [resource]
 script = ExtResource("2_wofi7")
@@ -12,10 +12,3 @@ stackable = false
 icon_fresh = ExtResource("1_drnrm")
 icon_stale = ExtResource("1_drnrm")
 icon_spoiled = ExtResource("1_drnrm")
-ingredients = {
-"butter": 1,
-"flour": 1,
-"milk": 1,
-"sugar": 1
-}
-bake_time = 40.0

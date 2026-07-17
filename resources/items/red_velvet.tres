@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ItemData" format=3]
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dbtgnd11kxtyn"]
 
-[ext_resource type="Texture2D" path="res://art/sprites/bakery/food/RedVelvet.png" id="1_d31ad"]
-[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_oo6v0"]
+[ext_resource type="Texture2D" uid="uid://1wwuefiyvqm2" path="res://art/sprites/bakery/food/RedVelvet.png" id="1_d31ad"]
+[ext_resource type="Script" uid="uid://d2765713yqfdl" path="res://scripts/resources/ItemData.gd" id="2_oo6v0"]
 
 [resource]
 script = ExtResource("2_oo6v0")
@@ -12,10 +12,3 @@ stackable = false
 icon_fresh = ExtResource("1_d31ad")
 icon_stale = ExtResource("1_d31ad")
 icon_spoiled = ExtResource("1_d31ad")
-ingredients = {
-"butter": 1,
-"flour": 1,
-"milk": 1,
-"sugar": 1
-}
-bake_time = 40.0

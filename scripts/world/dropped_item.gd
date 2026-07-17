@@ -20,7 +20,7 @@ func _ready() -> void:
 		sprite.texture = ItemDB.get_item_icon(item.item_id, item.freshness)
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.name == "Player" and item:
+	if body.is_in_group(&"player") and item:
 		if InventoryManager.add_inventory_item_resource(item):
 			InventoryManager.inventory_changed.emit()
 			queue_free()

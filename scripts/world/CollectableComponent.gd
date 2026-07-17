@@ -12,7 +12,7 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node2D) -> void:
-	if body.name == "Player":
+	if body.is_in_group(&"player"):
 		var to_add: InventoryItem
 		if item_resource:
 			to_add = item_resource
@@ -22,9 +22,9 @@ func _on_body_entered(body: Node2D) -> void:
 			to_add.amount = amount
 			to_add.freshness = freshness
 			
-		if Services.inventory.add_inventory_item_resource(to_add):
-			Services.inventory.inventory_changed.emit()
-			Services.game.save_game()
+		if InventoryManager.add_inventory_item_resource(to_add):
+			InventoryManager.inventory_changed.emit()
+			GameManager.save_game()
 			
 			# Free the physical item container (the parent node)
 			var parent = get_parent()

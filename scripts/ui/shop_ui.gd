@@ -9,18 +9,23 @@ class_name ShopUI
 
 var active_shop_type: String = ""
 var shop_items: Array[ShopItem] = []
+var _is_refresh_queued: bool = false
+
+const REFRESH_DEBOUNCE_SECONDS: float = 0.08
 
 func _ready() -> void:
+	add_to_group(UIOverlayManager.OVERLAY_GROUP)
 	close_button.pressed.connect(close)
 	
 	if backdrop:
 		backdrop.backdrop_clicked.connect(close)
 	
-	InventoryManager.inventory_changed.connect(refresh_items)
-	GameManager.money_changed.connect(func(_new_money): refresh_items())
+	InventoryManager.inventory_changed.connect(_queue_refresh_items)
+	GameManager.money_changed.connect(func(_new_money): _queue_refresh_items())
 	visible = false
 
 func open(shop_name: String, shop_type: String, catalog: Array[String]) -> void:
+	UIOverlayManager.close_all_overlays(self)
 	title_label.text = shop_name
 	active_shop_type = shop_type
 	visible = true
@@ -29,6 +34,36 @@ func open(shop_name: String, shop_type: String, catalog: Array[String]) -> void:
 
 func close() -> void:
 	visible = false
+
+
+func close_overlay() -> void:
+	close()
+
+
+func is_overlay_open() -> bool:
+	return visible
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if visible and (
+		event.is_action_pressed("toggle_inventory")
+		or event.is_action_pressed("ui_cancel")
+		or event.is_action_pressed("ui_accept")
+	):
+		close()
+		get_viewport().set_input_as_handled()
+
+
+func _queue_refresh_items() -> void:
+	if not visible or _is_refresh_queued:
+		return
+
+	_is_refresh_queued = true
+	var timer := get_tree().create_timer(REFRESH_DEBOUNCE_SECONDS)
+	timer.timeout.connect(func() -> void:
+		_is_refresh_queued = false
+		refresh_items()
+	)
 
 func _load_shop_items_from_catalog(catalog: Array[String]) -> void:
 	shop_items.clear()
@@ -109,8 +144,8 @@ func _create_locked_row(item: ShopItem) -> Control:
 	return row_hbox
 
 func _create_item_row(item: ShopItem) -> Control:
-	var item_data = ItemDB.get_item_data(item.item_id)
-	var icon = item_data.get("icon_fresh", null)
+	var item_data := ItemDB.get_item_resource(item.item_id)
+	var icon := item_data.icon_fresh if item_data else null
 	var display_name = item.item_id.capitalize()
 	
 	var row_hbox = HBoxContainer.new()
@@ -167,8 +202,10 @@ func _buy_item(item: ShopItem) -> void:
 	if not can_afford_all:
 		return
 	
-	if InventoryManager.add_item(item.item_id, 1):
+	GameManager.begin_state_update()
+	var purchased := InventoryManager.add_item(item.item_id, 1)
+	if purchased:
 		for cost in item.costs:
 			if cost is Requirement:
 				cost.consume()
-		refresh_items()
+	GameManager.end_state_update()

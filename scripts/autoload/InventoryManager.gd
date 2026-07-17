@@ -25,21 +25,11 @@ var held_item: InventoryItem:
 	get: return slot_interaction_service.held_item if slot_interaction_service else null
 	set(val): if slot_interaction_service: slot_interaction_service.held_item = val
 
-var last_interacted_slot_index: int:
-	get: return slot_interaction_service.last_interacted_slot_index if slot_interaction_service else -1
-	set(val): if slot_interaction_service: slot_interaction_service.last_interacted_slot_index = val
-
-var pressed_slot_index: int:
-	get: return slot_interaction_service.pressed_slot_index if slot_interaction_service else -1
-	set(val): if slot_interaction_service: slot_interaction_service.pressed_slot_index = val
-
 var is_paint_mode_active: bool:
 	get: return slot_interaction_service.is_paint_mode_active if slot_interaction_service else false
 	set(val): if slot_interaction_service: slot_interaction_service.is_paint_mode_active = val
 
 func _ready() -> void:
-	Services.inventory = self
-	
 	# Instantiate and register child services
 	decay_service = ItemDecayService.new()
 	add_child(decay_service)
@@ -52,21 +42,21 @@ func _ready() -> void:
 
 # --- Facade API delegation ---
 
-func handle_slot_click(slot_index: int, is_shift: bool, is_pressed: bool) -> void:
+func handle_slot_click(address: InventorySlotAddress, is_shift: bool, is_pressed: bool) -> void:
 	if slot_interaction_service:
-		slot_interaction_service.handle_slot_click(slot_index, is_shift, is_pressed)
+		slot_interaction_service.handle_slot_click(address, is_shift, is_pressed)
 
-func handle_slot_right_click(slot_index: int) -> void:
+func handle_slot_right_click(address: InventorySlotAddress) -> void:
 	if slot_interaction_service:
-		slot_interaction_service.handle_slot_right_click(slot_index)
+		slot_interaction_service.handle_slot_right_click(address)
 
-func handle_slot_double_click(slot_index: int) -> void:
+func handle_slot_double_click(address: InventorySlotAddress) -> void:
 	if slot_interaction_service:
-		slot_interaction_service.handle_slot_double_click(slot_index)
+		slot_interaction_service.handle_slot_double_click(address)
 
-func paint_slot(slot_index: int) -> void:
+func paint_slot(address: InventorySlotAddress) -> void:
 	if slot_interaction_service:
-		slot_interaction_service.paint_slot(slot_index)
+		slot_interaction_service.paint_slot(address)
 
 func drop_held_item_to_world() -> void:
 	if dropped_item_manager:
@@ -77,9 +67,6 @@ func enforce_hard_limit() -> void:
 		dropped_item_manager.enforce_hard_limit()
 
 # --- Core Data Store Responsibilities ---
-
-func is_trash_slot(slot_index: int) -> bool:
-	return slot_index == GameConstants.Inventory.TRASHBIN_IDX
 
 func get_item_count(item_id: String) -> int:
 	var total = 0

@@ -11,8 +11,3 @@ class_name ItemData
 @export var icon_fresh: Texture2D
 @export var icon_stale: Texture2D
 @export var icon_spoiled: Texture2D
-
-@export_group("Recipe Settings (Optional)")
-@export var ingredients: Dictionary[String, int] = {}
-@export var bake_time: float = 0.0
-@export var recipe_requirements: Array[Requirement] = []

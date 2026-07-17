@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="RecipeData" format=3 uid="uid://carnmgu3tuurt"]
+
+[ext_resource type="Script" uid="uid://1p3too0wndu1" path="res://scripts/resources/requirements/requirement.gd" id="1_abyu1"]
+[ext_resource type="Script" uid="uid://c3s7iafp4tbfq" path="res://scripts/resources/RecipeData.gd" id="1_recipe"]
+[ext_resource type="Script" uid="uid://cnfxiym54pmd8" path="res://scripts/resources/requirements/item_requirement.gd" id="2_item"]
+
+[sub_resource type="Resource" id="ItemRequirement_eggs"]
+script = ExtResource("2_item")
+item_id = "eggs"
+
+[sub_resource type="Resource" id="ItemRequirement_flour"]
+script = ExtResource("2_item")
+item_id = "flour"
+
+[resource]
+script = ExtResource("1_recipe")
+recipe_id = "bread"
+output_item_id = "bread"
+bake_duration_minutes = 22.0
+requirements = Array[ExtResource("1_abyu1")]([SubResource("ItemRequirement_eggs"), SubResource("ItemRequirement_flour")])

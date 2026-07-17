@@ -24,7 +24,7 @@ size = Vector2(11, 16)
 [sub_resource type="CircleShape2D" id="CircleShape2D_5cj04"]
 radius = 16.0
 
-[node name="Player" type="CharacterBody2D" unique_id=669378819]
+[node name="Player" type="CharacterBody2D" groups=["player"] unique_id=669378819]
 y_sort_enabled = false
 y_sort_origin = 16
 script = ExtResource("1_gfjak")

@@ -5,8 +5,8 @@ extends TextureRect
 @onready var freshness_bar: ProgressBar = $FreshnessBar
 @onready var selection_border: ReferenceRect = $SelectionBorder
 
-@export var slot_index: int = -1
 @export var slot_background_texture: Texture2D = null
+var slot_address: InventorySlotAddress
 
 
 func set_item(item: InventoryItem) -> void:
@@ -14,7 +14,7 @@ func set_item(item: InventoryItem) -> void:
 	item_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	item_icon.stretch_mode = TextureRect.STRETCH_SCALE
 	
-	if InventoryManager.is_trash_slot(slot_index):
+	if slot_address and slot_address.storage == InventorySlotAddress.Storage.TRASH:
 		count_label.text = ""
 		if freshness_bar: freshness_bar.visible = false
 		return
@@ -61,23 +61,30 @@ func set_slot_background(tex: Texture2D) -> void:
 	texture = tex
 
 
+func configure(address: InventorySlotAddress) -> void:
+	slot_address = address
+
+
 func _on_gui_input(event: InputEvent) -> void:
+	if slot_address == null:
+		return
+
 	if event is InputEventMouseButton:
 		if event.pressed:
 			if event.double_click and event.button_index == MOUSE_BUTTON_LEFT:
-				InventoryManager.handle_slot_double_click(slot_index)
+				InventoryManager.handle_slot_double_click(slot_address)
 				accept_event()
 			elif event.button_index == MOUSE_BUTTON_LEFT:
-				InventoryManager.handle_slot_click(slot_index, event.shift_pressed, true)
+				InventoryManager.handle_slot_click(slot_address, event.shift_pressed, true)
 				accept_event()
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
-				InventoryManager.handle_slot_right_click(slot_index)
+				InventoryManager.handle_slot_right_click(slot_address)
 				accept_event()
 		else:
 			if event.button_index == MOUSE_BUTTON_LEFT:
-				InventoryManager.handle_slot_click(slot_index, event.shift_pressed, false)
+				InventoryManager.handle_slot_click(slot_address, event.shift_pressed, false)
 				accept_event()
 
 func _on_mouse_entered() -> void:
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		InventoryManager.paint_slot(slot_index)
+	if slot_address and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		InventoryManager.paint_slot(slot_address)

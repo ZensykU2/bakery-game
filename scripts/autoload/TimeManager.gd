@@ -119,3 +119,35 @@ func force_process_time_update() -> void:
 	hour = int(time_in_minutes / 60.0)
 	minute = int(time_in_minutes) % 60
 	time_changed.emit(hour, minute)
+
+func reset_for_new_game() -> void:
+	time_in_minutes = GameConstants.TimeManage.DEFAULT_START_TIME
+	time_speed = 1.0
+	hour = int(time_in_minutes / 60)
+	minute = int(time_in_minutes) % 60
+	last_tracked_minute = -1
+	
+func to_save_data() -> Dictionary: 
+	return{
+		"time_in_minutes": time_in_minutes
+} 
+
+func load_from_save_data(data: Dictionary) -> void:
+	time_in_minutes = clampf(
+		float(data.get("time_in_minutes", GameConstants.TimeManage.DEFAULT_START_TIME)),
+		0.0,
+		GameConstants.TimeManage.MINUTES_IN_DAY - 0.001
+	)
+
+	# Time speed is temporary player/session state, not persisted game state.
+	time_speed = 1.0
+	hour = int(time_in_minutes / 60.0)
+	minute = int(time_in_minutes) % 60
+
+	# Prevent elapsed-time systems from receiving a false catch-up event on load.
+	last_tracked_minute = int(time_in_minutes) + (
+		GameManager.get_day() * int(GameConstants.TimeManage.MINUTES_IN_DAY)
+	)
+	
+	time_changed.emit(hour, minute)
+	ambient_color_changed.emit(get_ambient_color())

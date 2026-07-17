@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://c10yunm6rgl6e" path="res://art/sprites/bakery/food/ApplePie.png" id="1_khj5g"]
 [ext_resource type="Script" uid="uid://d2765713yqfdl" path="res://scripts/resources/ItemData.gd" id="2_fv20g"]
-[ext_resource type="Script" uid="uid://1p3too0wndu1" path="res://scripts/resources/requirements/requirement.gd" id="2_pptug"]
 
 [resource]
 script = ExtResource("2_fv20g")
@@ -13,10 +12,3 @@ stackable = false
 icon_fresh = ExtResource("1_khj5g")
 icon_stale = ExtResource("1_khj5g")
 icon_spoiled = ExtResource("1_khj5g")
-ingredients = Dictionary[String, int]({
-"butter": 1,
-"flour": 1,
-"milk": 1,
-"sugar": 1
-})
-bake_time = 12.0

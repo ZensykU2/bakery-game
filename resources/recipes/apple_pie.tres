@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="RecipeData" format=3 uid="uid://b1fnq1ropv81s"]
+
+[ext_resource type="Script" uid="uid://1p3too0wndu1" path="res://scripts/resources/requirements/requirement.gd" id="1_7j4nt"]
+[ext_resource type="Script" uid="uid://c3s7iafp4tbfq" path="res://scripts/resources/RecipeData.gd" id="1_recipe"]
+[ext_resource type="Script" uid="uid://cnfxiym54pmd8" path="res://scripts/resources/requirements/item_requirement.gd" id="2_item"]
+
+[sub_resource type="Resource" id="ItemRequirement_butter"]
+script = ExtResource("2_item")
+item_id = "butter"
+
+[sub_resource type="Resource" id="ItemRequirement_flour"]
+script = ExtResource("2_item")
+item_id = "flour"
+
+[sub_resource type="Resource" id="ItemRequirement_milk"]
+script = ExtResource("2_item")
+item_id = "milk"
+
+[sub_resource type="Resource" id="ItemRequirement_sugar"]
+script = ExtResource("2_item")
+item_id = "sugar"
+
+[resource]
+script = ExtResource("1_recipe")
+recipe_id = "apple_pie"
+output_item_id = "apple_pie"
+bake_duration_minutes = 65.0
+requirements = Array[ExtResource("1_7j4nt")]([SubResource("ItemRequirement_butter"), SubResource("ItemRequirement_flour"), SubResource("ItemRequirement_milk"), SubResource("ItemRequirement_sugar")])

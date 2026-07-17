@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ItemData" format=3]
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://img5w4a1a5d7"]
 
-[ext_resource type="Texture2D" path="res://art/sprites/bakery/food/Bread.png" id="1_7f8t4"]
-[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_m50y3"]
+[ext_resource type="Texture2D" uid="uid://m2hsdmu8dq7m" path="res://art/sprites/bakery/food/Bread.png" id="1_7f8t4"]
+[ext_resource type="Script" uid="uid://d2765713yqfdl" path="res://scripts/resources/ItemData.gd" id="2_m50y3"]
 
 [resource]
 script = ExtResource("2_m50y3")
@@ -12,8 +12,3 @@ stackable = false
 icon_fresh = ExtResource("1_7f8t4")
 icon_stale = ExtResource("1_7f8t4")
 icon_spoiled = ExtResource("1_7f8t4")
-ingredients = {
-"eggs": 1,
-"flour": 1
-}
-bake_time = 5.0

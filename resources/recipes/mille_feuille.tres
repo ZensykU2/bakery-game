@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="RecipeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/RecipeData.gd" id="1_recipe"]
+[ext_resource type="Script" path="res://scripts/resources/requirements/item_requirement.gd" id="2_item"]
+
+[sub_resource type="Resource" id="ItemRequirement_butter"]
+script = ExtResource("2_item")
+item_id = "butter"
+amount = 1
+[sub_resource type="Resource" id="ItemRequirement_sugar"]
+script = ExtResource("2_item")
+item_id = "sugar"
+amount = 1
+[sub_resource type="Resource" id="ItemRequirement_vanilla"]
+script = ExtResource("2_item")
+item_id = "vanilla"
+amount = 2
+
+[resource]
+script = ExtResource("1_recipe")
+recipe_id = "mille_feuille"
+output_item_id = "mille_feuille"
+bake_duration_minutes = 33.0
+requirements = Array[ExtResource("2_item")]([SubResource("ItemRequirement_butter"), SubResource("ItemRequirement_sugar"), SubResource("ItemRequirement_vanilla")])

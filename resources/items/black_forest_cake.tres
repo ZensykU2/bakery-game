@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ItemData" format=3]
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cytyu3sh4vuat"]
 
-[ext_resource type="Texture2D" path="res://art/sprites/bakery/food/BlackForestCake.png" id="1_76faq"]
-[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="2_lsb0e"]
+[ext_resource type="Texture2D" uid="uid://din3ic8twllhk" path="res://art/sprites/bakery/food/BlackForestCake.png" id="1_76faq"]
+[ext_resource type="Script" uid="uid://d2765713yqfdl" path="res://scripts/resources/ItemData.gd" id="2_lsb0e"]
 
 [resource]
 script = ExtResource("2_lsb0e")
@@ -12,10 +12,3 @@ stackable = false
 icon_fresh = ExtResource("1_76faq")
 icon_stale = ExtResource("1_76faq")
 icon_spoiled = ExtResource("1_76faq")
-ingredients = {
-"butter": 1,
-"chocolate": 1,
-"flour": 2,
-"sugar": 2
-}
-bake_time = 18.0

@@ -29,11 +29,11 @@ func _on_settings() -> void:
 
 func _on_title_screen() -> void:
 	get_tree().paused = false
-	GameManager.save_game()
+	GameManager.save_game_now()
 	Hud.visible = false
 	SceneManager.go_to_title_screen()
 	queue_free()
 
 func _on_quit() -> void:
-	GameManager.save_game()
+	GameManager.save_game_now()
 	get_tree().quit()

@@ -2,7 +2,7 @@ extends Node
 class_name DroppedItemManager
 
 var inv: Node:
-	get: return Services.inventory
+	get: return InventoryManager
 
 func _ready() -> void:
 	TimeManager.minutes_passed.connect(_on_time_minutes_passed)
@@ -23,7 +23,7 @@ func drop_held_item_to_world() -> void:
 		inv.item_dropped.emit(inv.held_item, drop_pos)
 		inv.held_item = null
 		inv.inventory_changed.emit()
-		Services.game.save_game()
+		GameManager.save_game()
 
 func enforce_hard_limit() -> void:
 	var scene_manager = get_node_or_null("/root/SceneManager")
@@ -46,7 +46,8 @@ func _despawn_oldest_item() -> void:
 		for drop_node in active_drops:
 			if drop_node.is_queued_for_deletion():
 				continue
-			if drop_node.item.item_id == oldest_drop.item_id and \
+			if drop_node.item != null and oldest_drop.item != null \
+				and drop_node.item.item_id == oldest_drop.item.item_id and \
 				drop_node.global_position.distance_to(oldest_drop.position) < 2.0:
 					drop_node.queue_free()
 					break
@@ -58,12 +59,12 @@ func _tick_dropped_items_despawn(minutes: int) -> void:
 	if count < GameConstants.Inventory.SOFT_MAX_DROPPED_ITEMS:
 		if state.dropped_items_timer != -1.0:
 			state.dropped_items_timer = -1.0
-			Services.game.save_game()
+			GameManager.save_game()
 		return
 	
 	if state.dropped_items_timer == -1.0:
 		state.dropped_items_timer = float(GameConstants.Inventory.DESPAWN_TIMER_MINUTES)
-		Services.game.save_game()
+		GameManager.save_game()
 	
 	state.dropped_items_timer -= float(minutes)
 	
@@ -83,4 +84,4 @@ func _tick_dropped_items_despawn(minutes: int) -> void:
 	
 	if despawned_any:
 		inv.inventory_changed.emit()
-		Services.game.save_game()
+		GameManager.save_game()

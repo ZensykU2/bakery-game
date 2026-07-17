@@ -13,10 +13,4 @@ stackable = false
 icon_fresh = ExtResource("1_l7y8h")
 icon_stale = ExtResource("1_l7y8h")
 icon_spoiled = ExtResource("1_l7y8h")
-ingredients = Dictionary[String, int]({
-"butter": 1,
-"sugar": 1,
-"vanilla": 2
-})
-bake_time = 24.0
 metadata/_custom_type_script = "uid://d2765713yqfdl"

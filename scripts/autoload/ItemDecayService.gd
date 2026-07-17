@@ -2,7 +2,7 @@ extends Node
 class_name ItemDecayService
 
 var inv: Node:
-	get: return Services.inventory
+	get: return InventoryManager
 
 func _ready() -> void:
 	TimeManager.minutes_passed.connect(_on_time_minutes_passed)
@@ -10,21 +10,16 @@ func _ready() -> void:
 func _on_time_minutes_passed(elapsed_minutes: int) -> void:
 	_tick_inventory_decay(elapsed_minutes)
 
-func _decay_array(slots: Array, minutes: int, modifier: float) -> bool:
+func _decay_array(slots: Array[InventoryItem], minutes: int, modifier: float) -> bool:
 	var changed = false
 	for item in slots:
 		if item == null:
 			continue
-		var item_id = item.item_id if "item_id" in item else item.get("item_id", "")
-		var rate = ItemDB.get_decay_rate(item_id)
+		var rate := ItemDB.get_decay_rate(item.item_id)
 		
 		if rate > 0.0:
-			var freshness = item.freshness if "freshness" in item else item.get("freshness", 1.0)
-			var new_fresh = clamp(freshness - (rate * minutes * modifier), 0.0, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER)
-			if "freshness" in item:
-				item.freshness = new_fresh
-			else:
-				item["freshness"] = new_fresh
+			var new_fresh = clamp(item.freshness - (rate * minutes * modifier), 0.0, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER)
+			item.freshness = new_fresh
 			changed = true
 	return changed
 
@@ -45,12 +40,12 @@ func _tick_inventory_decay(minutes: int) -> void:
 		if _decay_array(drop_items, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
 	
 	var cur_path = SceneManager.current_scene_path
-	var offline_drops = []
+	var offline_drop_items: Array[InventoryItem] = []
 	for drop in state.dropped_items:
 		if drop.scene_path != cur_path:
-			offline_drops.append(drop)
+			offline_drop_items.append(drop.item)
 			
-	if _decay_array(offline_drops, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
+	if _decay_array(offline_drop_items, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true
 	for casing_id in state.casing_slots.keys():
 		var slots = state.casing_slots[casing_id]
 		if _decay_array(slots, minutes, GameConstants.Inventory.DEFAULT_DECAY_MODIFIER): changed = true

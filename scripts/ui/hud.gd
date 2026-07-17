@@ -43,6 +43,7 @@ func _update_cursor_grabber() -> void:
 	cursor_grabber.global_position = cursor_grabber.get_global_mouse_position() - cursor_grabber.size / 2
 
 func _ready() -> void:
+	add_to_group(UIOverlayManager.OVERLAY_GROUP)
 	backdrop.backdrop_clicked.connect(func(): _toggle_backpack())
 	GameManager.day_changed.connect(_update_day)
 	GameManager.money_changed.connect(_update_money)
@@ -54,6 +55,7 @@ func _ready() -> void:
 	
 	if trash_slot_texture:
 		trash_slot.set_slot_background(trash_slot_texture)
+	trash_slot.configure(InventorySlotAddress.trash())
 		
 	setup_inventory_ui()
 	backpack_grid.visible = false
@@ -73,6 +75,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			InventoryManager.drop_held_item_to_world()
 			get_viewport().set_input_as_handled()
 			return
+
+	if backpack_grid.visible and (
+		event.is_action_pressed("ui_cancel") or event.is_action_pressed("ui_accept")
+	):
+		close_overlay()
+		get_viewport().set_input_as_handled()
+		return
 	
 	if event.is_action_pressed("toggle_inventory"):
 		_toggle_backpack()
@@ -92,6 +101,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _toggle_backpack() -> void:
 	var open = not backpack_grid.visible
+	if open:
+		UIOverlayManager.close_all_overlays(self)
 	backpack_grid.visible = open
 	backdrop.visible = open
 	InventoryManager.is_backpack_open = open
@@ -101,6 +112,15 @@ func _toggle_backpack() -> void:
 	
 	if not open:
 		GameManager.save_game()
+
+
+func close_overlay() -> void:
+	if backpack_grid.visible:
+		_toggle_backpack()
+
+
+func is_overlay_open() -> bool:
+	return backpack_grid.visible
 
 func _align_inventory_layout(open: bool) -> void:
 	inventory_container.reset_size()
@@ -129,7 +149,7 @@ func setup_inventory_ui() -> void:
 	
 	for i in range(GameConstants.Inventory.MAX_HOTBAR_IDX):
 		var slot = slot_scene.instantiate()
-		slot.slot_index = i
+		slot.configure(InventorySlotAddress.inventory(i))
 		if hotbar_slot_texture:
 			slot.set_slot_background(hotbar_slot_texture)
 		hotbar_list.add_child(slot)
@@ -137,7 +157,7 @@ func setup_inventory_ui() -> void:
 		
 	for i in range(GameConstants.Inventory.MAX_HOTBAR_IDX, total_slots):
 		var slot = slot_scene.instantiate()
-		slot.slot_index = i
+		slot.configure(InventorySlotAddress.inventory(i))
 		if backpack_slot_texture:
 			slot.set_slot_background(backpack_slot_texture)
 		backpack_grid.add_child(slot)

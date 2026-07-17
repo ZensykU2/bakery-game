@@ -6,8 +6,6 @@ class Player:
 
 # Inventory Configurations
 class Inventory:
-	const TRASHBIN_IDX: int = 999
-	const CONTAINER_IDX: int = 100
 	const MAX_HOTBAR_IDX: int = 9
 	const SOFT_MAX_DROPPED_ITEMS: int = 50
 	const HARD_MAX_DROPPED_ITEMS: int = 200
@@ -118,3 +116,6 @@ class Audio:
 	const TR_SE_SCORE: int = 2
 	const TR_WD_SCORE: int = 2
 	const TR_WE_SCORE: int = 2
+
+class Persistence:
+	const AUTOSAVE_INTERVAL_SECONDS: float = 60.0
