@@ -13,9 +13,11 @@ func _run() -> void:
 	_test_dropped_item_record_round_trip()
 	_test_game_state_round_trip()
 	_test_save_migrations()
+	_test_customer_profile_round_trip()
+	_test_customer_lifecycle()
 
 	if failures.is_empty():
-		print("TESTS PASSED: 5 deterministic test groups completed.")
+		print("TESTS PASSED: 7 deterministic test groups completed.")
 		get_tree().quit(0)
 		return
 
@@ -83,6 +85,27 @@ func _test_game_state_round_trip() -> void:
 		"GameState must preserve inventory capacity."
 	)
 
+func _test_customer_profile_round_trip() -> void:
+	var profile := CustomerProfile.new()
+	profile.customer_id = "tourist_001"
+	profile.display_name = "Mila"
+	profile.origin = CustomerProfile.Origin.TOURIST
+	profile.age_group = CustomerProfile.AgeGroup.OLDER_ADULT
+	profile.wealth_tier = CustomerProfile.WealthTier.AFFLUENT
+	profile.personality = CustomerProfile.Personality.FOODIE
+	profile.visit_count = 4
+	profile.last_selected_day = 12
+	profile.generation_seed = 48291
+
+	var restored := CustomerProfile.from_dict(profile.to_dict())
+
+	_expect(restored.customer_id == "tourist_001", "Customer ID must persist.")
+	_expect(restored.is_tourist(), "Customer origin must persist.")
+	_expect(
+		restored.personality == CustomerProfile.Personality.FOODIE,
+		"Customer personality must persist."
+	)
+	_expect(restored.generation_seed == 48291, "Customer appearance seed must persist.")
 
 func _test_save_migrations() -> void:
 	var migrated_legacy := SaveMigrator.migrate({"day": 2, "money": 50})
@@ -97,3 +120,21 @@ func _test_save_migrations() -> void:
 	})
 	_expect(migrated_v1.get("save_version", -1) == SaveMigrator.CURRENT_VERSION, "Version 1 saves must migrate to the current version.")
 	_expect(migrated_v1.has("location"), "Version 1 saves must receive location data.")
+
+func _test_customer_lifecycle() -> void:
+	var customer := Customer.new()
+	var profile := CustomerProfile.new()
+	profile.customer_id = "resident_baker"
+
+	customer.initialize(profile)
+	customer.activate()
+	customer.begin_leaving()
+	customer.mark_despawned()
+
+	_expect(customer.profile == profile, "Customer must retain its profile.")
+	_expect(
+		customer.lifecycle_state == Customer.LifecycleState.DESPAWNED,
+		"Customer lifecycle must reach DESPAWNED."
+	)
+
+	customer.free()
