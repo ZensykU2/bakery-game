@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://iiok7x3m3txc"]
 
 [ext_resource type="Script" uid="uid://du410irps4arw" path="res://scripts/customers/customer.gd" id="1_wpuvi"]
+[ext_resource type="Script" uid="uid://c85qtdy2u2k6n" path="res://scripts/customers/customer_activity_controller.gd" id="2_weoub"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1pkl4"]
 size = Vector2(12, 16)
@@ -12,3 +13,6 @@ script = ExtResource("1_wpuvi")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1618522816]
 position = Vector2(0, 0.8)
 shape = SubResource("RectangleShape2D_1pkl4")
+
+[node name="ActivityController" type="Node" parent="." unique_id=995874777]
+script = ExtResource("2_weoub")

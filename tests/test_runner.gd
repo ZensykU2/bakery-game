@@ -15,9 +15,10 @@ func _run() -> void:
 	_test_save_migrations()
 	_test_customer_profile_round_trip()
 	_test_customer_lifecycle()
+	_test_customer_activity_controller()
 
 	if failures.is_empty():
-		print("TESTS PASSED: 7 deterministic test groups completed.")
+		print("TESTS PASSED: 8 deterministic test groups completed.")
 		get_tree().quit(0)
 		return
 
@@ -29,6 +30,40 @@ func _run() -> void:
 func _expect(condition: bool, message: String) -> void:
 	if not condition:
 		failures.append(message)
+
+class RecordingCustomerActivity extends CustomerActivity:
+	var entered_count: int = 0
+	var exited_count: int = 0
+
+	func enter(_customer: Customer) -> void:
+		entered_count += 1
+
+	func exit(_customer: Customer) -> void:
+		exited_count += 1
+
+func _test_customer_activity_controller() -> void:
+	var customer := Customer.new()
+	var controller := CustomerActivityController.new()
+	controller.initialize(customer)
+
+	var first_activity := RecordingCustomerActivity.new()
+	var second_activity := RecordingCustomerActivity.new()
+
+	_expect(
+		controller.set_activity(first_activity),
+		"Activity controller must accept an activity."
+	)
+	_expect(first_activity.entered_count == 1, "Activity enter must run once.")
+
+	controller.set_activity(second_activity)
+	_expect(first_activity.exited_count == 1, "Replacing an activity must exit the old one.")
+	_expect(second_activity.entered_count == 1, "Replacement activity must enter once.")
+
+	controller.clear_activity()
+	_expect(second_activity.exited_count == 1, "Clearing an activity must exit it.")
+
+	controller.free()
+	customer.free()
 
 
 func _test_inventory_item_value_behavior() -> void:
