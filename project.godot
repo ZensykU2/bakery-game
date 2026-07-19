@@ -31,11 +31,13 @@ InventoryManager="*uid://dup74gp6ciw6x"
 CraftingService="*uid://okvc75vp5p3u"
 BakingManager="*uid://c77ecw1nfim6v"
 SceneManager="*uid://cfw08k5ocdf5k"
+CustomerDestinationRegistry="*uid://b08td3m41m4y5"
 UIOverlayManager="*res://scripts/autoload/UIOverlayManager.gd"
-Hud="*uid://fg1fujl77ecp"
 DebugPanel="*uid://cn4aeejgt1af3"
+Hud="*uid://fg1fujl77ecp"
 MusicManager="*uid://c0a03um3s5743"
 SfxManager="*uid://bwi6pqgh71b1g"
+CustomerManager="*uid://hhfdsre0qsdb"
 
 [display]
 

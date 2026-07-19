@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="CustomerTrafficSchedule" format=3 uid="uid://dlom26nft4kh8"]
+
+[ext_resource type="Script" uid="uid://sr3roalinier" path="res://scripts/customers/customer_traffic_schedule.gd" id="1_vgmef"]
+[ext_resource type="Script" uid="uid://dwl208j3wi45m" path="res://scripts/customers/customer_traffic_window.gd" id="2_oastq"]
+
+[sub_resource type="Resource" id="Resource_ejiur"]
+script = ExtResource("2_oastq")
+start_minute = 420
+end_minute = 570
+arrival_weight = 1.0
+metadata/_custom_type_script = "uid://dwl208j3wi45m"
+
+[sub_resource type="Resource" id="Resource_qr052"]
+script = ExtResource("2_oastq")
+start_minute = 660
+end_minute = 780
+arrival_weight = 0.75
+metadata/_custom_type_script = "uid://dwl208j3wi45m"
+
+[sub_resource type="Resource" id="Resource_tsp2f"]
+script = ExtResource("2_oastq")
+start_minute = 780
+end_minute = 960
+arrival_weight = 0.15
+metadata/_custom_type_script = "uid://dwl208j3wi45m"
+
+[sub_resource type="Resource" id="Resource_e4pcs"]
+script = ExtResource("2_oastq")
+start_minute = 960
+end_minute = 1080
+arrival_weight = 0.65
+metadata/_custom_type_script = "uid://dwl208j3wi45m"
+
+[sub_resource type="Resource" id="Resource_tnyvp"]
+script = ExtResource("2_oastq")
+start_minute = 1080
+end_minute = 1200
+arrival_weight = 0.5
+metadata/_custom_type_script = "uid://dwl208j3wi45m"
+
+[resource]
+script = ExtResource("1_vgmef")
+default_arrival_weight = 0.05
+windows = Array[ExtResource("2_oastq")]([SubResource("Resource_ejiur"), SubResource("Resource_qr052"), SubResource("Resource_tsp2f"), SubResource("Resource_e4pcs"), SubResource("Resource_tnyvp")])
+metadata/_custom_type_script = "uid://sr3roalinier"

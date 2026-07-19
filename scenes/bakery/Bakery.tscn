@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://bw83e2wm0ubub" path="res://scenes/bakery/Fridge.tscn" id="5_fi7vi"]
 [ext_resource type="PackedScene" uid="uid://cb83irmlsylp5" path="res://scenes/world/Window.tscn" id="9_fi7vi"]
 [ext_resource type="PackedScene" uid="uid://bo1cspga42kym" path="res://scenes/world/ExitDoor.tscn" id="9_jl5p4"]
+[ext_resource type="Script" uid="uid://bmrraa6prfjc2" path="res://scripts/customers/customer_destination.gd" id="11_fi7vi"]
+[ext_resource type="Script" uid="uid://28rplkcdjfw" path="res://scripts/customers/customer_debug_spawner.gd" id="12_customer_debug"]
 [ext_resource type="Script" uid="uid://vrbxnajgcm7m" path="res://scripts/world/lamp_controller.gd" id="13_e4aqv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oahqh"]
@@ -281,9 +283,6 @@ texture_region_size = Vector2i(32, 32)
 tile_size = Vector2i(32, 32)
 sources/0 = SubResource("TileSetAtlasSource_tuj7y")
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_1pkl4"]
-distance = -244.0
-
 [sub_resource type="Gradient" id="Gradient_fi7vi"]
 offsets = PackedFloat32Array(0, 0.6097561)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -294,6 +293,11 @@ width = 512
 height = 512
 fill = 1
 fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_1pkl4"]
+vertices = PackedVector2Array(130.67188, 149.14063, -137.77344, 152.85156, -135.21094, 35.90625, -26.359375, 34.90625, 124.32031, -45.046875, -23.359375, -45.9375)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 0, 3, 5)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-33, -56, -36, 25, -145, 26, -148, 163, 141, 159, 134, -55)])
 
 [node name="Bakery" type="Node2D" unique_id=247730497]
 y_sort_enabled = true
@@ -358,12 +362,6 @@ position = Vector2(788, 256)
 target_scene = "uid://ddjaxocttvlu"
 target_spawn_name = "StreetSpawnBakery"
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1916088712]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1828861011]
-position = Vector2(573, 179)
-shape = SubResource("WorldBoundaryShape2D_1pkl4")
-
 [node name="lamp" type="Node2D" parent="." unique_id=506346661 node_paths=PackedStringArray("light_node")]
 position = Vector2(479, 188)
 script = ExtResource("13_e4aqv")
@@ -403,3 +401,24 @@ position = Vector2(749, 345)
 
 [node name="OvenUI" parent="CanvasLayer" unique_id=709665024 instance=ExtResource("3_5gh0i")]
 visible = false
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=1234994431]
+position = Vector2(564, 369)
+navigation_polygon = SubResource("NavigationPolygon_1pkl4")
+
+[node name="CustomerDestination" type="Node2D" parent="." unique_id=553466438]
+
+[node name="BakeryEntranceInside" type="Marker2D" parent="CustomerDestination" unique_id=938336513]
+position = Vector2(513, 462)
+script = ExtResource("11_fi7vi")
+destination_id = &"bakery_entrance_inside"
+
+[node name="CustomerDebugSpawn" type="Marker2D" parent="CustomerDestination" unique_id=354118643]
+position = Vector2(650, 406)
+script = ExtResource("11_fi7vi")
+destination_id = &"bakery_debug_spawn"
+
+[node name="CustomerDebugSpawner" type="Node" parent="." unique_id=138305842]
+script = ExtResource("12_customer_debug")
+destination_id = &"bakery_entrance_inside"
+spawn_on_ready = true

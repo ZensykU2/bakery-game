@@ -1,5 +1,19 @@
-extends RefCounted
+extends Resource
 class_name CustomerProfile
+
+@export var customer_id: String = ""
+@export var display_name: String = ""
+
+@export var origin: Origin = Origin.RESIDENT
+@export var age_group: AgeGroup = AgeGroup.ADULT
+@export var wealth_tier: WealthTier = WealthTier.STANDARD
+@export var personality: Personality = Personality.FRIENDLY
+
+@export var generation_seed: int = 0
+
+# Used later by the persistent tourist-roster system.
+var visit_count: int = 0
+var last_selected_day: int = 0
 
 enum Origin {
 	RESIDENT,
@@ -29,18 +43,7 @@ enum Personality {
 	TRADITIONAL,
 }
 
-var customer_id: String = ""
-var display_name: String = ""
 
-var origin: Origin = Origin.RESIDENT
-var age_group: AgeGroup = AgeGroup.ADULT
-var wealth_tier: WealthTier = WealthTier.STANDARD
-var personality: Personality = Personality.FRIENDLY
-
-# Used later by the persistent tourist-roster system.
-var visit_count: int = 0
-var last_selected_day: int = 0
-var generation_seed: int = 0
 
 func is_resident() -> bool:
 	return origin == Origin.RESIDENT

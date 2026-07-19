@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CustomerRoster" format=3 uid="uid://b1kjd0ubestrm"]
+
+[ext_resource type="Script" uid="uid://e2vgbjl0xve8" path="res://scripts/customers/customer_profile.gd" id="1_i22xq"]
+[ext_resource type="Script" uid="uid://cxlnd884007ts" path="res://scripts/customers/customer_roster.gd" id="2_hpnb6"]
+[ext_resource type="Resource" uid="uid://bjj0iy6hvj3ya" path="res://resources/customers/residents/resident_example.tres" id="2_pbfml"]
+
+[resource]
+script = ExtResource("2_hpnb6")
+resident_profiles = Array[ExtResource("1_i22xq")]([ExtResource("2_pbfml")])
+metadata/_custom_type_script = "uid://cxlnd884007ts"

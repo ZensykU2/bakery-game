@@ -39,3 +39,6 @@ func _set_lifecycle_state(next_state: LifecycleState) -> void:
 	var previous_state := lifecycle_state
 	lifecycle_state = next_state
 	lifecycle_changed.emit(previous_state, lifecycle_state)
+
+func get_navigation_controller() -> CustomerNavigationController:
+	return get_node_or_null("NavigationController") as CustomerNavigationController

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://du410irps4arw" path="res://scripts/customers/customer.gd" id="1_wpuvi"]
 [ext_resource type="Script" uid="uid://c85qtdy2u2k6n" path="res://scripts/customers/customer_activity_controller.gd" id="2_weoub"]
+[ext_resource type="Script" uid="uid://fda7sojf6ptc" path="res://scripts/customers/customer_navigation_controller.gd" id="3_wvoe2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1pkl4"]
 size = Vector2(12, 16)
@@ -11,8 +12,13 @@ y_sort_enabled = true
 script = ExtResource("1_wpuvi")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1618522816]
-position = Vector2(0, 0.8)
+position = Vector2(0, 8)
 shape = SubResource("RectangleShape2D_1pkl4")
 
 [node name="ActivityController" type="Node" parent="." unique_id=995874777]
 script = ExtResource("2_weoub")
+
+[node name="NavigationController" type="Node2D" parent="." unique_id=617026593]
+script = ExtResource("3_wvoe2")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="NavigationController" unique_id=545346021]

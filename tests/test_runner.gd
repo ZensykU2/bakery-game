@@ -16,9 +16,11 @@ func _run() -> void:
 	_test_customer_profile_round_trip()
 	_test_customer_lifecycle()
 	_test_customer_activity_controller()
+	_test_customer_traffic_schedule()
+	_test_customer_roster_creates_runtime_profiles()
 
 	if failures.is_empty():
-		print("TESTS PASSED: 8 deterministic test groups completed.")
+		print("TESTS PASSED: 10 deterministic test groups completed.")
 		get_tree().quit(0)
 		return
 
@@ -173,3 +175,57 @@ func _test_customer_lifecycle() -> void:
 	)
 
 	customer.free()
+
+func _test_customer_traffic_schedule() -> void:
+	var schedule := CustomerTrafficSchedule.new()
+	schedule.default_arrival_weight = 0.05
+
+	var morning := CustomerTrafficWindow.new()
+	morning.start_minute = 420
+	morning.end_minute = 570
+	morning.arrival_weight = 1.0
+
+	var quiet_afternoon := CustomerTrafficWindow.new()
+	quiet_afternoon.start_minute = 780
+	quiet_afternoon.end_minute = 960
+	quiet_afternoon.arrival_weight = 0.15
+
+	schedule.windows = [morning, quiet_afternoon]
+
+	_expect(
+		is_equal_approx(schedule.get_arrival_weight(480), 1.05),
+		"Morning rush weight must include its traffic window."
+	)
+	_expect(
+		is_equal_approx(schedule.get_arrival_weight(840), 0.20),
+		"Quiet afternoon weight must include its traffic window."
+	)
+	_expect(
+		is_equal_approx(schedule.get_arrival_weight(600), 0.05),
+		"Unscheduled time must use the default traffic weight."
+	)
+
+func _test_customer_roster_creates_runtime_profiles() -> void:
+	var resident := CustomerProfile.new()
+	resident.customer_id = "resident_example"
+	resident.display_name = "Example"
+	resident.origin = CustomerProfile.Origin.RESIDENT
+	resident.generation_seed = 42
+
+	var roster := CustomerRoster.new()
+	roster.resident_profiles = [resident]
+
+	var runtime_profile := roster.create_runtime_profile("resident_example")
+
+	_expect(
+		runtime_profile != null,
+		"Roster must create a runtime resident profile."
+	)
+	_expect(
+		runtime_profile != resident,
+		"Runtime resident profiles must not reuse authored resources."
+	)
+	_expect(
+		runtime_profile.customer_id == "resident_example",
+		"Runtime resident profile must preserve its ID."
+	)

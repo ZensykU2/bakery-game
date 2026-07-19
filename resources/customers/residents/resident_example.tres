@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CustomerProfile" format=3 uid="uid://bjj0iy6hvj3ya"]
+
+[ext_resource type="Script" uid="uid://e2vgbjl0xve8" path="res://scripts/customers/customer_profile.gd" id="1_s8l8k"]
+
+[resource]
+script = ExtResource("1_s8l8k")
+customer_id = "resident_example"
+display_name = "Michi"
+generation_seed = 3
+metadata/_custom_type_script = "uid://e2vgbjl0xve8"
