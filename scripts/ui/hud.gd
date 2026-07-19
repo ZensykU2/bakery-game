@@ -6,6 +6,7 @@ extends CanvasLayer
 
 @onready var day_label: Label = $TopBarMargin/TopBar/DayLabel
 @onready var money_label: Label = $TopBarMargin/TopBar/MoneyLabel
+@onready var bakery_button: Button = $TopBarMargin/TopBar/BakeryButton
 
 @onready var trash_slot: TextureRect = $VBoxContainer/TrashSlot
 @onready var trash_label: Label = $VBoxContainer/TrashLabel
@@ -47,11 +48,16 @@ func _ready() -> void:
 	backdrop.backdrop_clicked.connect(func(): _toggle_backpack())
 	GameManager.day_changed.connect(_update_day)
 	GameManager.money_changed.connect(_update_money)
+	BakeryOperations.opening_changed.connect(_update_bakery_button)
+	SceneManager.scene_changed.connect(_on_scene_changed)
 	InventoryManager.inventory_changed.connect(_rebuild_inventory)
 	InventoryManager.active_container_changed.connect(_on_active_container_changed)
 
 	_update_day(GameManager.get_day())
 	_update_money(GameManager.get_money())
+	_update_bakery_button(BakeryOperations.is_open())
+	_on_scene_changed(SceneManager.current_scene_path)
+	bakery_button.pressed.connect(_toggle_bakery_opening)
 	
 	if trash_slot_texture:
 		trash_slot.set_slot_background(trash_slot_texture)
@@ -186,6 +192,21 @@ func _update_day(_new_day: int) -> void:
 
 func _update_money(new_money: int) -> void:
 	money_label.text = "Money: %d" % new_money
+
+
+func _toggle_bakery_opening() -> void:
+	if BakeryOperations.is_open():
+		BakeryOperations.close_bakery()
+	else:
+		BakeryOperations.open_bakery()
+
+
+func _update_bakery_button(is_open: bool) -> void:
+	bakery_button.text = "Close Bakery" if is_open else "Open Bakery"
+
+
+func _on_scene_changed(scene_path: String) -> void:
+	bakery_button.visible = scene_path == SceneManager.DEFAULT_LEVEL_PATH
 
 func show_confirm_dialog(title: String, text: String, on_confirm: Callable) -> void:
 	var dialog := ConfirmationDialog.new()

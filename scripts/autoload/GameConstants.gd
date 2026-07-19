@@ -70,6 +70,10 @@ class TimeManage:
 	const HOUR_EVENING_START: int = 17
 	const HOUR_NIGHT_START: int = 20
 
+class Customers:
+	const MAX_TOURISTS: int = 10
+	const TOURIST_RETIRE_AFTER_DAYS: int = 14
+
 class World:
 	const HARVEST_DISTANCE: float = 512.0
 	const DROPPED_ITEM_PICKUP_DELAY: float = 1.2

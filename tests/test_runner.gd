@@ -18,9 +18,18 @@ func _run() -> void:
 	_test_customer_activity_controller()
 	_test_customer_traffic_schedule()
 	_test_customer_roster_creates_runtime_profiles()
+	_test_tourist_roster_persistence_and_replacement()
+	_test_customer_visit_planner()
+	_test_customer_activity_sequence()
+	_test_customer_schedule_director_arrivals()
+	_test_customer_destination_purpose()
+	_test_customer_visit_route_planner()
+	_test_customer_order_planner()
+	_test_customer_order_fulfillment()
+	_test_bakery_open_state_persistence()
 
 	if failures.is_empty():
-		print("TESTS PASSED: 10 deterministic test groups completed.")
+		print("TESTS PASSED: 19 deterministic test groups completed.")
 		get_tree().quit(0)
 		return
 
@@ -42,6 +51,19 @@ class RecordingCustomerActivity extends CustomerActivity:
 
 	func exit(_customer: Customer) -> void:
 		exited_count += 1
+
+class CompletedCustomerActivity extends CustomerActivity:
+	var entered_count: int = 0
+	var exited_count: int = 0
+
+	func enter(_customer: Customer) -> void:
+		entered_count += 1
+
+	func exit(_customer: Customer) -> void:
+		exited_count += 1
+
+	func is_finished(_customer: Customer) -> bool:
+		return true
 
 func _test_customer_activity_controller() -> void:
 	var customer := Customer.new()
@@ -228,4 +250,204 @@ func _test_customer_roster_creates_runtime_profiles() -> void:
 	_expect(
 		runtime_profile.customer_id == "resident_example",
 		"Runtime resident profile must preserve its ID."
+	)
+
+
+func _test_tourist_roster_persistence_and_replacement() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 12345
+	var roster := TouristRoster.new()
+	roster.ensure_population(1, rng)
+
+	_expect(
+		roster.profiles.size() == GameConstants.Customers.MAX_TOURISTS,
+		"Tourist roster must maintain its configured population."
+	)
+	var retired_tourist_id := roster.profiles[0].customer_id
+	var active_tourist_id := roster.profiles[1].customer_id
+	roster.profiles[0].last_selected_day = 1
+	roster.profiles[1].last_selected_day = 15
+
+	var retired_count := roster.retire_inactive(16)
+	_expect(retired_count >= 1, "Inactive tourists must be retired.")
+	_expect(
+		roster.profiles.any(func(profile: CustomerProfile) -> bool: return profile.customer_id == active_tourist_id),
+		"Recently selected tourists must remain in the roster."
+	)
+
+	roster.ensure_population(16, rng)
+	_expect(
+		roster.profiles.size() == GameConstants.Customers.MAX_TOURISTS,
+		"Retired tourists must be replaced."
+	)
+	_expect(
+		not roster.profiles.any(func(profile: CustomerProfile) -> bool: return profile.customer_id == retired_tourist_id),
+		"Retired tourists must not remain in the roster."
+	)
+
+	var restored_roster := TouristRoster.new()
+	restored_roster.from_dict(roster.to_dict())
+	_expect(
+		restored_roster.profiles.size() == roster.profiles.size(),
+		"Tourist roster must persist all active tourists."
+	)
+
+
+func _test_customer_visit_planner() -> void:
+	var resident_template := CustomerProfile.new()
+	resident_template.customer_id = "resident_ada"
+	resident_template.origin = CustomerProfile.Origin.RESIDENT
+	var resident_roster := CustomerRoster.new()
+	resident_roster.resident_profiles = [resident_template]
+
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 54321
+	var tourist_roster := TouristRoster.new()
+	tourist_roster.ensure_population(3, rng)
+	var planner := CustomerVisitPlanner.new()
+
+	var resident_request := planner.create_visit_request(
+		resident_roster, tourist_roster, 3, 480, 0.0, rng
+	)
+	_expect(
+		resident_request != null and resident_request.profile.is_resident(),
+		"Planner must select a resident when tourist probability is zero."
+	)
+	_expect(
+		resident_request.profile != resident_template,
+		"Planner must create runtime resident profiles."
+	)
+
+	var tourist_request := planner.create_visit_request(
+		resident_roster, tourist_roster, 3, 480, 1.0, rng
+	)
+	_expect(
+		tourist_request != null and tourist_request.profile.is_tourist(),
+		"Planner must select a tourist when tourist probability is one."
+	)
+	_expect(
+		tourist_request.profile.visit_count == 1,
+		"Selecting a tourist for a visit must update its visit history."
+	)
+
+
+func _test_customer_activity_sequence() -> void:
+	var customer := Customer.new()
+	var first_activity := CompletedCustomerActivity.new()
+	var second_activity := CompletedCustomerActivity.new()
+	var sequence := CustomerActivitySequence.new([first_activity, second_activity])
+
+	sequence.enter(customer)
+	sequence.tick(customer, 0.0)
+	_expect(first_activity.exited_count == 1, "Sequence must exit each completed activity.")
+	_expect(second_activity.entered_count == 1, "Sequence must enter the next activity.")
+
+	sequence.tick(customer, 0.0)
+	_expect(sequence.is_finished(customer), "Sequence must complete after its final activity.")
+	_expect(second_activity.exited_count == 1, "Sequence must exit its final activity.")
+	customer.free()
+
+
+func _test_customer_schedule_director_arrivals() -> void:
+	var resident := CustomerProfile.new()
+	resident.customer_id = "resident_scheduler"
+	var resident_roster := CustomerRoster.new()
+	resident_roster.resident_profiles = [resident]
+
+	var schedule := CustomerTrafficSchedule.new()
+	schedule.default_arrival_weight = 1.0
+	var director := CustomerScheduleDirector.new()
+	director.traffic_schedule = schedule
+	director.resident_roster = resident_roster
+	director.arrivals_per_weight = 1.0
+	director.tourist_probability = 0.0
+
+	var previous_open_state := GameManager.state.bakery_is_open
+	GameManager.state.bakery_is_open = true
+	var request := director.evaluate_arrivals(1, 480)
+	GameManager.state.bakery_is_open = previous_open_state
+	_expect(
+		request != null and request.profile.is_resident(),
+		"Schedule director must produce a visit once enough arrival progress is accumulated."
+	)
+
+
+func _test_customer_destination_purpose() -> void:
+	var destination := CustomerDestination.new()
+	destination.purpose = CustomerDestination.Purpose.BROWSE
+	_expect(
+		destination.purpose == CustomerDestination.Purpose.BROWSE,
+		"Customer destinations must retain their assigned purpose."
+	)
+	destination.free()
+
+
+func _test_customer_visit_route_planner() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 98765
+	var planner := CustomerVisitRoutePlanner.new()
+	var plan := planner.create_plan(
+		[&"browse_a", &"browse_b", &"browse_c"],
+		[&"order_counter"],
+		2,
+		rng
+	)
+
+	_expect(plan != null, "Visit route planner must create a plan with an order point.")
+	_expect(
+		plan.order_destination_id == &"order_counter",
+		"Visit route planner must end at an order destination."
+	)
+	_expect(
+		plan.browse_destination_ids.size() <= 2,
+		"Visit route planner must respect its browse-stop limit."
+	)
+
+
+func _test_customer_order_planner() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 222
+	var planner := CustomerOrderPlanner.new()
+	var intent := planner.create_intent(["donut", "pie"], rng)
+	_expect(intent != null, "Order planner must create an intent from displayed items.")
+	_expect(
+		intent.item_id == "donut" or intent.item_id == "pie",
+		"Order planner must select a displayed item."
+	)
+	_expect(
+		planner.create_intent([], rng) == null,
+		"Order planner must not create an intent without displayed items."
+	)
+
+
+func _test_customer_order_fulfillment() -> void:
+	var displayed_item := InventoryItem.new()
+	displayed_item.item_id = "donut"
+	displayed_item.amount = 2
+	displayed_item.freshness = 1.0
+	var casing_slots := {"test_casing": [displayed_item]}
+	var fulfillment_service := CustomerOrderFulfillmentService.new()
+	var result := fulfillment_service.fulfill(
+		CustomerOrderIntent.new("donut"),
+		casing_slots
+	)
+
+	_expect(result.fulfilled, "Fulfillment must succeed for a displayed requested item.")
+	_expect(result.earned_money > 0, "Fulfillment must calculate the sale value.")
+	_expect(displayed_item.amount == 1, "Fulfillment must remove exactly one displayed item.")
+
+
+func _test_bakery_open_state_persistence() -> void:
+	var original := GameState.new()
+	original.bakery_is_open = true
+	original.bakery_opened_day = 3
+	original.bakery_opened_minute = 720
+	original.bakery_open_minutes_today = 90
+	var restored := GameState.new()
+	restored.from_dict(original.to_dict())
+
+	_expect(restored.bakery_is_open, "Bakery open state must persist.")
+	_expect(
+		restored.bakery_opened_day == 3 and restored.bakery_open_minutes_today == 90,
+		"Bakery opening timing must persist."
 	)

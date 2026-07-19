@@ -50,6 +50,11 @@ layout_mode = 2
 [node name="MoneyLabel" type="Label" parent="TopBarMargin/TopBar" unique_id=468569681]
 layout_mode = 2
 
+[node name="BakeryButton" type="Button" parent="TopBarMargin/TopBar"]
+layout_mode = 2
+focus_mode = 0
+text = "Open Bakery"
+
 [node name="InventoryContainer" type="VBoxContainer" parent="." unique_id=1012493382]
 custom_minimum_size = Vector2(0, 120)
 anchors_preset = 7

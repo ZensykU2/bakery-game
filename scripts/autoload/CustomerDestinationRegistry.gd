@@ -49,3 +49,13 @@ func has_destination(destination_id: StringName) -> bool:
 
 func get_destination(destination_id: StringName) -> CustomerDestination:
 	return _destinations.get(destination_id) as CustomerDestination
+
+
+func get_destinations_by_purpose(
+		purpose: CustomerDestination.Purpose
+	) -> Array[CustomerDestination]:
+	var matching_destinations: Array[CustomerDestination] = []
+	for destination in _destinations.values():
+		if destination.purpose == purpose:
+			matching_destinations.append(destination)
+	return matching_destinations

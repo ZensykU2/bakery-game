@@ -16,6 +16,11 @@ var dropped_items: Array[DroppedItemRecord] = []
 var dropped_items_timer: float = -1.0
 
 var active_bakes := {}
+var tourist_roster := TouristRoster.new()
+var bakery_is_open: bool = false
+var bakery_opened_day: int = 0
+var bakery_opened_minute: int = -1
+var bakery_open_minutes_today: int = 0
 
 func _init() -> void:
 	inventory_slots.resize(max_inventory_slots)
@@ -24,6 +29,8 @@ func _init() -> void:
 	
 	for item_id in GameConstants.Inventory.STARTING_ITEMS.keys():
 		_add_initial_item(item_id, GameConstants.Inventory.STARTING_ITEMS[item_id])
+	
+	tourist_roster.ensure_population(day)
 
 func _add_initial_item(item_id: String, amount: int) -> void:
 	for i in range(inventory_slots.size()):
@@ -90,7 +97,12 @@ func to_dict() -> Dictionary:
 		"casing_slots": casing_data,
 		"counter_slots": _serialize_slots(counter_slots),
 		"dropped_items": drops,
-		"dropped_items_timer": dropped_items_timer
+		"dropped_items_timer": dropped_items_timer,
+		"tourist_roster": tourist_roster.to_dict(),
+		"bakery_is_open": bakery_is_open,
+		"bakery_opened_day": bakery_opened_day,
+		"bakery_opened_minute": bakery_opened_minute,
+		"bakery_open_minutes_today": bakery_open_minutes_today
 	}
 
 func from_dict(data: Dictionary) -> void:
@@ -125,3 +137,14 @@ func from_dict(data: Dictionary) -> void:
 		if drop_data is Dictionary:
 			dropped_items.append(DroppedItemRecord.from_dict(drop_data))
 	dropped_items_timer = data.get("dropped_items_timer", -1.0)
+	
+	tourist_roster = TouristRoster.new()
+	var tourist_roster_data = data.get("tourist_roster", {})
+	if tourist_roster_data is Dictionary:
+		tourist_roster.from_dict(tourist_roster_data)
+	tourist_roster.ensure_population(day)
+	
+	bakery_is_open = bool(data.get("bakery_is_open", false))
+	bakery_opened_day = maxi(0, int(data.get("bakery_opened_day", 0)))
+	bakery_opened_minute = clampi(int(data.get("bakery_opened_minute", -1)), -1, 1439)
+	bakery_open_minutes_today = maxi(0, int(data.get("bakery_open_minutes_today", 0)))

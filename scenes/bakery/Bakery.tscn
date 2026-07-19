@@ -12,6 +12,10 @@
 [ext_resource type="Script" uid="uid://bmrraa6prfjc2" path="res://scripts/customers/customer_destination.gd" id="11_fi7vi"]
 [ext_resource type="Script" uid="uid://28rplkcdjfw" path="res://scripts/customers/customer_debug_spawner.gd" id="12_customer_debug"]
 [ext_resource type="Script" uid="uid://vrbxnajgcm7m" path="res://scripts/world/lamp_controller.gd" id="13_e4aqv"]
+[ext_resource type="Script" uid="uid://bb7i2vuvuxk0n" path="res://scripts/customers/customer_schedule_director.gd" id="14_customer_schedule"]
+[ext_resource type="Script" uid="uid://dqgsts7x1cmyl" path="res://scripts/customers/customer_visit_service.gd" id="15_customer_visits"]
+[ext_resource type="Resource" uid="uid://dlom26nft4kh8" path="res://resources/customers/bakery_traffic_schedule.tres" id="16_customer_traffic"]
+[ext_resource type="Resource" uid="uid://b1kjd0ubestrm" path="res://resources/customers/resident_roster.tres" id="17_customer_roster"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oahqh"]
 texture = ExtResource("2_oahqh")
@@ -295,9 +299,9 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1pkl4"]
-vertices = PackedVector2Array(130.67188, 149.14063, -137.77344, 152.85156, -135.21094, 35.90625, -26.359375, 34.90625, 124.32031, -45.046875, -23.359375, -45.9375)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 0, 3, 5)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-33, -56, -36, 25, -145, 26, -148, 163, 141, 159, 134, -55)])
+vertices = PackedVector2Array(-36.726563, 27, -38.71875, -46.882813, 124.32031, -45.101563, 130.67188, 149.14063, -137.85156, 152.85156, -136.14063, 27)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(0, 3, 4, 5)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-49, -57, -47, 17, -146, 17, -148, 163, 141, 159, 134, -55)])
 
 [node name="Bakery" type="Node2D" unique_id=247730497]
 y_sort_enabled = true
@@ -409,16 +413,51 @@ navigation_polygon = SubResource("NavigationPolygon_1pkl4")
 [node name="CustomerDestination" type="Node2D" parent="." unique_id=553466438]
 
 [node name="BakeryEntranceInside" type="Marker2D" parent="CustomerDestination" unique_id=938336513]
-position = Vector2(513, 462)
+position = Vector2(479, 416)
 script = ExtResource("11_fi7vi")
 destination_id = &"bakery_entrance_inside"
+purpose = 1
 
 [node name="CustomerDebugSpawn" type="Marker2D" parent="CustomerDestination" unique_id=354118643]
-position = Vector2(650, 406)
+position = Vector2(629, 491)
 script = ExtResource("11_fi7vi")
 destination_id = &"bakery_debug_spawn"
+
+[node name="BrowseDisplayLeft" type="Marker2D" parent="CustomerDestination" unique_id=1386372852]
+position = Vector2(548, 430)
+script = ExtResource("11_fi7vi")
+destination_id = &"bakery_browse_left"
+purpose = 2
+
+[node name="BrowseDisplayCenter" type="Marker2D" parent="CustomerDestination" unique_id=1881836516]
+position = Vector2(596, 446)
+script = ExtResource("11_fi7vi")
+destination_id = &"bakery_browse_center"
+purpose = 2
+
+[node name="BrowseDisplayRight" type="Marker2D" parent="CustomerDestination" unique_id=466101678]
+position = Vector2(646, 462)
+script = ExtResource("11_fi7vi")
+destination_id = &"bakery_browse_right"
+purpose = 2
+
+[node name="OrderCounter" type="Marker2D" parent="CustomerDestination" unique_id=925012182]
+position = Vector2(458, 400)
+script = ExtResource("11_fi7vi")
+destination_id = &"bakery_order_counter"
+purpose = 3
 
 [node name="CustomerDebugSpawner" type="Node" parent="." unique_id=138305842]
 script = ExtResource("12_customer_debug")
 destination_id = &"bakery_entrance_inside"
-spawn_on_ready = true
+
+[node name="CustomerSystem" type="Node" parent="." unique_id=137759125]
+
+[node name="ScheduleDirector" type="Node" parent="CustomerSystem" unique_id=1863617186]
+script = ExtResource("14_customer_schedule")
+traffic_schedule = ExtResource("16_customer_traffic")
+resident_roster = ExtResource("17_customer_roster")
+
+[node name="VisitService" type="Node" parent="CustomerSystem" unique_id=358445293 node_paths=PackedStringArray("schedule_director")]
+script = ExtResource("15_customer_visits")
+schedule_director = NodePath("../ScheduleDirector")

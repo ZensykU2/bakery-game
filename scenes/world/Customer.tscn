@@ -15,6 +15,11 @@ script = ExtResource("1_wpuvi")
 position = Vector2(0, 8)
 shape = SubResource("RectangleShape2D_1pkl4")
 
+[node name="PrototypeVisual" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, -16, 10, -6, 0, 4, -10, -6)
+color = Color(0.93, 0.68, 0.42, 1)
+z_index = 1
+
 [node name="ActivityController" type="Node" parent="." unique_id=995874777]
 script = ExtResource("2_weoub")
 

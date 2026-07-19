@@ -158,6 +158,7 @@ func _load_migrated_save(slot_index: int) -> Dictionary:
 
 func next_day() -> void:
 	state.day += 1
+	BakeryOperations.begin_new_day()
 	state.dropped_items.clear()
 	state.dropped_items_timer = -1.0
 	var current_level = SceneManager.get_active_level()

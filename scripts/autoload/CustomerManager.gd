@@ -60,6 +60,13 @@ func get_customer(customer_id: String) -> Customer:
 func get_active_customer_count() -> int:
 	return _active_customers.size()
 
+
+func get_active_customer_ids() -> Array[String]:
+	var customer_ids: Array[String] = []
+	for customer_id in _active_customers.keys():
+		customer_ids.append(String(customer_id))
+	return customer_ids
+
 func _on_customer_tree_exiting(
 	customer_id: String,
 	customer: Customer
